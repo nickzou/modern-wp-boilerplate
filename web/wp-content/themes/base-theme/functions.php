@@ -2,7 +2,7 @@
 
 function load_theme_files()
 {
-    $directory = 'inc/';
+    $directory = get_template_directory() . '/inc/';
     
     // Check if the directory exists
     if (!is_dir($directory)) {
