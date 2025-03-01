@@ -53,6 +53,7 @@
   },
   "dependencies": {
     "@tailwindcss/cli": "^4.0.8",
+    "@wordpress/scripts": "^30.12.0",
     "alpinejs": "^3.14.8",
     "tailwindcss": "^4.0.8"
   }
