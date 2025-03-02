@@ -77,7 +77,7 @@ import { __ } from "@wordpress/i18n";
 /**
  * Internal dependencies
  */
-import metadata from "@projectRoot/web/wp-content/themes/${BASE_THEME}/inc/blocks/${block_name}/block.json";
+import metadata from "@/web/wp-content/themes/${THEME_NAME}/inc/blocks/${block_name}/block.json";
 
 /**
  * Block attribute types
