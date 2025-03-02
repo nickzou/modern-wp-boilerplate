@@ -35,7 +35,8 @@ done
 full_name="${namespace}/${block_name}"
 
 # Define the blocks directory
-blocks_dir="web/wp-content/themes/${THEME_NAME}/inc/blocks/${block_name}"
+# blocks_dir="web/wp-content/themes/${THEME_NAME}/inc/blocks/${block_name}"
+blocks_dir="src/blocks/${block_name}"
 
 mkdir -p "$blocks_dir"
 
@@ -65,7 +66,7 @@ cat > "${blocks_dir}/block.json" << EOF
 EOF
 
 # Create the editor.js file
-cat > "src/blocks/${block_name}-editor.tsx" << EOF
+cat > "src/blocks/${block_name}/${block_name}-editor.tsx" << EOF
 /**
  * WordPress dependencies
  */
@@ -77,7 +78,7 @@ import { __ } from "@wordpress/i18n";
 /**
  * Internal dependencies
  */
-import metadata from "@/web/wp-content/themes/${THEME_NAME}/inc/blocks/${block_name}/block.json";
+import metadata from "./block.json";
 
 /**
  * Block attribute types
@@ -157,4 +158,4 @@ echo "✅ block.json created successfully!"
 echo "Block identifier: ${full_name}"
 echo "Files created:"
 echo "- ${blocks_dir}/block.json"
-echo "- src/blocks/${block_name}-editor.tsx"
+echo "- ${blocks_dir}/${block_name}-editor.tsx"
