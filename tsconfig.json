@@ -12,6 +12,7 @@
     "noUncheckedIndexedAccess":true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
     "noEmit": true,
     "lib":["es2022","dom"],
     "baseUrl": ".",
@@ -20,6 +21,6 @@
       "@functions/*": ["./src/ts/functions/*"]
     }
   },
-  "include": ["./src/ts/**/*.ts"],
-  "exclude": ["./playwright.config.ts"]
+  "include": ["./src/ts/**/*.ts", "./src/blocks/**/*.ts"],
+  "exclude": ["node_modules", "./playwright.config.ts"]
 }
