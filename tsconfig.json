@@ -11,16 +11,14 @@
     "strict":true,
     "noUncheckedIndexedAccess":true,
     "module": "ESNext",
-    "moduleResolution": "Bundler",
+    "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "noEmit": true,
     "lib":["es2022","dom"],
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["*"],
-      "@functions/*": ["./src/ts/functions/*"]
+      "rootDir/*": ["./src/*"],
     }
   },
-  "include": ["./src/ts/**/*.ts", "./src/blocks/**/*.ts"],
+  "include": ["./src/**/*.ts", "./src/**/*.tsx"],
   "exclude": ["node_modules", "./playwright.config.ts"]
 }
