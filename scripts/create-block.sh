@@ -65,26 +65,49 @@ cat > "${blocks_dir}/block.json" << EOF
 EOF
 
 # Create the editor.js file
-cat > "src/blocks/${block_name}-editor.js" << EOF
+cat > "src/blocks/${block_name}-editor.tsx" << EOF
 /**
  * WordPress dependencies
  */
-import { registerBlockType } from '@wordpress/blocks';
-import { useBlockProps, RichText } from '@wordpress/block-editor';
-import { __ } from '@wordpress/i18n';
+ import React from "react";
+import { registerBlockType } from "@wordpress/blocks";
+import { useBlockProps, RichText } from "@wordpress/block-editor";
+import { __ } from "@wordpress/i18n";
 
 /**
  * Internal dependencies
  */
-import metadata from '../../blocks/${block_name}/block.json';
+import metadata from "@projectRoot/web/wp-content/themes/${BASE_THEME}/inc/blocks/${block_name}/block.json";
+
+/**
+ * Block attribute types
+ */
+interface BlockAttributes {
+	content: string;
+}
+
+/**
+ * Edit component props
+ */
+interface EditProps {
+	attributes: BlockAttributes;
+	setAttributes: (attrs: Partial<BlockAttributes>) => void;
+}
+
+/**
+ * Save component props
+ */
+interface SaveProps {
+	attributes: BlockAttributes;
+}
 
 /**
  * Edit component - Renders the block in the editor
  * 
- * @param {Object} props Block properties
+ * @param {EditProps} props Block properties
  * @returns {JSX.Element} The component to render
  */
-const Edit = ({ attributes, setAttributes }) => {
+const Edit = ({ attributes, setAttributes }: EditProps): JSX.Element => {
 	const { content } = attributes;
 	const blockProps = useBlockProps();
 
@@ -93,7 +116,7 @@ const Edit = ({ attributes, setAttributes }) => {
 			<RichText
 				tagName="p"
 				value={ content }
-				onChange={ ( content ) => setAttributes({ content }) }
+				onChange={ (newContent: string) => setAttributes({ content: newContent }) }
 				placeholder={ __( 'Enter content...', metadata.textdomain ) }
 			/>
 		</div>
@@ -103,10 +126,10 @@ const Edit = ({ attributes, setAttributes }) => {
 /**
  * Save component - Defines the saved output
  * 
- * @param {Object} props Block properties
- * @returns {JSX.Element|null} The component to save or null
+ * @param {SaveProps} props Block properties
+ * @returns {JSX.Element} The component to save
  */
-const Save = ({ attributes }) => {
+const Save = ({ attributes }: SaveProps): JSX.Element => {
 	const { content } = attributes;
 	const blockProps = useBlockProps.save();
 
@@ -123,7 +146,7 @@ const Save = ({ attributes }) => {
 /**
  * Register the block
  */
-registerBlockType( ${full_name}, {
+registerBlockType( metadata.name, {
 	edit: Edit,
 	save: Save,
 });
@@ -134,4 +157,4 @@ echo "✅ block.json created successfully!"
 echo "Block identifier: ${full_name}"
 echo "Files created:"
 echo "- ${blocks_dir}/block.json"
-echo "- src/blocks/${block_name}-editor.js"
+echo "- src/blocks/${block_name}-editor.tsx"
