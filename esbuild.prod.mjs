@@ -6,7 +6,7 @@ dotenv.config();
 
 const themeName = process.env.THEME_NAME ?? "base-theme";
 
-const entryPoints = globSync("./src/ts/**/*.ts", { ignore: "./src/ts/**/*.d.ts" });
+const entryPoints = globSync("./src/ts/**/*.{ts,tsx}", { ignore: "./src/ts/**/*.d.ts" });
 
 await esbuild.build({
     entryPoints,
