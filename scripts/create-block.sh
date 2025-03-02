@@ -70,22 +70,17 @@ cat > "src/blocks/${block_name}/${block_name}-editor.tsx" << EOF
 /**
  * WordPress dependencies
  */
- import React from "react";
-import { registerBlockType } from "@wordpress/blocks";
+import { registerBlockType, BlockConfiguration, BlockAttributes } from "@wordpress/blocks";
 import { useBlockProps, RichText } from "@wordpress/block-editor";
 import { __ } from "@wordpress/i18n";
+import Metadata from "rootDir/types/blocks/Metadata"; 
 
 /**
  * Internal dependencies
  */
 import metadata from "./block.json";
 
-/**
- * Block attribute types
- */
-interface BlockAttributes {
-	content: string;
-}
+const {name, ...settings } = metadata as unknown as Metadata;
 
 /**
  * Edit component props
@@ -148,9 +143,10 @@ const Save = ({ attributes }: SaveProps): JSX.Element => {
  * Register the block
  */
 registerBlockType( metadata.name, {
+	...settings,
 	edit: Edit,
 	save: Save,
-});
+} as BlockConfiguration<BlockAttributes>);
 
 EOF
 
