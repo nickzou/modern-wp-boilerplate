@@ -14,6 +14,7 @@
     "env:clean": "wp-env clean all",
     "env:destroy": "wp-env destroy",
     "wp:create-block": "bash ./scripts/create-block.sh",
+    "wp:build-block": "esrun esbuild.block.mjs && esrun blockcopy.mjs",
     "tailwind:dev": "npx @tailwindcss/cli -i ./tailwind.css -o ./web/wp-content/themes/base-theme/css/tailwind.css",
     "tailwind:prod": "npx @tailwindcss/cli -i ./tailwind.css -o ./web/wp-content/themes/base-theme/css/tailwind.css -m",
     "tailwind:watch": "npx @tailwindcss/cli -i ./tailwind.css -o ./web/wp-content/themes/base-theme/css/tailwind.css -w",
