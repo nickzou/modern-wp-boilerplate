@@ -3,29 +3,29 @@
     "vcs": {
         "enabled": false,
         "clientKind": "git",
-        "useIgnoreFile": false,
+        "useIgnoreFile": false
     },
     "files": {
         "ignoreUnknown": false,
         "include": ["./src/ts/**/*.ts", "./src/ts/**/*.tsx", "./src/css/**/*.css"],
-        "ignore": [],
+        "ignore": []
     },
     "formatter": {
         "enabled": true,
-        "indentStyle": "tab",
+        "indentStyle": "tab"
     },
     "organizeImports": {
-        "enabled": true,
+        "enabled": true
     },
     "linter": {
         "enabled": true,
         "rules": {
-            "recommended": true,
-        },
+            "recommended": true
+        }
     },
     "javascript": {
         "formatter": {
-            "quoteStyle": "double",
-        },
-    },
+            "quoteStyle": "double"
+        }
+    }
 }
