@@ -64,5 +64,74 @@ cat > "${blocks_dir}/block.json" << EOF
 }
 EOF
 
+# Create the editor.js file
+cat > "src/blocks/${block_name}-editor.js" << EOF
+/**
+ * WordPress dependencies
+ */
+import { registerBlockType } from '@wordpress/blocks';
+import { useBlockProps, RichText } from '@wordpress/block-editor';
+import { __ } from '@wordpress/i18n';
+
+/**
+ * Internal dependencies
+ */
+import metadata from '../../blocks/${block_name}/block.json';
+
+/**
+ * Edit component - Renders the block in the editor
+ * 
+ * @param {Object} props Block properties
+ * @returns {JSX.Element} The component to render
+ */
+const Edit = ({ attributes, setAttributes }) => {
+	const { content } = attributes;
+	const blockProps = useBlockProps();
+
+	return (
+		<div { ...blockProps }>
+			<RichText
+				tagName="p"
+				value={ content }
+				onChange={ ( content ) => setAttributes({ content }) }
+				placeholder={ __( 'Enter content...', metadata.textdomain ) }
+			/>
+		</div>
+	);
+};
+
+/**
+ * Save component - Defines the saved output
+ * 
+ * @param {Object} props Block properties
+ * @returns {JSX.Element|null} The component to save or null
+ */
+const Save = ({ attributes }) => {
+	const { content } = attributes;
+	const blockProps = useBlockProps.save();
+
+	return (
+		<div { ...blockProps }>
+			<RichText.Content
+				tagName="p"
+				value={ content }
+			/>
+		</div>
+	);
+};
+
+/**
+ * Register the block
+ */
+registerBlockType( ${full_name}, {
+	edit: Edit,
+	save: Save,
+});
+
+EOF
+
 echo "✅ block.json created successfully!"
 echo "Block identifier: ${full_name}"
+echo "Files created:"
+echo "- ${blocks_dir}/block.json"
+echo "- src/blocks/${block_name}-editor.js"
