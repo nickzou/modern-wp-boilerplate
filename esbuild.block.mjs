@@ -21,6 +21,6 @@ await esbuild.build({
     bundle: true,
     minify: false,
     sourcemap: true,
-    outdir: `./web/wp-content/themes/${themeName}/blocks`,
+    outdir: `./web/wp-content/themes/${themeName}/inc/blocks`,
 });
 
