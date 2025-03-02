@@ -53,7 +53,7 @@ cat > "${blocks_dir}/block.json" << EOF
 	"description": "${description}",
 	"example": {},
 	"textdomain": "${block_name}",
-	"editorScript": "file:./build/index.js",
+	"editorScript": "file:./editor.js",
 	"attributes": {
 		"content": {
 			"type": "string",
