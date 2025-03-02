@@ -66,7 +66,7 @@ cat > "${blocks_dir}/block.json" << EOF
 EOF
 
 # Create the editor.js file
-cat > "src/blocks/${block_name}/${block_name}-editor.tsx" << EOF
+cat > "src/blocks/${block_name}/editor.tsx" << EOF
 /**
  * WordPress dependencies
  */
@@ -154,4 +154,4 @@ echo "✅ block.json created successfully!"
 echo "Block identifier: ${full_name}"
 echo "Files created:"
 echo "- ${blocks_dir}/block.json"
-echo "- ${blocks_dir}/${block_name}-editor.tsx"
+echo "- ${blocks_dir}/ editor.tsx"
