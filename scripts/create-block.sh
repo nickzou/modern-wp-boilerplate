@@ -34,8 +34,13 @@ done
 # Format the full block name
 full_name="${namespace}/${block_name}"
 
+# Define the blocks directory
+blocks_dir="web/wp-content/themes/${THEME_NAME}/inc/blocks/${block_name}"
+
+mkdir -p "$blocks_dir"
+
 # Create the block.json content
-cat > block.json << EOF
+cat > "${blocks_dir}/block.json" << EOF
 {
 	"\$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": ${api_version},
