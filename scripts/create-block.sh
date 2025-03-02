@@ -1,7 +1,12 @@
 #!/bin/bash
 
+# Load environment variables from root directory
+if [ -f "$(dirname "$0")/../.env" ]; then
+  source "$(dirname "$0")/../.env"
+fi
+
 # Default values
-namespace="my-namespace"
+namespace="${THEME_NAME:-"my-namespace"}"
 block_name="my-block"
 title="My Block"
 category="widgets"
