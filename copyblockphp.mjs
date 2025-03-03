@@ -16,21 +16,18 @@ entryPoints.forEach(filePath => {
 
     const destDir = `./web/wp-content/themes/${themeName}/inc/blocks/${blockName}`;
 
-    // Read the source file
-    const blockJson = fs.readFileSync(filePath, 'utf8');
-  
     // Parse the JSON to update any properties if needed
-    const blockData = JSON.parse(blockJson);
+    const phpContent = fs.readFileSync(filePath, 'utf8');
 
     // Write the updated JSON to the destination
     fs.writeFileSync(
-        path.join(destDir, 'block.json'),
-        JSON.stringify(blockData, null, 2)
+        path.join(destDir, 'register.php'),
+        phpContent
     );
     
-    console.log(`Copied and updated: ${blockName} block`);
+    console.log(`Copied and updated: ${blockName} register.php`);
 });
 
-console.log(`All blocks copied to the blocks directory`);
+console.log(`All register.php copied to the blocks directory`);
 
 
