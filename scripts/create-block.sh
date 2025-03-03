@@ -158,7 +158,7 @@ cat > "${blocks_dir}/register.php" << EOF
  */
 function register_${block_name//-/_}_block() {
     // Get the directory of the current file
-    \$block_dir = dirname(__FILE__);
+    \$block_dir = get_template_directory() . '/inc/blocks/${block_name}';
     
     // Path to the sibling block.json file
     \$json_file = \$block_dir . '/block.json';
