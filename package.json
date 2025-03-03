@@ -13,7 +13,7 @@
     "env:stop": "wp-env stop",
     "env:clean": "wp-env clean all",
     "env:destroy": "wp-env destroy",
-    "wp:create-block": "bash ./scripts/create-block.sh",
+    "wp:create-block": "bash ./scripts/create-block.sh && npm run wp:build-block",
     "wp:build-block": "wp-scripts build --source-path=src/blocks --output-path=web/wp-content/themes/base-theme/inc/blocks && esrun copyblockjson.mjs && esrun copyblockphp.mjs",
     "wp:build-block:watch": "chokidar './src/blocks/**/*' -c 'npm run wp:build-block'",
     "tailwind:dev": "npx @tailwindcss/cli -i ./tailwind.css -o ./web/wp-content/themes/base-theme/css/tailwind.css",
