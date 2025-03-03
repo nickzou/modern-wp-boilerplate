@@ -166,7 +166,7 @@ function register_${block_name//-/_}_block() {
     // Check if block.json exists
     if (file_exists(\$json_file)) {
         // Register block based on its JSON file
-        register_block_type(\$json_file);
+        register_block_type_from_metadata(\$json_file);
     } else {
         // Log an error if the file doesn't exist
         error_log('Block JSON file not found at: ' . \$json_file);
