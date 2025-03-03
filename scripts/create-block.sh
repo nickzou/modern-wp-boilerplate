@@ -25,7 +25,7 @@ while [[ "$#" -gt 0 ]]; do
         --description) description="$2"; shift ;;
         --icon) icon="$2"; shift ;;
         --version) version="$2"; shift ;;
-        --api-version) api_version="$2"; shift ;;
+        --api_version) api_version="$2"; shift ;;
         *) echo "Unknown parameter: $1"; exit 1 ;;
     esac
     shift
