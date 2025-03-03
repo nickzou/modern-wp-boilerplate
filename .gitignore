@@ -8,6 +8,4 @@ vendor
 web/wp-content/plugins/
 web/wp-content/themes/*/css/
 web/wp-content/themes/*/js/
-web/wp-content/themes/*/inc/blocks/**/*.js
-web/wp-content/themes/*/inc/blocks/**/*.js.map
-web/wp-content/themes/*/inc/blocks/**/*.json
+web/wp-content/themes/*/inc/blocks/*
