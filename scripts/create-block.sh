@@ -150,6 +150,33 @@ registerBlockType( metadata.name, {
 
 EOF
 
+# Create the block registration PHP file
+cat > "${blocks_dir}/register_${block_name}_block.php" << EOF
+<?php
+/**
+ * Register the ${title} block
+ */
+function register_${block_name}_block() {
+    // Get the directory of the current file
+    \$block_dir = dirname(__FILE__);
+    
+    // Path to the sibling block.json file
+    \$json_file = \$block_dir . '/block.json';
+    
+    // Check if block.json exists
+    if (file_exists(\$json_file)) {
+        // Register block based on its JSON file
+        register_block_type(\$json_file);
+    } else {
+        // Log an error if the file doesn't exist
+        error_log('Block JSON file not found at: ' . \$json_file);
+    }
+}
+
+// Hook into WordPress init
+add_action('init', 'register_${block_name}_block');
+EOF
+
 echo "✅ block.json created successfully!"
 echo "Block identifier: ${full_name}"
 echo "Files created:"
