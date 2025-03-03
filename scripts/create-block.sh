@@ -19,7 +19,7 @@ api_version=3
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         --namespace) namespace="$2"; shift ;;
-        --block-name) block_name="$2"; shift ;;
+        --block_name) block_name="$2"; shift ;;
         --title) title="$2"; shift ;;
         --category) category="$2"; shift ;;
         --description) description="$2"; shift ;;
