@@ -151,12 +151,12 @@ registerBlockType( metadata.name, {
 EOF
 
 # Create the block registration PHP file
-cat > "${blocks_dir}/register_${block_name}_block.php" << EOF
+cat > "${blocks_dir}/register.php" << EOF
 <?php
 /**
  * Register the ${title} block
  */
-function register_${block_name}_block() {
+function register_${block_name//-/_}_block() {
     // Get the directory of the current file
     \$block_dir = dirname(__FILE__);
     
@@ -174,11 +174,11 @@ function register_${block_name}_block() {
 }
 
 // Hook into WordPress init
-add_action('init', 'register_${block_name}_block');
+add_action('init', 'register_${block_name//-/_}_block');
 EOF
 
 echo "✅ block.json created successfully!"
 echo "Block identifier: ${full_name}"
 echo "Files created:"
 echo "- ${blocks_dir}/block.json"
-echo "- ${blocks_dir}/ editor.tsx"
+echo "- ${blocks_dir}/editor.tsx"
