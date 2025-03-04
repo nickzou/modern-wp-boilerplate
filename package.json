@@ -30,7 +30,7 @@
     "ts:prod": "esrun esbuild.prod.mjs",
     "ts:watch": "esrun esbuild.watch.mjs",
     "ts:typecheck": "tsc --noEmit --project tsconfig.json",
-    "ts:typecheck:watch": "chokidar ./src/ts/ -c 'npm run ts:typecheck'",
+    "ts:typecheck:watch": "chokidar ./src/ -c 'npm run ts:typecheck'",
     "biome": "biome check --write",
     "biome:watch": "chokidar './src/**/*' -c 'biome check {path} --write'",
     "browsersync": "browser-sync start --no-open -p 'localhost:8888' -f 'web/**/*'",
