@@ -183,3 +183,8 @@ echo "Files created:"
 echo "- ${blocks_dir}/block.json"
 echo "- ${blocks_dir}/editor.tsx"
 echo "- ${blocks_dir}/register.php"
+
+echo "Running build processes..."
+npm run admin:tailwind:prod
+npm run wp:build-block
+echo "✅ Block creation and build complete!"
