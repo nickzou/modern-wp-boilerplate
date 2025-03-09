@@ -54,6 +54,7 @@ cat > "${blocks_dir}/block.json" << EOF
 	"example": {},
 	"textdomain": "${block_name}",
 	"editorScript": "file:./editor.js",
+    "render": "file:./render.php",
 	"attributes": {
 		"content": {
 			"type": "string",
@@ -164,13 +165,10 @@ cat > "${blocks_dir}/render.php" <<EOF
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
-// The full block name as registered
-\$full_block_name = \$block->name ?? 'namespace/block-name';
 ?>
 
 <div>
-    <?php echo esc_html( \$full_block_name ); ?>
+    <?= "${full_name}" ?>
 </div>
 
 EOF
