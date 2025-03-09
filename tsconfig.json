@@ -16,7 +16,7 @@
     "noEmit": true,
     "lib":["es2022","dom"],
     "paths": {
-      "rootDir/*": ["./src/*"],
+      "rootDir/*": ["./src/*"]
     }
   },
   "include": ["./src/**/*.ts", "./src/**/*.tsx"],
