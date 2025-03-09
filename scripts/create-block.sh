@@ -165,12 +165,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$block_name = $attributes['blockName'] ?? get_block_type( $block->name )->title ?? 'Custom Block';
-
+// The full block name as registered
+\$full_block_name = \$block->name ?? 'namespace/block-name';
 ?>
 
 <div>
-        <?php echo esc_html( $block_name ); ?>
+    <?php echo esc_html( \$full_block_name ); ?>
 </div>
 
 EOF
@@ -180,7 +180,7 @@ echo "Block identifier: ${full_name}"
 echo "Files created:"
 echo "- ${blocks_dir}/block.json"
 echo "- ${blocks_dir}/editor.tsx"
-echo "- ${blocks_dir}/register.php"
+echo "- ${blocks_dir}/render.php"
 
 echo "Running build processes..."
 npm run admin:tailwind:prod
