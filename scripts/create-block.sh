@@ -182,5 +182,5 @@ echo "- ${blocks_dir}/render.php"
 
 echo "Running build processes..."
 npm run admin:tailwind:prod
-npm run wp:build-block
+npm run wp:blocks:build
 echo "✅ Block creation and build complete!"

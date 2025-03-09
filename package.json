@@ -15,7 +15,7 @@
     "env:destroy": "wp-env destroy",
     "wp:create-block": "bash ./scripts/create-block.sh",
     "wp:build-block": "wp-scripts build --source-path=src/blocks --output-path=web/wp-content/themes/base-theme/inc/blocks",
-    "wp:build-block:watch": "chokidar './src/blocks/**/*' -c 'npm run wp:build-block'",
+    "wp:build-block:watch": "npm run wp:build-block -- --watch",
     "admin:tailwind:dev": "npx @tailwindcss/cli -i ./admin-tailwind.css -o ./web/wp-content/themes/base-theme/css/admin-tailwind.css",
     "admin:tailwind:prod": "npx @tailwindcss/cli -i ./admin-tailwind.css -o ./web/wp-content/themes/base-theme/css/admin-tailwind.css -m",
     "admin:tailwind:watch": "npx @tailwindcss/cli -i ./admin-tailwind.css -o ./web/wp-content/themes/base-theme/css/admin-tailwind.css -w",
