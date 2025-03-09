@@ -150,31 +150,29 @@ registerBlockType( metadata.name, {
 
 EOF
 
-# Create the block registration PHP file
-cat > "${blocks_dir}/register.php" << EOF
+
+
+cat > "${blocks_dir}/render.php" <<EOF
 <?php
 /**
- * Register the ${title} block
+ * Render template for a custom block
+ *
+ * @package MyTheme
  */
-function register_${block_name//-/_}_block() {
-    // Get the directory of the current file
-    \$block_dir = get_template_directory() . '/inc/blocks/${block_name}';
-    
-    // Path to the sibling block.json file
-    \$json_file = \$block_dir . '/block.json';
-    
-    // Check if block.json exists
-    if (file_exists(\$json_file)) {
-        // Register block based on its JSON file
-        register_block_type_from_metadata(\$json_file);
-    } else {
-        // Log an error if the file doesn't exist
-        error_log('Block JSON file not found at: ' . \$json_file);
-    }
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
-// Hook into WordPress init
-add_action('init', 'register_${block_name//-/_}_block');
+$block_name = $attributes['blockName'] ?? get_block_type( $block->name )->title ?? 'Custom Block';
+
+?>
+
+<div>
+        <?php echo esc_html( $block_name ); ?>
+</div>
+
 EOF
 
 echo "✅ block.json created successfully!"
