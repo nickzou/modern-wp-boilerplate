@@ -7,7 +7,13 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"include": ["./src/ts/**/*.ts", "./src/ts/**/*.tsx", "./src/blocks/**/*.ts", "./src/blocks/**/*.tsx", "./src/css/**/*.css"],
+		"include": [
+			"./src/ts/**/*.ts",
+			"./src/ts/**/*.tsx",
+			"./src/blocks/**/*.ts",
+			"./src/blocks/**/*.tsx",
+			"./src/css/**/*.css"
+		],
 		"ignore": []
 	},
 	"formatter": {
