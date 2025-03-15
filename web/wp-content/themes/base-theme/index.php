@@ -14,7 +14,8 @@ get_header();
             </article>
     <?php
         endwhile;
-    else: ?>
+    else:
+         ?>
         <p>No posts found.</p>
     <?php
     endif; ?>
