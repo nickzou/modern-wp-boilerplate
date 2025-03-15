@@ -39,7 +39,7 @@
     "lightningcss:watch": "chokidar './src/css/**/*.css' -c 'lightningcss --sourcemap --bundle --targets \">= 0.25%\" {path} -o ./web/wp-content/themes/base-theme/css/$(basename {path})'",
     "dev": "npm run tailwind:dev && npm run lightningcss:dev && npm run biome && npm run ts:typecheck && npm run wp:blocks:build && npm run ts:dev && npm run php:format && npm run php:lint",
     "prod": "npm run tailwind:prod && npm run lightningcss:prod && npm run biome && npm run ts:typecheck && npm run wp:blocks:build && npm run ts:prod && npm run php:format && npm run php:lint",
-    "watch": "concurrently -k --names 'Tailwind,CSS,TS Typecheck,Biome,TypeScript,Blocks,PHP Format,PHP Lint,BrowserSync' --prefixColors '#0EA5E9,#f9bb03,#FF584C,#64A8F9,#167ECE,#B6BD73,#4F5B93,#4F5B93,#F34D4D' 'npm run tailwind:watch' 'npm run lightningcss:watch'  'npm run ts:typecheck:watch' 'npm run biome:watch' 'npm run ts:watch' 'npm run wp:blocks:watch' 'npm run php:format:watch' 'npm run php:lint:watch' 'npm run browsersync'"
+    "watch": "concurrently -k --names 'Tailwind,CSS,TS Typecheck,Biome,TypeScript,Blocks,PHP Format,PHP Lint,BrowserSync' --prefixColors '#0EA5E9,#F9BB03,#FF584C,#64A8F9,#167ECE,#B6BD73,#4F5B93,#4F5B93,#F34D4D' 'npm run tailwind:watch' 'npm run lightningcss:watch'  'npm run ts:typecheck:watch' 'npm run biome:watch' 'npm run ts:watch' 'npm run wp:blocks:watch' 'npm run php:format:watch' 'npm run php:lint:watch' 'npm run browsersync'"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
