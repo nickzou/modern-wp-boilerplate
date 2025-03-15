@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A modern WordPress boilerplate",
   "license": "ISC",
-  "author": "",
+  "author": "Nick Zou",
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
