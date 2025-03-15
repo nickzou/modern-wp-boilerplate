@@ -6,9 +6,12 @@
 **/web/wp-content/themes/**/css
 **/web/wp-content/themes/**/js
 **/*.json
+**/*.jsonc
 **/*.lock
 **/*.css
 **/*.js
+**/*.mjs
+**/*.cjs
 **/*.jsx
 **/*.ts
 **/*.tsx
