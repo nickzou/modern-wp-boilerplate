@@ -28,6 +28,7 @@
     "ts:dev": "parcel build src/ts/*.ts --dist-dir web/wp-content/themes/base-theme/js --no-optimize",
     "ts:prod": "parcel build src/ts/*.ts --dist-dir web/wp-content/themes/base-theme/js",
     "ts:watch": "parcel watch src/ts/*.ts --dist-dir web/wp-content/themes/base-theme/js",
+    "ts:watch:hot": "parcel serve src/ts/*.ts --dist-dir web/wp-content/themes/base-theme/js --hmr-host 1234",
     "ts:typecheck": "tsc --noEmit --project tsconfig.json",
     "ts:typecheck:watch": "chokidar ./src/ -c 'npm run ts:typecheck'",
     "biome": "biome check --write",
