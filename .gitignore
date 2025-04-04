@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 vendor
+.parcel-cache
 
 .env
 .php-cs-fixer.cache
