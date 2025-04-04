@@ -27,7 +27,7 @@
     "php:lint:watch": "chokidar './web/wp-content/themes/base-theme/**/*.php' -i '{vendor}' -c 'php -l {path}'",
     "ts:dev": "parcel build src/ts/*.ts --dist-dir web/wp-content/themes/base-theme/js --no-optimize",
     "ts:prod": "parcel build src/ts/*.ts --dist-dir web/wp-content/themes/base-theme/js",
-    "ts:watch": "esrun esbuild.watch.mjs",
+    "ts:watch": "parcel watch src/ts/*.ts --dist-dir web/wp-content/themes/base-theme/js",
     "ts:typecheck": "tsc --noEmit --project tsconfig.json",
     "ts:typecheck:watch": "chokidar ./src/ -c 'npm run ts:typecheck'",
     "biome": "biome check --write",
