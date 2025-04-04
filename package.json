@@ -5,7 +5,6 @@
   "license": "ISC",
   "author": "Nick Zou",
   "type": "commonjs",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "env:update": "wp-env start --update",
@@ -26,7 +25,7 @@
     "php:format:watch": "chokidar './web/wp-content/themes/**/*.php' -c './vendor/bin/php-cs-fixer fix {path}'",
     "php:lint": "esrun phplint.mjs",
     "php:lint:watch": "chokidar './web/wp-content/themes/base-theme/**/*.php' -i '{vendor}' -c 'php -l {path}'",
-    "ts:dev": "esrun esbuild.config.mjs",
+    "ts:dev": "parcel build src/ts/*.ts --dist-dir web/wp-content/themes/base-theme/js --no-optimize",
     "ts:prod": "esrun esbuild.prod.mjs",
     "ts:watch": "esrun esbuild.watch.mjs",
     "ts:typecheck": "tsc --noEmit --project tsconfig.json",
@@ -54,10 +53,10 @@
     "chokidar-cli": "^3.0.0",
     "concurrently": "^9.1.2",
     "dotenv": "^16.4.7",
-    "esbuild": "^0.25.0",
     "esrun": "^3.2.26",
     "glob": "^11.0.1",
     "lightningcss-cli": "^1.29.1",
+    "parcel": "^2.14.4",
     "prettier": "^3.5.2",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "typescript": "^5.7.3"
