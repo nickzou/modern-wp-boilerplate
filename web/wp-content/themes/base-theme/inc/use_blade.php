@@ -28,9 +28,24 @@ function get_blade_instance()
 
 function view($template, $data = [])
 {
+    $globals = [
+        'language_attributes' => get_language_attributes(),
+        'charset' => get_bloginfo('charset'),
+        'site_name' => get_bloginfo('name'),
+        'site_description' => get_bloginfo('description'),
+        'site_url' => get_bloginfo('url'),
+        'template_directory_uri' => get_template_directory_uri(),
+        'stylesheet_directory_uri' => get_stylesheet_directory_uri(),
+        'home_url' => home_url('/'),
+        'wp_head' => function() { ob_start(); wp_head(); return ob_get_clean(); },
+        'wp_footer' => function() { ob_start(); wp_footer(); return ob_get_clean(); },
+        'body_class' => join(' ', get_body_class()),
+    ];
+
+    $merged_data = array_merge($globals, $data);
     try {
         $blade = get_blade_instance();
-        echo $blade->run($template, $data);
+        echo $blade->run($template, $merged_data);
     } catch (Exception $e) {
         if (WP_DEBUG) {
             echo "Template error: " . $e->getMessage();
