@@ -41,6 +41,7 @@ function view($template, $data = [])
         'wp_body_open' => function() { ob_start(); wp_head(); return ob_get_clean(); },
         'wp_footer' => function() { ob_start(); wp_footer(); return ob_get_clean(); },
         'body_class' => join(' ', get_body_class()),
+        'copyright_year' => date('Y'),
     ];
 
     $merged_data = array_merge($globals, $data);
