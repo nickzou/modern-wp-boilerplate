@@ -38,6 +38,7 @@ function view($template, $data = [])
         'stylesheet_directory_uri' => get_stylesheet_directory_uri(),
         'home_url' => home_url('/'),
         'wp_head' => function() { ob_start(); wp_head(); return ob_get_clean(); },
+        'wp_body_open' => function() { ob_start(); wp_head(); return ob_get_clean(); },
         'wp_footer' => function() { ob_start(); wp_footer(); return ob_get_clean(); },
         'body_class' => join(' ', get_body_class()),
     ];
