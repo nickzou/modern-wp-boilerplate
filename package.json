@@ -33,7 +33,7 @@
     "ts:typecheck:watch": "chokidar ./src/ -c 'npm run ts:typecheck'",
     "biome": "biome check --write",
     "biome:watch": "chokidar './src/**/*' -c 'biome check {path} --write'",
-    "browsersync": "browser-sync start",
+    "browsersync": "browser-sync start --config bs-config.json",
     "lightningcss:dev": "lightningcss ./src/css/** --output-dir ./web/wp-content/themes/base-theme/css/ --sourcemap --bundle --targets \">= 0.25%\"",
     "lightningcss:prod": "lightningcss ./src/css/** --output-dir ./web/wp-content/themes/base-theme/css/ --minify --bundle --targets \">= 0.25%\"",
     "lightningcss:watch": "chokidar './src/css/**/*.css' -c 'lightningcss --sourcemap --bundle --targets \">= 0.25%\" {path} -o ./web/wp-content/themes/base-theme/css/$(basename {path})'",

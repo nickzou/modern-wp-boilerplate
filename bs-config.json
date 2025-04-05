@@ -1,9 +1,20 @@
 {
   "open": false,
   "proxy": "localhost:8888",
-  "files": ["web/wp-content/themes/base-theme/"],
+  "files": ["web/wp-content/themes/base-theme"],
   "watchEvents": ["change"],
   "reloadDelay": 0,
   "reloadDebounce": 0,
-  "injectChanges": true
+  "injectChanges": true,
+  "watchOptions": {
+    "ignored": [
+      ".gitkeep",
+      "*.log",
+      "*.map",
+      "vendor/**",
+      "cache/**",
+      "**/tailwind.css",
+      "**/admin-tailwind.css"
+    ]
+  }
 }
