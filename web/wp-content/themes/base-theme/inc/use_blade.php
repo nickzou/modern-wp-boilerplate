@@ -23,7 +23,21 @@ function get_blade_instance()
     // Use 5 (debug) for development, 0 for production
     $mode = WP_DEBUG ? 5 : 0;
 
-    return new BladeOne($views, $cache, $mode);
+    $blade = new BladeOne($views, $cache, $mode);
+
+    $blade->directive('wphead', function() {
+        return '<?php wp_head(); ?>';
+    });
+    
+    $blade->directive('wpfooter', function() {
+        return '<?php wp_footer(); ?>';
+    });
+    
+    $blade->directive('wpbodyopen', function() {
+        return '<?php if (function_exists("wp_body_open")) { wp_body_open(); } ?>';
+    });
+
+    return $blade;
 }
 
 function view($template, $data = [])
@@ -37,9 +51,7 @@ function view($template, $data = [])
         'template_directory_uri' => get_template_directory_uri(),
         'stylesheet_directory_uri' => get_stylesheet_directory_uri(),
         'home_url' => home_url('/'),
-        'wp_head' => function() { ob_start(); wp_head(); return ob_get_clean(); },
         'wp_body_open' => function() { ob_start(); wp_head(); return ob_get_clean(); },
-        'wp_footer' => function() { ob_start(); wp_footer(); return ob_get_clean(); },
         'body_class' => join(' ', get_body_class()),
         'copyright_year' => date('Y'),
     ];
