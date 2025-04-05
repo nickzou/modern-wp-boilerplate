@@ -1,3 +1,2 @@
 @import "tailwindcss" source(none);
-@source "./web/wp-content/plugins";
-@source "./web/wp-content/themes";
+@source "./web/wp-content/themes/base-theme/views";
