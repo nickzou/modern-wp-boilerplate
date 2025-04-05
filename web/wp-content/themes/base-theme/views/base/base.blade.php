@@ -10,7 +10,7 @@
     @wpbodyopen
 
     @include('globals.header')
-        yotyot
+    @yield('content')
     @include('globals.footer')
     @wpfooter
 </body>
