@@ -3,7 +3,18 @@
     "tabWidth": 4,
     "plugins": [
         "@prettier/plugin-php",
+        "prettier-plugin-blade",
         "prettier-plugin-tailwindcss"
     ],
-    "tailwindStylesheet": "./tailwind.css"
+    "tailwindStylesheet": "./tailwind.css",
+     "overrides": [
+        {
+            "files": [
+                "*.blade.php"
+            ],
+            "options": {
+                "parser": "blade"
+            }
+        }
+    ]
 }

@@ -59,6 +59,7 @@
     "lightningcss-cli": "^1.29.1",
     "parcel": "^2.14.4",
     "prettier": "^3.5.2",
+    "prettier-plugin-blade": "^2.1.21",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "typescript": "^5.7.3"
   },
