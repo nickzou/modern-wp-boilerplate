@@ -1,7 +1,5 @@
-@extends('base.base')
+@extends("base.base")
 
-@section('content')
-<main>
-index template
-</main>
+@section("content")
+    <main>index template</main>
 @endsection
