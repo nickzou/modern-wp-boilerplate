@@ -2,7 +2,7 @@
   "open": false,
   "proxy": "localhost:8888",
   "files": ["web/wp-content/themes/base-theme"],
-  "watchEvents": ["change"],
+  "watchEvents": ["add", "change"],
   "reloadDelay": 0,
   "reloadDebounce": 0,
   "injectChanges": true,
