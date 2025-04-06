@@ -1,7 +1,11 @@
 {
   "open": false,
   "proxy": "localhost:8888",
-  "files": ["web/wp-content/themes/base-theme"],
+  "files": [
+        "web/wp-content/themes/base-theme/views",
+        "web/wp-content/themes/base-theme/inc",
+        "src"
+    ],
   "watchEvents": ["add", "change"],
   "reloadDelay": 0,
   "reloadDebounce": 0,
