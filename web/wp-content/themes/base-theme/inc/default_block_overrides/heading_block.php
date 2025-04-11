@@ -22,7 +22,7 @@ function heading_block($block_content, $block)
 
         $classes = $class_map[$level] ?? $class_map[2];
 
-        return get_view("default-blocks.heading", [
+        return get_view("components.default-blocks.heading", [
             "level" => $level,
             "classes" => $classes,
             "content" => $content,

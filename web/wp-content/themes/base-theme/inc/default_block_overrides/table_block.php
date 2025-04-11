@@ -47,7 +47,7 @@ function table_block($block_content, $block)
         $tbody_classes = "bg-white";
         $td_classes = "px-4 py-2 border border-gray-300";
 
-        return get_view("default-blocks.table", [
+        return get_view("components.default-blocks.table", [
             "table_classes" => $table_classes,
             "thead_classes" => $thead_classes,
             "th_classes" => $th_classes,

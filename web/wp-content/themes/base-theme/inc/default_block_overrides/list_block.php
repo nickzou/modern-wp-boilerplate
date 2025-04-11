@@ -29,7 +29,7 @@ function list_block($block_content, $block)
             $list_classes .= " list-disc";
         }
 
-        return get_view("default-blocks.list", [
+        return get_view("components.default-blocks.list", [
             "is_ordered" => $is_ordered,
             "list_classes" => $list_classes,
             "item_classes" => $item_classes,

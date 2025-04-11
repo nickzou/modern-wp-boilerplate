@@ -21,7 +21,7 @@ function paragraph_block($block_content, $block)
             $classes .= " text-right";
         }
 
-        return get_view("default-blocks.paragraph", [
+        return get_view("components.default-blocks.paragraph", [
             "classes" => $classes,
             "content" => $content,
         ]);
