@@ -37,22 +37,13 @@ function table_block($block_content, $block)
         $has_fixed_layout = isset($block["attrs"]["hasFixedLayout"]) && $block["attrs"]["hasFixedLayout"];
 
         // Define classes
-        $table_classes = "min-w-full border-collapse mb-6";
+        $table_classes = "";
         if ($has_fixed_layout) {
             $table_classes .= " table-fixed";
         }
 
-        $thead_classes = "bg-gray-100";
-        $th_classes = "px-4 py-2 text-left font-semibold text-gray-700 border border-gray-300";
-        $tbody_classes = "bg-white";
-        $td_classes = "px-4 py-2 border border-gray-300";
-
         return get_view("components.default-blocks.table", [
             "table_classes" => $table_classes,
-            "thead_classes" => $thead_classes,
-            "th_classes" => $th_classes,
-            "tbody_classes" => $tbody_classes,
-            "td_classes" => $td_classes,
             "header_cells" => $header_cells,
             "body_cells" => $body_cells,
         ]);
@@ -62,3 +53,4 @@ function table_block($block_content, $block)
 }
 
 add_filter("render_block", "table_block", 10, 2);
+
