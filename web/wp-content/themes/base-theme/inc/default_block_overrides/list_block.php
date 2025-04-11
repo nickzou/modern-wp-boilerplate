@@ -18,21 +18,8 @@ function list_block($block_content, $block)
         preg_match_all("/<li[^>]*>(.*?)<\/li>/s", $list_content, $item_matches);
         $items = $item_matches[1] ?? [];
 
-        // Define classes for different list types
-        $list_classes = "pl-6 space-y-1.5 mb-6";
-        $item_classes = "text-base leading-relaxed";
-
-        // Additional styling based on list type
-        if ($is_ordered) {
-            $list_classes .= " list-decimal";
-        } else {
-            $list_classes .= " list-disc";
-        }
-
         return get_view("components.default-blocks.list", [
             "is_ordered" => $is_ordered,
-            "list_classes" => $list_classes,
-            "item_classes" => $item_classes,
             "items" => $items,
         ]);
     }
