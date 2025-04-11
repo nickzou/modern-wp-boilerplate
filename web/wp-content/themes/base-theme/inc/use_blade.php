@@ -67,3 +67,29 @@ function view($template, $data = [])
     }
 }
 
+function get_view($template, $data = [])
+{
+    $globals = [
+        'language_attributes' => get_language_attributes(),
+        'charset' => get_bloginfo('charset'),
+        'site_name' => get_bloginfo('name'),
+        'site_description' => get_bloginfo('description'),
+        'site_url' => get_bloginfo('url'),
+        'template_directory_uri' => get_template_directory_uri(),
+        'stylesheet_directory_uri' => get_stylesheet_directory_uri(),
+        'home_url' => home_url('/'),
+        'wp_body_open' => function() { ob_start(); wp_head(); return ob_get_clean(); },
+        'body_class' => join(' ', get_body_class()),
+        'copyright_year' => date('Y'),
+    ];
+
+    $merged_data = array_merge($globals, $data);
+    try {
+        $blade = get_blade_instance();
+        return $blade->run($template, $merged_data);
+    } catch (Exception $e) {
+        if (WP_DEBUG) {
+            echo "Template error: " . $e->getMessage();
+        }
+    }
+}
