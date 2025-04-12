@@ -15,6 +15,7 @@
     "wp:create-block": "bash ./scripts/create-block.sh",
     "wp:blocks:build": "wp-scripts build --source-path=src/blocks --output-path=web/wp-content/themes/base-theme/blocks",
     "wp:blocks:watch": "npm run wp:blocks:build -- --watch",
+    "wp:cli": "wp-env run cli",
     "admin:tailwind:dev": "tailwindcss -i ./admin-tailwind.css -o ./web/wp-content/themes/base-theme/css/admin-tailwind.css",
     "admin:tailwind:prod": "tailwindcss -i ./admin-tailwind.css -o ./web/wp-content/themes/base-theme/css/admin-tailwind.css -m",
     "admin:tailwind:watch": "tailwindcss -i ./admin-tailwind.css -o ./web/wp-content/themes/base-theme/css/admin-tailwind.css -w",
