@@ -6,7 +6,13 @@ dotenv.config();
 
 const themeName = process.env.THEME_NAME ?? "base-theme";
 
-const phpFiles = globSync(`./web/wp-content/themes/${themeName}/**/*.php`);
+const phpFiles = globSync([
+        `./web/wp-content/themes/${themeName}/**/*.php`,
+    ], 
+    {ignore:
+        `./web/wp-content/themes/${themeName}/vendor/**/*.php`
+    });
+
 
 console.log(`PHP Lint: Found ${phpFiles.length} PHP files in ${themeName}`);
 
