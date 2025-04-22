@@ -68,6 +68,9 @@ function view($template, $data = [])
         'stylesheet_directory_uri' => get_stylesheet_directory_uri(),
         'home_url' => home_url('/'),
         'wp_body_open' => function() { ob_start(); wp_head(); return ob_get_clean(); },
+        "menus" => (object) [
+            "primary_navigation" => wp_get_nav_menu_items("primary-navigation"),
+        ],
         'body_class' => join(' ', get_body_class()),
         'copyright_year' => date('Y'),
     ];
