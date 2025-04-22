@@ -37,6 +37,22 @@ function get_blade_instance()
         return '<?php if (function_exists("wp_body_open")) { wp_body_open(); } ?>';
     });
 
+    $blade->directive("content", function () {
+        return "<?php the_content(); ?>";
+    });
+
+    $blade->directive("pagination", function () {
+        return "<?php 
+                    echo \"<div class='flex items-center justify-center text-it-dark-gray lg:justify-end dark:text-white'>\";
+                        echo get_the_posts_pagination([
+                            'type' => 'plain',
+                            'prev_text' => 'Prev',
+                            'next_text' => 'Next',
+                        ]); 
+                    echo \"</div>\";
+                ?>";
+    });
+  
     return $blade;
 }
 
