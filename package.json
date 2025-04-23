@@ -7,6 +7,9 @@
   "type": "commonjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "composer:install:dev": "composer install",
+    "composer:install:theme": "composer install -d ./web/wp-content/themes/base-theme",
+    "composer:install": "npm run composer:install:dev && npm run composer:install:theme",
     "env:update": "wp-env start --update",
     "env:start": "wp-env start",
     "env:stop": "wp-env stop",
