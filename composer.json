@@ -17,11 +17,13 @@
     },
     "config": {
         "allow-plugins": {
-            "composer/installers": true
+            "composer/installers": true,
+            "pestphp/pest-plugin": true
         },
         "vendor-dir": "web/wp-content/themes/base-theme/vendor"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.70"
+        "friendsofphp/php-cs-fixer": "^3.70",
+        "pestphp/pest": "^3.8"
     }
 }
