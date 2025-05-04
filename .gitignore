@@ -1,4 +1,6 @@
 .DS_Store
+terraform.tfvars
+
 node_modules
 vendor
 .parcel-cache
