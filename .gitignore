@@ -8,6 +8,10 @@ vendor
 .env
 .php-cs-fixer.cache
 
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+
 web/wp-content/plugins/
 web/wp-content/themes/*/css/
 web/wp-content/themes/*/js/
