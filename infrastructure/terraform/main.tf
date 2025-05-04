@@ -100,8 +100,7 @@ resource "digitalocean_droplet" "wordpress" {
       mysql_root_password = var.mysql_root_password,
       mysql_database   = var.mysql_database,
       mysql_user       = var.mysql_user,
-      mysql_password   = var.mysql_password,
-      ENV_NAME         = "$${ENV_NAME}"
+      mysql_password   = var.mysql_password
     })
     destination = "/opt/wordpress/create-env.sh"
   }
