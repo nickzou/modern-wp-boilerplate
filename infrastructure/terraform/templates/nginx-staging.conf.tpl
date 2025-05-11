@@ -2,7 +2,7 @@
 server {
     listen 80;
     listen [::]:80;
-    server_name ${domain_name} www.${domain_name};
+    server_name staging.${domain_name};
     
     # Allow Let's Encrypt validation to work
     location /.well-known/acme-challenge/ {
@@ -17,16 +17,16 @@ server {
     }
 }
 
-# HTTPS server for production
+# HTTPS server for staging
 server {
     listen 443 ssl;
     listen [::]:443 ssl;
     
-    server_name ${domain_name} www.${domain_name};
+    server_name staging.${domain_name};
     
     # SSL certificates
-    ssl_certificate /etc/letsencrypt/live/${domain_name}/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/${domain_name}/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/staging.${domain_name}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/staging.${domain_name}/privkey.pem;
     
     # SSL settings
     ssl_protocols TLSv1.2 TLSv1.3;
@@ -39,9 +39,9 @@ server {
     # HSTS (uncomment if you understand the implications)
     # add_header Strict-Transport-Security "max-age=63072000" always;
     
-    # Proxy to WordPress container
+    # Proxy to staging WordPress container
     location / {
-        proxy_pass http://wordpress:80;
+        proxy_pass http://staging_wordpress:80;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

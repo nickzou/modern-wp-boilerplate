@@ -1,6 +1,7 @@
 version: '3'
 
 services:
+  # Production Database
   db:
     image: mysql:8.0
     container_name: wordpress_db
@@ -15,6 +16,7 @@ services:
     networks:
       - wordpress_network
 
+  # Production WordPress
   wordpress:
     image: wordpress:latest
     container_name: wordpress_app
@@ -31,6 +33,7 @@ services:
     networks:
       - wordpress_network
 
+  # Staging Database
   staging_db:
     image: mysql:8.0
     container_name: staging_db
@@ -58,13 +61,14 @@ services:
       WORDPRESS_DB_USER: ${mysql_user}
       WORDPRESS_DB_PASSWORD: ${mysql_password}
       WORDPRESS_CONFIG_EXTRA: |
-        define('WP_HOME', 'http://staging.${domain_name}');
-        define('WP_SITEURL', 'http://staging.${domain_name}');
+        define('WP_HOME', 'https://staging.${domain_name}');
+        define('WP_SITEURL', 'https://staging.${domain_name}');
     volumes:
       - staging_wordpress_data:/var/www/html
     networks:
       - wordpress_network
 
+  # Nginx Reverse Proxy
   nginx:
     image: nginx:latest
     container_name: wordpress_nginx
@@ -75,7 +79,8 @@ services:
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - wordpress_data:/var/www/html/production
-      - wordpress_data:/var/www/html/staging
+      - staging_wordpress_data:/var/www/html/staging
+      - /etc/letsencrypt:/etc/letsencrypt:ro  # Mount Let's Encrypt certificates
     depends_on:
       - wordpress
       - staging_wordpress

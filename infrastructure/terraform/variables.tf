@@ -10,14 +10,13 @@ variable "ssh_key_id" {
 }
 
 variable "ssh_private_key_path" {
-  description = "Path to your SSH private key file"
+  description = "Path to your SSH private key"
   type        = string
 }
 
 variable "domain_name" {
   description = "Domain name for WordPress site"
   type        = string
-  default     = "pandacalculus.com"
 }
 
 variable "environment" {
@@ -35,13 +34,7 @@ variable "region" {
 variable "droplet_size" {
   description = "Size of the DigitalOcean droplet"
   type        = string
-  default     = "s-1vcpu-2gb"  # 1 vCPU, 2GB RAM
-}
-
-variable "your_ip_address" {
-  description = "Your IP address for SSH access restrictions"
-  type        = string
-  default     = "0.0.0.0/0"  # Default allows all, but you should restrict this
+  default     = "s-1vcpu-2gb"
 }
 
 variable "mysql_root_password" {
@@ -66,4 +59,9 @@ variable "mysql_password" {
   description = "MySQL password"
   type        = string
   sensitive   = true
+}
+
+variable "ssl_email" {
+  description = "Email address for Let's Encrypt SSL certificates"
+  type        = string
 }

@@ -26,3 +26,6 @@ mysql_root_password = "secure_root_password"
 mysql_database = "wordpress"
 mysql_user = "wordpress"
 mysql_password = "secure_wordpress_password"
+
+# Email address for Let's Encrypt SSL certificates
+ssl_email = "your_email@example.com"
