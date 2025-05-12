@@ -15,7 +15,7 @@ provider "digitalocean" {
 
 # Create a Digital Ocean Project
 resource "digitalocean_project" "wordpress" {
-  name        = "WordPress Infrastructure"
+  name        = var.project_name
   description = "Resources for the WordPress site at ${var.domain_name}"
   purpose     = "Web Application"
   environment = var.environment
@@ -88,6 +88,7 @@ resource "digitalocean_record" "main" {
   type   = "A"
   name   = "@"
   value  = digitalocean_droplet.wordpress.ipv4_address
+  ttl    = 1800
 }
 
 # Add www subdomain
@@ -96,6 +97,7 @@ resource "digitalocean_record" "www" {
   type   = "CNAME"
   name   = "www"
   value  = "@"
+  ttl    = 1800
 }
 
 # Add staging subdomain
@@ -104,6 +106,7 @@ resource "digitalocean_record" "staging" {
   type   = "A"
   name   = "staging"
   value  = digitalocean_droplet.wordpress.ipv4_address
+  ttl    = 1800
 }
 
 # Add wildcard for feature branches
@@ -112,6 +115,7 @@ resource "digitalocean_record" "wildcard" {
   type   = "A"
   name   = "*"
   value  = digitalocean_droplet.wordpress.ipv4_address
+  ttl    = 1800
 }
 
 # STEP 3: Create initial HTTP/HTTPS configuration to get started
