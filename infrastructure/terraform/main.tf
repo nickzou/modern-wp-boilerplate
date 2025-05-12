@@ -522,7 +522,7 @@ resource "null_resource" "initial_http_setup" {
       "chmod +x /opt/wordpress/create-env.sh",
       "chmod +x /opt/wordpress/get-ssl.sh",
       "cd /opt/wordpress && docker-compose up -d",
-      "sleep 10", # Wait for services to start
+      "sleep 60", # Wait for services to start
       "bash /opt/wordpress/get-ssl.sh" # Run the SSL script
     ]
   }
