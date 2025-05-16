@@ -23,7 +23,7 @@ resource "digitalocean_project" "wordpress" {
 
 # STEP 1: Create the DigitalOcean Droplet
 resource "digitalocean_droplet" "wordpress" {
-  image    = "ubuntu-22-04-x64"
+  image    = "ubuntu-24-04-x64"
   name     = "wordpress-${var.environment}"
   region   = var.region
   size     = var.droplet_size
