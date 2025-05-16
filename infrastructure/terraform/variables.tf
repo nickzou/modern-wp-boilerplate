@@ -14,6 +14,11 @@ variable "ssh_private_key_path" {
   type        = string
 }
 
+variable "project_name" {
+  description = "Project name for WordPress site"
+  type        = string
+}
+
 variable "domain_name" {
   description = "Domain name for WordPress site"
   type        = string
