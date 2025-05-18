@@ -14,4 +14,3 @@ document.addEventListener("alpine:init", () => {
 		size: screens.find((screen) => window.innerWidth < screen.value)?.name,
 	} as { size: Names });
 });
-

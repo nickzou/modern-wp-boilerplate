@@ -14,4 +14,3 @@ const screens: Screen[] = [
 	{ name: "2xl", value: 1536 },
 ];
 export default screens;
-
