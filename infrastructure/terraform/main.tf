@@ -43,19 +43,19 @@ resource "digitalocean_droplet" "wordpress" {
   provisioner "remote-exec" {
     inline = [
       "export DEBIAN_FRONTEND=noninteractive",
-      "apt-get update",
-      "apt-get upgrade -y",
+      "apt update",
+      "apt upgrade -y",
       
       # Install prerequisites
-      "apt-get install -y apt-transport-https ca-certificates curl software-properties-common certbot",
+      "apt install -y apt-transport-https ca-certificates curl software-properties-common certbot",
       
       # Add Docker's official GPG key and repository
       "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg",
       "echo \"deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" | tee /etc/apt/sources.list.d/docker.list > /dev/null",
       
       # Update package index again and install Docker
-      "apt-get update",
-      "apt-get install -y docker-ce docker-ce-cli containerd.io",
+      "apt update",
+      "apt install -y docker-ce docker-ce-cli containerd.io",
       
       # Install Docker Compose
       "curl -L \"https://github.com/docker/compose/releases/download/v2.18.1/docker-compose-linux-x86_64\" -o /usr/local/bin/docker-compose",
