@@ -45,6 +45,14 @@ resource "digitalocean_droplet" "wordpress" {
       "export DEBIAN_FRONTEND=noninteractive",
       "apt update",
       "apt upgrade -y",
+
+      "useradd -m -s /bin/bash automator",
+      "mkdir -p /home/automator/.ssh",
+      "echo '${var.automator_ssh_public_key}' > /home/automator/.ssh/authorized_keys",
+      "chmod 700 /home/automator/.ssh",
+      "chmod 600 /home/automator/.ssh/authorized_keys",
+      "chown -R automator:automator /home/automator/.ssh",
+      "echo 'automator ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/automator",
       
       # Install prerequisites
       "apt install -y apt-transport-https ca-certificates curl software-properties-common certbot",

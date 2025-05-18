@@ -14,6 +14,11 @@ variable "ssh_private_key_path" {
   type        = string
 }
 
+variable "automator_ssh_public_key" {
+  description = "Public key for autormator user"
+  type        = string
+}
+
 variable "project_name" {
   description = "Project name for WordPress site"
   type        = string
