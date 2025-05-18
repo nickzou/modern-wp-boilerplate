@@ -294,7 +294,7 @@ resource "null_resource" "initial_http_setup" {
             define('WP_HOME', 'https://staging.${var.domain_name}');
             define('WP_SITEURL', 'https://staging.${var.domain_name}');
         volumes:
-          - /opt/wordpress/wordpress/staging/wp-content/themes:/var/www/html/wp-content/themes/
+          - /opt/wordpress/wordpress/staging/wp-content/themes:/var/www/html/wp-content/themes
           - /opt/wordpress/wordpress/staging/wp-content/plugins:/var/www/html/wp-content/themes/plugins
         networks:
           - wordpress_network
