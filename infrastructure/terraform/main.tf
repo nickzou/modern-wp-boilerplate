@@ -70,7 +70,8 @@ resource "digitalocean_droplet" "wordpress" {
       "mkdir -p /opt/wordpress/nginx",
       "mkdir -p /opt/wordpress/nginx/conf.d",
       "mkdir -p /opt/wordpress/mysql",
-      "mkdir -p /opt/wordpress/wordpress",
+      "mkdir -p /opt/wordpress/wordpress/production",
+      "mkdir -p /opt/wordpress/wordpress/staging",
       "mkdir -p /opt/wordpress/ssl",
       "ls -la /opt/wordpress/nginx/conf.d"  # Verify the directory exists
     ]
@@ -257,7 +258,8 @@ resource "null_resource" "initial_http_setup" {
             define('WP_HOME', 'https://${var.domain_name}');
             define('WP_SITEURL', 'https://${var.domain_name}');
         volumes:
-          - wordpress_data:/var/www/html
+          - /opt/wordpress/wordpress/production/wp-content/themes:/var/www/html/wp-content/themes
+          - /opt/wordpress/wordpress/production/wp-content/plugins:/var/www/html/wp-content/plugins
         networks:
           - wordpress_network
 
@@ -292,7 +294,8 @@ resource "null_resource" "initial_http_setup" {
             define('WP_HOME', 'https://staging.${var.domain_name}');
             define('WP_SITEURL', 'https://staging.${var.domain_name}');
         volumes:
-          - staging_wordpress_data:/var/www/html
+          - /opt/wordpress/wordpress/staging/wp-content/themes:/var/www/html/wp-content/themes/
+          - /opt/wordpress/wordpress/staging/wp-content/plugins:/var/www/html/wp-content/themes/plugins
         networks:
           - wordpress_network
 
