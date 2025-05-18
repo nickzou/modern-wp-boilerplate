@@ -10,6 +10,7 @@ vendor
 
 .terraform/
 terraform.tfstate
+terraform.tfstate.lock.info
 terraform.tfstate.backup
 
 web/wp-content/plugins/
