@@ -19,10 +19,10 @@ jobs:
               run: |
                   if ping -c 3 ${{ secrets.SSH_HOST }} &> /dev/null; then
                     echo "Host is reachable, will proceed with deployment"
-                    echo "reachable=true" >> $GITHUB_OUTPUT
+                    echo "host_reachable=true" >> $GITHUB_OUTPUT
                   else
                     echo "Host is not reachable, skipping entire workflow"
-                    echo "reachable=false" >> $GITHUB_OUTPUT
+                    echo "host_reachable=false" >> $GITHUB_OUTPUT
                   fi
     build-and-deploy:
         runs-on: ubuntu-latest
