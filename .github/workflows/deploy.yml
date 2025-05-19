@@ -47,6 +47,11 @@ jobs:
         run: |
           npm run prod 
 
+      - name: Secret Check
+        run: |
+          grep Port /etc/ssh/sshd_config
+          echo ${{ secrets.SSH_HOST }}
+
       - name: Deploy artifact
         uses: appleboy/ssh-action@v1
         with:
