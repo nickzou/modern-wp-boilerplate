@@ -23,7 +23,7 @@ jobs:
         
       # Runs a simple echo command
       - name: Say hello
-        run: echo "Hello, World!"
+        run: echo "Hello, specific branch!"
         
       # Optional: Display the time as well
       - name: Display the time
