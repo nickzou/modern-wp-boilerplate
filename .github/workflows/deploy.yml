@@ -30,7 +30,7 @@ jobs:
                   fi
     build-and-deploy:
         runs-on: ubuntu-latest
-        if: github.event.pull_request.merged == true
+        if: needs.check-host.outputs.host_reachable == 'true'
         steps:
             # Checks-out your repository under $GITHUB_WORKSPACE
             - name: Checkout repository
