@@ -47,20 +47,14 @@ jobs:
         run: |
           npm run prod 
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.9.1
-        with:
-          ssh-private-key: ${{ secrets.AUTOMATOR_SSH_PRIVATE_KEY }}
-
-      - name: Configure known hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -t ed25519 ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-
-      - name: Test SSH connection
-        run: ssh -T automator@${{ secrets.SSH_HOST }} "echo 'SSH connection successful!'"
-
       - name: Deploy artifact
-        run: |
-          rsync -vzcr --rsync-path="sudo rsync" automator@${{ secrets.SSH_HOST }}:/opt/wordpress/wordpress/production
-          ssh automator@${{ secrets.SSH_HOST }} "sudo chown -R www-data:www-data /opt/wordpress/wordpress/production"
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          key: ${{ secrets.AUTOMATOR_SSH_PRIVATE_KEY }}
+          port: 22
+          host: ${{ secrets.AUTOMATOR_SSH_PRIVATE_KEY }}
+          script: |
+            rsync -vzcr --rsync-path="sudo rsync" automator@${{ secrets.SSH_HOST }}:/opt/wordpress/wordpress/production
+            ssh automator@${{ secrets.SSH_HOST }} "sudo chown -R www-data:www-data /opt/wordpress/wordpress/production"
+
