@@ -63,7 +63,7 @@ jobs:
       - name: Deploy artifact
         run: |
           rsync -vzcr --rsync-path="sudo rsync" automator@${{ secrets.SSH_HOST }}:/opt/wordpress/wordpress/production
-          ssh automator@${{ secrest.SSH_HOST }} "sudo chown -R www-data:www-data /opt/wordpress/wordpress/production"
+          ssh automator@${{ secrets.SSH_HOST }} "sudo chown -R www-data:www-data /opt/wordpress/wordpress/production"
 
       # Runs a simple echo command
       - name: Say hello
