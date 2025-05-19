@@ -5,7 +5,7 @@
 ENV_FILE=".env"
 
 # Path to the output terraform.tfvars file
-TFVARS_FILE="terraform.tfvars"
+TFVARS_FILE="infrastructure/terraform/terraform.tfvars"
 
 # Check if .env file exists
 if [ ! -f "$ENV_FILE" ]; then
@@ -55,5 +55,4 @@ while IFS= read -r line || [[ -n "$line" ]]; do
     fi
 done < "$ENV_FILE"
 
-echo "Conversion complete. Created $TFVARS_FILE with TF_ variables from $ENV_FILE."
-echo "Variables were converted to lowercase and the TF_ prefix was removed."
+echo "Setup complete. Created $TFVARS_FILE with TF_ variables from $ENV_FILE."

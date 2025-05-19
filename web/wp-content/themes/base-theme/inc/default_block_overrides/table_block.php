@@ -53,4 +53,3 @@ function table_block($block_content, $block)
 }
 
 add_filter("render_block", "table_block", 10, 2);
-

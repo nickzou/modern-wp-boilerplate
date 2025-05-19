@@ -15,7 +15,7 @@ provider "digitalocean" {
 
 # Create a Digital Ocean Project
 resource "digitalocean_project" "wordpress" {
-  name        = "WordPress Infrastructure"
+  name        = var.project_name
   description = "Resources for the WordPress site at ${var.domain_name}"
   purpose     = "Web Application"
   environment = var.environment
@@ -23,7 +23,7 @@ resource "digitalocean_project" "wordpress" {
 
 # STEP 1: Create the DigitalOcean Droplet
 resource "digitalocean_droplet" "wordpress" {
-  image    = "ubuntu-22-04-x64"
+  image    = "ubuntu-24-04-x64"
   name     = "wordpress-${var.environment}"
   region   = var.region
   size     = var.droplet_size
@@ -43,19 +43,27 @@ resource "digitalocean_droplet" "wordpress" {
   provisioner "remote-exec" {
     inline = [
       "export DEBIAN_FRONTEND=noninteractive",
-      "apt-get update",
-      "apt-get upgrade -y",
+      "apt update",
+      "apt upgrade -y",
+
+      "useradd -m -s /bin/bash automator",
+      "mkdir -p /home/automator/.ssh",
+      "echo '${var.automator_ssh_public_key}' > /home/automator/.ssh/authorized_keys",
+      "chmod 700 /home/automator/.ssh",
+      "chmod 600 /home/automator/.ssh/authorized_keys",
+      "chown -R automator:automator /home/automator/.ssh",
+      "echo 'automator ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/automator",
       
       # Install prerequisites
-      "apt-get install -y apt-transport-https ca-certificates curl software-properties-common certbot",
+      "apt install -y apt-transport-https ca-certificates curl software-properties-common certbot",
       
       # Add Docker's official GPG key and repository
       "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg",
       "echo \"deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" | tee /etc/apt/sources.list.d/docker.list > /dev/null",
       
       # Update package index again and install Docker
-      "apt-get update",
-      "apt-get install -y docker-ce docker-ce-cli containerd.io",
+      "apt update",
+      "apt install -y docker-ce docker-ce-cli containerd.io",
       
       # Install Docker Compose
       "curl -L \"https://github.com/docker/compose/releases/download/v2.18.1/docker-compose-linux-x86_64\" -o /usr/local/bin/docker-compose",
@@ -70,7 +78,8 @@ resource "digitalocean_droplet" "wordpress" {
       "mkdir -p /opt/wordpress/nginx",
       "mkdir -p /opt/wordpress/nginx/conf.d",
       "mkdir -p /opt/wordpress/mysql",
-      "mkdir -p /opt/wordpress/wordpress",
+      "mkdir -p /opt/wordpress/wordpress/production",
+      "mkdir -p /opt/wordpress/wordpress/staging",
       "mkdir -p /opt/wordpress/ssl",
       "ls -la /opt/wordpress/nginx/conf.d"  # Verify the directory exists
     ]
@@ -88,6 +97,7 @@ resource "digitalocean_record" "main" {
   type   = "A"
   name   = "@"
   value  = digitalocean_droplet.wordpress.ipv4_address
+  ttl    = 1800
 }
 
 # Add www subdomain
@@ -96,6 +106,7 @@ resource "digitalocean_record" "www" {
   type   = "CNAME"
   name   = "www"
   value  = "@"
+  ttl    = 1800
 }
 
 # Add staging subdomain
@@ -104,6 +115,7 @@ resource "digitalocean_record" "staging" {
   type   = "A"
   name   = "staging"
   value  = digitalocean_droplet.wordpress.ipv4_address
+  ttl    = 1800
 }
 
 # Add wildcard for feature branches
@@ -112,6 +124,7 @@ resource "digitalocean_record" "wildcard" {
   type   = "A"
   name   = "*"
   value  = digitalocean_droplet.wordpress.ipv4_address
+  ttl    = 1800
 }
 
 # STEP 3: Create initial HTTP/HTTPS configuration to get started
@@ -253,7 +266,8 @@ resource "null_resource" "initial_http_setup" {
             define('WP_HOME', 'https://${var.domain_name}');
             define('WP_SITEURL', 'https://${var.domain_name}');
         volumes:
-          - wordpress_data:/var/www/html
+          - /opt/wordpress/wordpress/production/wp-content/themes:/var/www/html/wp-content/themes
+          - /opt/wordpress/wordpress/production/wp-content/plugins:/var/www/html/wp-content/plugins
         networks:
           - wordpress_network
 
@@ -288,7 +302,8 @@ resource "null_resource" "initial_http_setup" {
             define('WP_HOME', 'https://staging.${var.domain_name}');
             define('WP_SITEURL', 'https://staging.${var.domain_name}');
         volumes:
-          - staging_wordpress_data:/var/www/html
+          - /opt/wordpress/wordpress/staging/wp-content/themes:/var/www/html/wp-content/themes
+          - /opt/wordpress/wordpress/staging/wp-content/plugins:/var/www/html/wp-content/themes/plugins
         networks:
           - wordpress_network
 
