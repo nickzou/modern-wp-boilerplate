@@ -51,9 +51,9 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-          echo $ssh_automator_private_key > ~/.ssh/automator
+          echo "$ssh_automator_private_key" > ~/.ssh/automator
           chmod 600 ~/.ssh/automator
-          ssh-keyscan -H $ssh_host >> ~/.ssh/known_hosts
+          ssh-keyscan $ssh_host >> ~/.ssh/known_hosts
           chmod 600 ~/.ssh/known_hosts
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/automator
