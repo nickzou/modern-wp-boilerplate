@@ -21,33 +21,33 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # - name: Set up Node.js
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: 'latest'
-      #     cache: 'npm'
-      #
-      # - name: Set up PHP
-      #   uses: shivammathur/setup-php@v2
-      #   with:
-      #     php-version: '8.2'
-      #     tools: composer:v2
-      #     coverage: none
-      #
-      # - name: Install Node dependencies
-      #   run: |
-      #     npm install
-      #
-      # - name: Install PHP dependencies
-      #   run: |
-      #     npm run composer:install:dev
-      #     npm run composer:install:theme
-      #
-      # - name: Build assets
-      #   run: |
-      #     npm run prod 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'
+          cache: 'npm'
 
-      - name: Get remote host key
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+          coverage: none
+
+      - name: Install Node dependencies
+        run: |
+          npm install
+
+      - name: Install PHP dependencies
+        run: |
+          npm run composer:install:dev
+          npm run composer:install:theme
+
+      - name: Build assets
+        run: |
+          npm run prod 
+
+      - name: Deploy artifact
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
@@ -55,22 +55,14 @@ jobs:
           ${{ secrets.AUTOMATOR_SSH_PRIVATE_KEY }}
           EOL
           chmod 600 ~/.ssh/automator
-          ssh-keyscan wandernode.ca >> ~/.ssh/known_hosts
+          ssh-keyscan $ssh_host >> ~/.ssh/known_hosts
           chmod 600 ~/.ssh/known_hosts
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/automator
           ssh-add -l
-          ssh automator@wandernode.ca "whoami"
+          ssh automator@$ssh_host "whoami"
+          rsync -vzcr --rsync-path="sudo rsync" automator@$ssh_host:/opt/wordpress/wordpress/production
+          ssh automator@$ssh_host "sudo chown -R www-data:www-data /opt/wordpress/wordpress/production"
         env:
           ssh_host: ${{ secrets.SSH_HOST }}
-          key: ${{ secrets.AUTOMATOR_SSH_PRIVATE_KEY }}
-
-      - name: Test Action
-        run: |
-          ssh-add -l
-          # ssh automator@wandernode.ca "whoami"
-        # env:
-        #   ssh_host: ${{ secrets.SSH_HOST }}
-            # rsync -vzcr --rsync-path="sudo rsync" automator@${{ secrets.SSH_HOST }}:/opt/wordpress/wordpress/production
-            # ssh automator@${{ secrets.SSH_HOST }} "sudo chown -R www-data:www-data /opt/wordpress/wordpress/production"
 
