@@ -1,29 +1,75 @@
 name: Hello World Workflow
 
 on:
-  # Triggers the workflow on push events
-  pull_request:
-    types: [ closed ]
-    branches: [ main ]
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+    pull_request:
+        types: [closed]
+        branches: [main]
+    # Allows you to run this workflow manually from the Actions tab
+    workflow_dispatch:
 
 jobs:
-  say-hello:
-    runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
-    
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        
-      # Runs a simple echo command
-      - name: Say hello
-        run: echo "Hello, World!"
-        
-      # Optional: Display the time as well
-      - name: Display the time
-        run: |
-          echo "The time is:"
-          date
+    check-host:
+        runs-on: ubuntu-latest
+        if: github.event.pull_request.merged == true
+        outputs:
+            host_reachable: ${{ steps.ping-check.outputs.reachable }}
+        steps:
+            - name: Check if host is reachable
+              id: ping-check
+              run: |
+                  if ping -c 3 ${{ secrets.SSH_HOST }} &> /dev/null; then
+                    echo "Host is reachable, will proceed with deployment"
+                    echo "reachable=true" >> $GITHUB_OUTPUT
+                  else
+                    echo "Host is not reachable, skipping entire workflow"
+                    echo "reachable=false" >> $GITHUB_OUTPUT
+                  fi
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        if: needs.check-host.outputs.host_reachable == 'true'
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "latest"
+                  cache: "npm"
+
+            - name: Set up PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: "8.2"
+                  tools: composer:v2
+                  coverage: none
+
+            - name: Install Node dependencies
+              run: |
+                  npm install
+
+            - name: Install PHP dependencies
+              run: |
+                  npm run composer:install:dev
+                  npm run composer:install:theme
+
+            - name: Build assets
+              run: |
+                  npm run prod
+
+            - name: Deploy artifact
+              run: |
+                  mkdir -p ~/.ssh
+                  chmod 700 ~/.ssh
+                  cat > ~/.ssh/automator << 'EOL'
+                  ${{ secrets.AUTOMATOR_SSH_PRIVATE_KEY }}
+                  EOL
+                  chmod 600 ~/.ssh/automator
+                  ssh-keyscan $ssh_host >> ~/.ssh/known_hosts
+                  chmod 600 ~/.ssh/known_hosts
+                  eval "$(ssh-agent -s)"
+                  ssh-add ~/.ssh/automator
+                  rsync -vzcr --rsync-path="sudo rsync" web/wp-content automator@$ssh_host:/opt/wordpress/wordpress/production
+                  ssh automator@$ssh_host "sudo chown -R www-data:www-data /opt/wordpress/wordpress/production"
+              env:
+                  ssh_host: ${{ secrets.SSH_HOST }}
