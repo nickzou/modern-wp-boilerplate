@@ -68,8 +68,8 @@ jobs:
         run: |
           ssh-add -l
           # ssh automator@wandernode.ca "whoami"
-        env:
-          ssh_host: ${{ secrets.SSH_HOST }}
+        # env:
+        #   ssh_host: ${{ secrets.SSH_HOST }}
             # rsync -vzcr --rsync-path="sudo rsync" automator@${{ secrets.SSH_HOST }}:/opt/wordpress/wordpress/production
             # ssh automator@${{ secrets.SSH_HOST }} "sudo chown -R www-data:www-data /opt/wordpress/wordpress/production"
 
