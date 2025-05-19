@@ -40,7 +40,12 @@ jobs:
 
       - name: Install PHP dependencies
         run: |
-          composer install
+          npm run composer:install:dev
+          npm run composer:install:theme
+
+      - name: Build Assets
+        run: |
+          npm run prod 
 
       # Runs a simple echo command
       - name: Say hello
