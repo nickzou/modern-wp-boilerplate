@@ -47,6 +47,15 @@ jobs:
         run: |
           npm run prod 
 
+      - name: Get remote host key
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          ssh-keyscan -H $ssh_host >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+        env:
+          ssh_host: ${{ secrets.SSH_HOST }}
+
       - name: Deploy artifact
         uses: appleboy/ssh-action@v1
         with:
@@ -57,5 +66,4 @@ jobs:
           script: |
             rsync -vzcr --rsync-path="sudo rsync" automator@${{ secrets.SSH_HOST }}:/opt/wordpress/wordpress/production
             ssh automator@${{ secrets.SSH_HOST }} "sudo chown -R www-data:www-data /opt/wordpress/wordpress/production"
-          known_hosts: 'auto'
 
