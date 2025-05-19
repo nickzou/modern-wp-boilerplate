@@ -51,7 +51,9 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-          echo $key > ~/.ssh/automator
+          cat > ~/.ssh/automator << 'EOL'
+          $key
+          EOL
           chmod 600 ~/.ssh/automator
           ssh-keyscan $ssh_host >> ~/.ssh/known_hosts
           chmod 600 ~/.ssh/known_hosts
