@@ -47,10 +47,10 @@ jobs:
         run: |
           npm run prod 
 
-      - name: Secret Check
+      - name: Setup known hosts
         run: |
-          grep Port /etc/ssh/sshd_config
-          echo ${{ secrets.SSH_HOST }}
+          mkdir -p ~/.ssh
+          ssh-keyscan -H {{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy artifact
         uses: appleboy/ssh-action@v1
