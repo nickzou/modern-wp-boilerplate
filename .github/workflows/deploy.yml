@@ -59,6 +59,7 @@ jobs:
           chmod 600 ~/.ssh/known_hosts
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/automator
+          cat ~/.ssh/known_hosts
         env:
           ssh_host: ${{ secrets.SSH_HOST }}
           key: ${{ secrets.AUTOMATOR_SSH_PRIVATE_KEY }}
