@@ -73,6 +73,6 @@ jobs:
           key: ${{ secrets.AUTOMATOR_SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            rsync -vzcr --rsync-path="sudo rsync" automator@${{ secrets.SSH_HOST }}:/opt/wordpress/wordpress/production
+             # rsync -vzcr --rsync-path="sudo rsync" automator@${{ secrets.SSH_HOST }}:/opt/wordpress/wordpress/production
             ssh automator@${{ secrets.SSH_HOST }} "sudo chown -R www-data:www-data /opt/wordpress/wordpress/production"
 
