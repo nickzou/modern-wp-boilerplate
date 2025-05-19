@@ -59,8 +59,6 @@ jobs:
           chmod 600 ~/.ssh/known_hosts
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/automator
-          ssh-add -l
-          ssh automator@$ssh_host "whoami"
           rsync -vzcr --rsync-path="sudo rsync" automator@$ssh_host:/opt/wordpress/wordpress/production
           ssh automator@$ssh_host "sudo chown -R www-data:www-data /opt/wordpress/wordpress/production"
         env:
