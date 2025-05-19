@@ -50,7 +50,18 @@ jobs:
       - name: Setup known hosts
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
+          chmod 700 ~/.ssh
+          echo "Fetching host key for $SSH_HOST"
+          ssh-keyscan -H $SSH_HOST > ~/.ssh/known_hosts
+          cat ~/.ssh/known_hosts
+          echo "Host *
+            StrictHostKeyChecking no
+            UserKnownHostsFile=~/.ssh/known_hosts
+          " > ~/.ssh/config
+          chmod 600 ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/config
+          echo "SSH configuration:"
+          cat ~/.ssh/config
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
 
