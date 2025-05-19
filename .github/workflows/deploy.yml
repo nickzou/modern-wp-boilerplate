@@ -51,6 +51,7 @@ jobs:
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.SSH_HOST }}
+          username: automator
           key: ${{ secrets.AUTOMATOR_SSH_PRIVATE_KEY }}
           port: 22
           script: |
