@@ -47,6 +47,19 @@ jobs:
         run: |
           npm run prod 
 
+      - name: Set up SSH
+        uses: webfartory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.AUTOMATOR_SSH_PRIVATE_KEY }}
+
+      - name: Configure known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -t rsa ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Test SSH connection
+        run: ssh -T automator@${{ secrets.SSH_HOST }} "echo 'SSH connection successful!'"
+
       # Runs a simple echo command
       - name: Say hello
         run: echo "Hello, specific branch!"
