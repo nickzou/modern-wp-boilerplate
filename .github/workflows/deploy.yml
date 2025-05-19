@@ -52,7 +52,7 @@ jobs:
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
           cat > ~/.ssh/automator << 'EOL'
-          $key
+          ${{ secrets.AUTOMATOR_SSH_PRIVATE_KEY }}
           EOL
           chmod 600 ~/.ssh/automator
           ssh-keyscan $ssh_host >> ~/.ssh/known_hosts
