@@ -14,7 +14,7 @@ on:
 jobs:
   say-hello:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
+    # if: github.event.pull_request.merged == true
     
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE
