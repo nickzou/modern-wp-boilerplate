@@ -51,7 +51,9 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-          echo "$ssh_automator_private_key" | sed 's/\\n/\n/g' > ~/.ssh/automator
+          cat > ~/.ssh/automator << 'EOL'
+${{ secrets.SSH_AUTOMATOR_PRIVATE_KEY }}
+EOL
           chmod 600 ~/.ssh/automator
           ssh-keyscan $ssh_host >> ~/.ssh/known_hosts
           chmod 600 ~/.ssh/known_hosts
@@ -59,7 +61,6 @@ jobs:
           ssh-add ~/.ssh/automator
         env:
           ssh_host: ${{ secrets.SSH_HOST }}
-          ssh_automator_private_key: ${{ secrets.SSH_AUTOMATOR_PRIVATE_KEY }}
 
       - name: 
         run: |
