@@ -1,0 +1,31 @@
+# DigitalOcean API token (get from DigitalOcean dashboard)
+do_token = "your_digitalocean_api_token"
+
+# SSH key ID (find in DigitalOcean dashboard under Security -> SSH Keys)
+ssh_key_id = "your_ssh_key_id"
+
+# Path to your SSH private key on your local machine
+ssh_private_key_path = "~/.ssh/id_ed25519"
+
+# Your domain name
+domain_name = "example.com"
+
+# Environment name
+environment = "production"
+
+# DigitalOcean region
+# Common options: nyc1, sfo3, ams3, sgp1, lon1, etc.
+region = "nyc1"
+
+# Droplet size
+# Options: s-1vcpu-1gb, s-1vcpu-2gb, s-2vcpu-2gb, etc.
+droplet_size = "s-1vcpu-2gb"
+
+# MySQL credentials
+mysql_root_password = "secure_root_password"
+mysql_database = "wordpress"
+mysql_user = "wordpress"
+mysql_password = "secure_wordpress_password"
+
+# Email address for Let's Encrypt SSL certificates
+ssl_email = "your_email@example.com"

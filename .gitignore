@@ -1,10 +1,17 @@
 .DS_Store
+terraform.tfvars
+
 node_modules
 vendor
 .parcel-cache
 
 .env
 .php-cs-fixer.cache
+
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+.terraform.tfstate.lock.info
 
 web/wp-content/plugins/
 web/wp-content/themes/*/css/
