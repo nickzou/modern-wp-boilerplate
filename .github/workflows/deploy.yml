@@ -12,7 +12,7 @@ jobs:
         runs-on: ubuntu-latest
         if: github.event.pull_request.merged == true
         outputs:
-            env_ready: ${{ steps.ping-check.outputs.env_ready }}
+            env_ready: ${{ steps.check-env.outputs.env_ready }}
         steps:
           - name: Check if deployment environment is ready
             id: check-env
