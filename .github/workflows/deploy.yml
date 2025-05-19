@@ -55,7 +55,7 @@ jobs:
           ${{ secrets.AUTOMATOR_SSH_PRIVATE_KEY }}
           EOL
           chmod 600 ~/.ssh/automator
-          ssh-keyscan $ssh_host >> ~/.ssh/known_hosts
+          ssh-keyscan wandernode.ca >> ~/.ssh/known_hosts
           chmod 600 ~/.ssh/known_hosts
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/automator
@@ -65,7 +65,7 @@ jobs:
 
       - name: Test Action
         run: |
-          ssh automator@${{ secrets.SSH_HOST }} "whoami"
+          ssh automator@wandernode.ca "whoami"
         env:
           ssh_host: ${{ secrets.SSH_HOST }}
             # rsync -vzcr --rsync-path="sudo rsync" automator@${{ secrets.SSH_HOST }}:/opt/wordpress/wordpress/production
