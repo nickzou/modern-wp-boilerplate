@@ -60,6 +60,7 @@ jobs:
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/automator
           ssh-add -l
+          ssh automator@wandernode.ca "whoami"
         env:
           ssh_host: ${{ secrets.SSH_HOST }}
           key: ${{ secrets.AUTOMATOR_SSH_PRIVATE_KEY }}
