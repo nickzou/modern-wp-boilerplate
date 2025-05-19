@@ -51,7 +51,7 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-          echo "$ssh_automator_private_key" > ~/.ssh/automator
+          echo "$ssh_automator_private_key" | sed 's/\\n/\n/g' > ~/.ssh/automator
           chmod 600 ~/.ssh/automator
           ssh-keyscan $ssh_host >> ~/.ssh/known_hosts
           chmod 600 ~/.ssh/known_hosts
