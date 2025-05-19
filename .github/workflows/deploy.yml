@@ -50,7 +50,9 @@ jobs:
       - name: Setup known hosts
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -H {{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
 
       - name: Deploy artifact
         uses: appleboy/ssh-action@v1
