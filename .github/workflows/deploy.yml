@@ -62,7 +62,7 @@ jobs:
         env:
           ssh_host: ${{ secrets.SSH_HOST }}
 
-      - name: 
+      - name: Test Action
         run: |
           ssh automator@$ssh_host "whoami"
         env:
