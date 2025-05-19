@@ -48,7 +48,7 @@ jobs:
           npm run prod 
 
       - name: Set up SSH
-        uses: webfartory/ssh-agent@v0.9.1
+        uses: webfactory/ssh-agent@v0.9.1
         with:
           ssh-private-key: ${{ secrets.AUTOMATOR_SSH_PRIVATE_KEY }}
 
