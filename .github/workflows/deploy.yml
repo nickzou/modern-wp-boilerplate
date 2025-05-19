@@ -52,7 +52,7 @@ jobs:
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
           cat > ~/.ssh/automator << 'EOL'
-          ${{ secrets.SSH_AUTOMATOR_PRIVATE_KEY }}
+          ${{ secrets.AUTOMATER_SSH_PRIVATE_KEY }}
           EOL
           chmod 600 ~/.ssh/automator
           echo "First 30 chars of key file:"
