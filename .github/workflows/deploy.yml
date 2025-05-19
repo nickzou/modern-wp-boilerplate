@@ -1,0 +1,29 @@
+name: Hello World Workflow
+
+on:
+  # Triggers the workflow on push events
+  pull_request:
+    types: [ closed ]
+    branches: [ main ]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  say-hello:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      # Runs a simple echo command
+      - name: Say hello
+        run: echo "Hello, World!"
+        
+      # Optional: Display the time as well
+      - name: Display the time
+        run: |
+          echo "The time is:"
+          date
