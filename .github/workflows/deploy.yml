@@ -47,15 +47,6 @@ jobs:
         run: |
           npm run prod 
 
-      - name: Setup known hosts
-        run: |
-          mkdir -p ~/.ssh/ && touch ~/.ssh/known_hosts
-          ssh-keyscan $SSH_HOST >> ~/.ssh/known_hosts
-          eval $(ssh-agent) 
-          ssh-add - <<< "${{ secrets.SHH_PRIVATE_KEY }}"
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-
       - name: Deploy artifact
         uses: appleboy/ssh-action@v1
         with:
