@@ -55,6 +55,10 @@ jobs:
           ${{ secrets.SSH_AUTOMATOR_PRIVATE_KEY }}
           EOL
           chmod 600 ~/.ssh/automator
+          echo "First 30 chars of key file:"
+          head -c 30 ~/.ssh/automator
+          echo ""
+          file ~/.ssh/automator
           ssh-keyscan $ssh_host >> ~/.ssh/known_hosts
           chmod 600 ~/.ssh/known_hosts
           eval "$(ssh-agent -s)"
