@@ -1,66 +1,65 @@
 name: Hello World Workflow
 
 on:
-  # Triggers the workflow on push events
-  push:
-    branches:
-      - "deployment-action"
-  pull_request:
-    types: [ closed ]
-    branches: [ main ]
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+    # Triggers the workflow on push events
+    push:
+        branches:
+            - "deployment-action"
+    pull_request:
+        types: [closed]
+        branches: [main]
+    # Allows you to run this workflow manually from the Actions tab
+    workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    # if: github.event.pull_request.merged == true
-    
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    build:
+        runs-on: ubuntu-latest
+        # if: github.event.pull_request.merged == true
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 'latest'
-          cache: 'npm'
+        steps:
+            # Checks-out your repository under $GITHUB_WORKSPACE
+            - name: Checkout repository
+              uses: actions/checkout@v4
 
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2'
-          tools: composer:v2
-          coverage: none
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "latest"
+                  cache: "npm"
 
-      - name: Install Node dependencies
-        run: |
-          npm install
+            - name: Set up PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: "8.2"
+                  tools: composer:v2
+                  coverage: none
 
-      - name: Install PHP dependencies
-        run: |
-          npm run composer:install:dev
-          npm run composer:install:theme
+            - name: Install Node dependencies
+              run: |
+                  npm install
 
-      - name: Build assets
-        run: |
-          npm run prod 
+            - name: Install PHP dependencies
+              run: |
+                  npm run composer:install:dev
+                  npm run composer:install:theme
 
-      - name: Deploy artifact
-        run: |
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          cat > ~/.ssh/automator << 'EOL'
-          ${{ secrets.AUTOMATOR_SSH_PRIVATE_KEY }}
-          EOL
-          chmod 600 ~/.ssh/automator
-          ssh-keyscan $ssh_host >> ~/.ssh/known_hosts
-          chmod 600 ~/.ssh/known_hosts
-          eval "$(ssh-agent -s)"
-          ssh-add ~/.ssh/automator
-          rsync -vzcr --rsync-path="sudo rsync" automator@$ssh_host:/opt/wordpress/wordpress/production
-          ssh automator@$ssh_host "sudo chown -R www-data:www-data /opt/wordpress/wordpress/production"
-        env:
-          ssh_host: ${{ secrets.SSH_HOST }}
+            - name: Build assets
+              run: |
+                  npm run prod
 
+            - name: Deploy artifact
+              run: |
+                  mkdir -p ~/.ssh
+                  chmod 700 ~/.ssh
+                  cat > ~/.ssh/automator << 'EOL'
+                  ${{ secrets.AUTOMATOR_SSH_PRIVATE_KEY }}
+                  EOL
+                  chmod 600 ~/.ssh/automator
+                  ssh-keyscan $ssh_host >> ~/.ssh/known_hosts
+                  chmod 600 ~/.ssh/known_hosts
+                  eval "$(ssh-agent -s)"
+                  ssh-add ~/.ssh/automator
+                  rsync -vzcr --rsync-path="sudo rsync" web/wp-content automator@$ssh_host:/opt/wordpress/wordpress/production
+                  ssh automator@$ssh_host "sudo chown -R www-data:www-data /opt/wordpress/wordpress/production"
+              env:
+                  ssh_host: ${{ secrets.SSH_HOST }}
