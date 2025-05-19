@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  say-hello:
+  build:
     runs-on: ubuntu-latest
     # if: github.event.pull_request.merged == true
     
@@ -20,7 +20,28 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'
+          cache: 'npm'
         
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+          coverage: none
+
+      - name: Install Node dependencies
+        run: |
+          npm install
+
+      - name: Install PHP dependencies
+        run: |
+          composer install
+
       # Runs a simple echo command
       - name: Say hello
         run: echo "Hello, specific branch!"
