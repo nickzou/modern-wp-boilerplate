@@ -65,6 +65,7 @@ jobs:
 
       - name: Test Action
         run: |
+          ssh-add -l
           ssh automator@wandernode.ca "whoami"
         env:
           ssh_host: ${{ secrets.SSH_HOST }}
