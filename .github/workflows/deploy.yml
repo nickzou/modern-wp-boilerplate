@@ -62,8 +62,8 @@ jobs:
           ssh_automator_private_key: ${{ secrets.SSH_AUTOMATOR_PRIVATE_KEY }}
 
       - name: 
-          run: |
-            ssh automator@$ssh_hot "whoami"
+        run: |
+          ssh automator@$ssh_hot "whoami"
         env:
           ssh_host: ${{ secrets.SSH_HOST }}
             # rsync -vzcr --rsync-path="sudo rsync" automator@${{ secrets.SSH_HOST }}:/opt/wordpress/wordpress/production
