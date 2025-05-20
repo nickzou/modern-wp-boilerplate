@@ -1,4 +1,4 @@
-name: Hello World Workflow
+name: Deploy on Production Workflow
 
 on:
     pull_request:
@@ -8,28 +8,9 @@ on:
     workflow_dispatch:
 
 jobs:
-    check-env:
+    build-and-deploy:
         runs-on: ubuntu-latest
         if: github.event.pull_request.merged == true
-        outputs:
-            env_ready: ${{ steps.check-env.outputs.env_ready }}
-        steps:
-          - name: Check if deployment environment is ready
-            id: check-env
-            run: |
-              if timeout 10 ssh -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=no -T automator@$SSH_HOST 2>/dev/null; then
-                echo "SSH connection successful, environment is ready for deployment"
-                echo "env_ready=true" >> $GITHUB_OUTPUT
-              else
-                echo "Cannot establish SSH connection, environment may not be ready"
-                echo "env_ready=false" >> $GITHUB_OUTPUT
-              fi
-            env:
-              SSH_HOST: ${{ secrets.SSH_HOST }}
-    build-and-deploy:
-        needs: check-env
-        runs-on: ubuntu-latest
-        if: needs.check-host.outputs.env_ready == 'true'
         steps:
             - name: Checkout repository
               uses: actions/checkout@v4
