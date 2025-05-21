@@ -54,6 +54,7 @@ resource "digitalocean_droplet" "wordpress" {
       "chown -R automator:automator /home/automator/.ssh",
       "echo 'automator ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/automator",
 
+      # Adding a system administrator user for manual tasks
       "useradd -m -s /bin/bash sysadmin",
       "mkdir -p /home/sysadmin/.ssh",
       "echo '${var.sysadmin_ssh_public_key}' > /home/sysadmin/.ssh/authorized_keys",
@@ -61,6 +62,9 @@ resource "digitalocean_droplet" "wordpress" {
       "chmod 600 /home/sysadmin/.ssh/authorized_keys",
       "chown -R sysadmin:sysadmin /home/sysadmin/.ssh",
       "echo 'sysadmin ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sysadmin",
+      
+      # Adding some nice quality of life packages
+      #      "sudo -u sysadmin apt install neovim fzf lsd bat btop stow curl unzip buil-essential zsh"
       
       # Install prerequisites
       "apt install -y apt-transport-https ca-certificates curl software-properties-common certbot",
