@@ -53,6 +53,14 @@ resource "digitalocean_droplet" "wordpress" {
       "chmod 600 /home/automator/.ssh/authorized_keys",
       "chown -R automator:automator /home/automator/.ssh",
       "echo 'automator ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/automator",
+
+      "useradd -m -s /bin/bash sysadmin",
+      "mkdir -p /home/sysadmin/.ssh",
+      "echo '${var.sysadmin_ssh_public_key}' > /home/sysadmin/.ssh/authorized_keys",
+      "chmod 700 /home/sysadmin/.ssh",
+      "chmod 600 /home/sysadmin/.ssh/authorized_keys",
+      "chown -R sysadmin:sysadmin /home/sysadmin/.ssh",
+      "echo 'sysadmin ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sysadmin",
       
       # Install prerequisites
       "apt install -y apt-transport-https ca-certificates curl software-properties-common certbot",
@@ -342,171 +350,93 @@ resource "null_resource" "initial_http_setup" {
   provisioner "file" {
     content     = <<-EOT
     #!/bin/bash
-    # Script to create feature branch environments for WordPress (with HTTPS)
 
-    # Check if argument is provided
-    if [ "$#" -ne 1 ]; then
-        echo "Usage: $0 <environment-name>"
-        exit 1
-    fi
+# Check if an argument was provided
+if [ $# -eq 0 ]; then
+    echo "Error: No feature branch name provided."
+    echo "Usage: $0 <feature-branch-name>"
+    exit 1
+fi
 
-    # Use bash variables
-    ENV_NAME=$1
-    ENV_PATH="/opt/wordpress-$ENV_NAME"
-    DOMAIN="$ENV_NAME.${var.domain_name}"
+# Get the feature branch name from the first argument
+FEATURE_BRANCH="$1"
 
-    # Create directory structure
-    mkdir -p $ENV_PATH/{nginx/conf.d,mysql,wordpress}
+# Replace slashes and dashes with underscores for all names
+FEATURE_NAME=$(echo "$FEATURE_BRANCH" | sed 's|/|__|g' | sed 's|-|_|g')
 
-    # Create docker-compose.yml
-    cat > $ENV_PATH/docker-compose.yml << EOF
-    version: '3'
+# Set filename with the requested format: docker-compose.featurebranchname.yml
+output_file="docker-compose.$${FEATURE_NAME}.yml"
 
-    services:
-      db:
-        image: mysql:8.0
-        container_name: $${ENV_NAME}_db
-        restart: always
-        environment:
-          MYSQL_ROOT_PASSWORD: ${var.mysql_root_password}
-          MYSQL_DATABASE: ${var.mysql_database}_$${ENV_NAME}
-          MYSQL_USER: ${var.mysql_user}
-          MYSQL_PASSWORD: ${var.mysql_password}
-        volumes:
-          - mysql_data:/var/lib/mysql
-        networks:
-          - wordpress_network
+# Create the Docker Compose file
+cat > "$output_file" << EOF
+version: '3'
 
-      wordpress:
-        image: wordpress:latest
-        container_name: $${ENV_NAME}_app
-        restart: always
-        depends_on:
-          - db
-        environment:
-          WORDPRESS_DB_HOST: db
-          WORDPRESS_DB_NAME: ${var.mysql_database}_$${ENV_NAME}
-          WORDPRESS_DB_USER: ${var.mysql_user}
-          WORDPRESS_DB_PASSWORD: ${var.mysql_password}
-          WORDPRESS_CONFIG_EXTRA: |
-            define('WP_HOME', 'https://$${DOMAIN}');
-            define('WP_SITEURL', 'https://$${DOMAIN}');
-        volumes:
-          - wordpress_data:/var/www/html
-        networks:
-          - wordpress_network
-
-      nginx:
-        image: nginx:latest
-        container_name: $${ENV_NAME}_nginx
-        restart: always
-        expose:
-          - 80
-        volumes:
-          - ./nginx/conf.d:/etc/nginx/conf.d
-          - wordpress_data:/var/www/html
-          - /etc/letsencrypt:/etc/letsencrypt:ro
-        depends_on:
-          - wordpress
-        networks:
-          - wordpress_network
-
-    networks:
-      wordpress_network:
-
+services:
+  # Feature Database
+  $${FEATURE_NAME}_db:
+    image: mysql:8.0
+    container_name: $${FEATURE_NAME}_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${var.mysql_root_password}
+      MYSQL_DATABASE: ${var.mysql_database}_$${FEATURE_NAME}
+      MYSQL_USER: ${var.mysql_user}
+      MYSQL_PASSWORD: ${var.mysql_password}
     volumes:
-      mysql_data:
-      wordpress_data:
-    EOF
+      - $${FEATURE_NAME}_mysql_data:/var/lib/mysql
+    networks:
+      - wordpress_network
 
-    # Create Nginx configuration for the feature branch
-    cat > $ENV_PATH/nginx/conf.d/default.conf << EOF
-    server {
-        listen 80;
-        server_name $${DOMAIN};
-        
-        # Redirect HTTP to HTTPS
-        location / {
-            return 301 https://\$host\$request_uri;
-        }
-    }
+  # Feature WordPress
+  $${FEATURE_NAME}_wordpress:
+    image: wordpress:latest
+    container_name: $${FEATURE_NAME}_app
+    restart: always
+    depends_on:
+      - $${FEATURE_NAME}_db
+    environment:
+      WORDPRESS_DB_HOST: $${FEATURE_NAME}_db
+      WORDPRESS_DB_NAME: ${var.mysql_database}_$${FEATURE_NAME}
+      WORDPRESS_DB_USER: ${var.mysql_user}
+      WORDPRESS_DB_PASSWORD: ${var.mysql_password}
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_HOME', 'https://$${FEATURE_NAME}.${var.domain_name}');
+        define('WP_SITEURL', 'https://$${FEATURE_NAME}.${var.domain_name}');
+    volumes:
+      - /opt/wordpress/wordpress/$${FEATURE_NAME}/wp-content/themes:/var/www/html/wp-content/themes
+      - /opt/wordpress/wordpress/$${FEATURE_NAME}/wp-content/plugins:/var/www/html/wp-content/plugins
+      - $${FEATURE_NAME}_wordpress_data:/var/www/html
+    networks:
+      - wordpress_network
 
-    server {
-        listen 443 ssl;
-        server_name $${DOMAIN};
-        
-        # SSL configuration
-        ssl_certificate /etc/letsencrypt/live/${var.domain_name}/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/${var.domain_name}/privkey.pem;
-        
-        # Recommended SSL settings
-        ssl_protocols TLSv1.2 TLSv1.3;
-        ssl_prefer_server_ciphers on;
-        ssl_ciphers HIGH:!aNULL:!MD5;
-        ssl_session_cache shared:SSL:10m;
-        
-        location / {
-            proxy_pass http://wordpress:80;
-            proxy_set_header Host \$host;
-            proxy_set_header X-Real-IP \$remote_addr;
-            proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto \$scheme;
-        }
-    }
-    EOF
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:latest
+    container_name: wordpress_nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - $${FEATURE_NAME}_wordpress_data:/var/www/html/$${FEATURE_NAME}
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - $${FEATURE_NAME}_wordpress
+    networks:
+      - wordpress_network
 
-    # Update main Nginx configuration to include feature branch
-    cat > /opt/wordpress/nginx/conf.d/$${DOMAIN}.conf << EOF
-    server {
-        listen 80;
-        listen [::]:80;
-        server_name $${DOMAIN};
-        
-        # Redirect HTTP to HTTPS
-        location / {
-            return 301 https://\$host\$request_uri;
-        }
-    }
+networks:
+  wordpress_network:
 
-    server {
-        listen 443 ssl;
-        listen [::]:443 ssl;
-        server_name $${DOMAIN};
-        
-        # SSL configuration
-        ssl_certificate /etc/letsencrypt/live/${var.domain_name}/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/${var.domain_name}/privkey.pem;
-        
-        # Recommended SSL settings
-        ssl_protocols TLSv1.2 TLSv1.3;
-        ssl_prefer_server_ciphers on;
-        ssl_ciphers HIGH:!aNULL:!MD5;
-        ssl_session_cache shared:SSL:10m;
-        
-        location / {
-            proxy_pass http://$${ENV_NAME}_app;
-            proxy_set_header Host \$host;
-            proxy_set_header X-Real-IP \$remote_addr;
-            proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto \$scheme;
-        }
-    }
-    EOF
+volumes:
+  $${FEATURE_NAME}_mysql_data:
+  $${FEATURE_NAME}_wordpress_data:
+EOF
 
-    # Start the feature branch environment
-    cd $ENV_PATH && docker-compose up -d
-
-    # Reload main Nginx to pick up the new configuration
-    docker exec -it wordpress_nginx nginx -s reload
-
-    echo "Feature branch environment created at https://$DOMAIN"
-    echo "To remove this environment, run:"
-    echo "  cd $ENV_PATH && docker-compose down -v"
-    echo "  rm -rf $ENV_PATH"
-    echo "  rm /opt/wordpress/nginx/conf.d/$DOMAIN.conf"
-    echo "  docker exec -it wordpress_nginx nginx -s reload"
+echo "Docker Compose file generated as $output_file for feature branch: $FEATURE_BRANCH (sanitized as: $FEATURE_NAME)"
     EOT
-    destination = "/opt/wordpress/create-env.sh"
+    destination = "/opt/wordpress/create-feature-env.sh"
   }
   
   # Create an SSL acquisition script
@@ -534,7 +464,7 @@ resource "null_resource" "initial_http_setup" {
   # Start containers and get SSL certificates
   provisioner "remote-exec" {
     inline = [
-      "chmod +x /opt/wordpress/create-env.sh",
+      "chmod +x /opt/wordpress/create-feature-env.sh",
       "chmod +x /opt/wordpress/get-ssl.sh",
       "cd /opt/wordpress && docker-compose up -d",
       "sleep 60", # Wait for services to start
