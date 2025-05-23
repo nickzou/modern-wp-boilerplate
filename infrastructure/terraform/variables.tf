@@ -19,6 +19,11 @@ variable "automator_ssh_public_key" {
   type        = string
 }
 
+variable "sysadmin_ssh_public_key" {
+  description = "Public key for sysadmin user"
+  type        = string
+}
+
 variable "project_name" {
   description = "Project name for WordPress site"
   type        = string
