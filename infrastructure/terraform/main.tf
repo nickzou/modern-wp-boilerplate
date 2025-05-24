@@ -39,7 +39,7 @@ resource "digitalocean_droplet" "wordpress" {
     timeout     = "2m"
   }
 
-  user_data = templatefile("${path.module}/templates/cloud-init.tpl", {
+  user_data = templatefile("${path.module}/templates/cloud-init.yml.tpl", {
     automator_ssh_public_key = file(var.automator_ssh_public_key_path),
     sysadmin_ssh_public_key = file(var.sysadmin_ssh_public_key_path)
   })
