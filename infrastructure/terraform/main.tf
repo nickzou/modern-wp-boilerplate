@@ -40,8 +40,8 @@ resource "digitalocean_droplet" "wordpress" {
   }
 
   user_data = templatefile("${path.module}/templates/cloud-init.tpl", {
-    automator_ssh_public_key = file(var.automator_ssh_public_key)
-    sysadmin_ssh_public_key = file(var.sysadmin_ssh_public_key)
+    automator_ssh_public_key = file(var.automator_ssh_public_key_path),
+    sysadmin_ssh_public_key = file(var.sysadmin_ssh_public_key_path)
   })
 
   provisioner "remote-exec" {
