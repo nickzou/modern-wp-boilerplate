@@ -39,33 +39,13 @@ resource "digitalocean_droplet" "wordpress" {
     timeout     = "2m"
   }
 
-  # Install required packages
+  user_data = templatefile("${path.module}/templates/cloud-init.tpl", {
+    automator_ssh_public_key = file(var.automator_ssh_public_key)
+    sysadmin_ssh_public_key = file(var.sysadmin_ssh_public_key)
+  })
+
   provisioner "remote-exec" {
     inline = [
-      "export DEBIAN_FRONTEND=noninteractive",
-      "apt update",
-      "apt upgrade -y",
-
-      "useradd -m -s /bin/bash automator",
-      "mkdir -p /home/automator/.ssh",
-      "echo '${var.automator_ssh_public_key}' > /home/automator/.ssh/authorized_keys",
-      "chmod 700 /home/automator/.ssh",
-      "chmod 600 /home/automator/.ssh/authorized_keys",
-      "chown -R automator:automator /home/automator/.ssh",
-      "echo 'automator ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/automator",
-
-      # Adding a system administrator user for manual tasks
-      "useradd -m -s /bin/bash sysadmin",
-      "mkdir -p /home/sysadmin/.ssh",
-      "echo '${var.sysadmin_ssh_public_key}' > /home/sysadmin/.ssh/authorized_keys",
-      "chmod 700 /home/sysadmin/.ssh",
-      "chmod 600 /home/sysadmin/.ssh/authorized_keys",
-      "chown -R sysadmin:sysadmin /home/sysadmin/.ssh",
-      "echo 'sysadmin ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sysadmin",
-      
-      # Adding some nice quality of life packages
-      #      "sudo -u sysadmin apt install neovim fzf lsd bat btop stow curl unzip buil-essential zsh"
-      
       # Install prerequisites
       "apt install -y apt-transport-https ca-certificates curl software-properties-common certbot",
       
