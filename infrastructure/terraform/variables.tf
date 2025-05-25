@@ -14,13 +14,13 @@ variable "ssh_private_key_path" {
   type        = string
 }
 
-variable "automator_ssh_public_key" {
-  description = "Public key for autormator user"
+variable "automator_ssh_public_key_path" {
+  description = "Path to your automator user SSH public key"
   type        = string
 }
 
-variable "sysadmin_ssh_public_key" {
-  description = "Public key for sysadmin user"
+variable "sysadmin_ssh_public_key_path" {
+  description = "Path to your SSH public key"
   type        = string
 }
 
