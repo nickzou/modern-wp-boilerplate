@@ -79,13 +79,45 @@ runcmd:
   - systemctl start docker
   - usermod -aG docker automator
   - usermod -aG docker sysadmin
-#  - |
-#    cat > /opt/wordpress/nginx/conf.d/default.conf <<-DEFAULT_CONF_EOF
-#    ${default_conf} 
-#   DEFAULT_CONF_EOF
-# - chmod 644 /opt/wordpress/nginx/conf.d/default.conf
-# - |
-#   cat > /opt/wordpress/nginx/conf.d/staging.conf <<-STAGING_CONF_EOF
-#   ${staging_conf} 
-#   STAGING_CONF_EOF
-# - chmod 644 /opt/wordpress/nginx/conf.d/staging.conf
+  - curl -L \"https://github.com/docker/compose/releases/download/v2.36.2/docker-compose-linux-x86_64\" -o /usr/local/bin/docker-compose
+  - chmod +x /usr/local/bin/docker-compose
+  - |
+    cat > /opt/wordpress/nginx/conf.d/default.conf <<-DEFAULT_CONFIG_EOF
+     server {
+         listen 80;
+         listen [::]:80;
+
+         server_name ${domain_name} www.${domain_name};
+
+         # Redirect HTTP to HTTPS
+         location / {
+             return 301 https://\$host\$request_uri;
+         }
+     }
+
+     server {
+         listen 443 ssl;
+         listen [::]:443 ssl;
+
+         server_name ${domain_name} www.${domain_name};
+
+         # SSL configuration
+         ssl_certificate /etc/letsencrypt/live/${domain_name}/fullchain.pem;
+         ssl_certificate_key /etc/letsencrypt/live/${domain_name}/privkey.pem;
+
+         # Recommended SSL settings
+         ssl_protocols TLSv1.2 TLSv1.3;
+         ssl_prefer_server_ciphers on;
+         ssl_ciphers HIGH:!aNULL:!MD5;
+         ssl_session_cache shared:SSL:10m;
+
+         location / {
+             proxy_pass http://wordpress_app;
+             proxy_set_header Host \$host;
+             proxy_set_header X-Real-IP \$remote_addr;
+             proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+             proxy_set_header X-Forwarded-Proto \$scheme;
+         }
+     }
+    DEFAULT_CONFIG_EOF
+  - chmod +x /opt/wordpress/nginx/default.conf
