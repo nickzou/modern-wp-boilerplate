@@ -6,15 +6,14 @@
     chdir: /opt/wordpress
   become: yes
 
-- name: Obtain SSL certificates with retry
+- name: Obtain SSL certificate
   ansible.builtin.shell:
     cmd: >
-      certbot certonly --standalone 
-      -d {{ domain_name }} 
-      -d www.{{ domain_name }} 
-      -d staging.{{ domain_name }} 
-      --email {{ ssl_email }} 
-      --agree-tos 
+      certbot certonly --dns-cloudflare
+      -d {{ domain_name }}
+      -d *.{{ domain_name }}
+      --email {{ ssl_email }}
+      --agree-tos
       --non-interactive
   register: certbot_result
   until: certbot_result.rc == 0
