@@ -18,7 +18,7 @@
       --non-interactive
   register: certbot_result
   until: certbot_result.rc == 0
-  retries: 10
+  retries: 20
   delay: 30
   become: yes
 

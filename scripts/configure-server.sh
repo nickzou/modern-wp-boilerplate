@@ -192,7 +192,7 @@ echo "  Inventory: $INVENTORY_FILE"
 echo "  Variables: $GROUP_VARS_FILE"
 echo ""
 print_status "You can now run Ansible playbooks with:"
-echo "  ansible-playbook -i $INVENTORY_FILE your-playbook.yml"
+echo "  ansible-playbook -i $INVENTORY_FILE $ANSIBLE_DIR/configuration.yml"
 echo ""
 
 # Optional: Test connectivity
@@ -201,6 +201,8 @@ if [[ $test_ssh == [yY] || $test_ssh == [yY][eE][sS] ]]; then
     print_status "Testing SSH connectivity..."
     if ansible all -i "$INVENTORY_FILE" -m ping 2>/dev/null; then
         print_status "SSH connectivity test successful!"
+
+        ansible-playbook -i $INVENTORY_FILE  $ANSIBLE_DIR/configuration.yml
     else
         print_warning "SSH connectivity test failed. Please check your SSH key configuration."
         print_status "You can test manually with: $ssh_command"

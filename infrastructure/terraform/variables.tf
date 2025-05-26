@@ -52,31 +52,3 @@ variable "droplet_size" {
   default     = "s-1vcpu-2gb"
 }
 
-variable "mysql_root_password" {
-  description = "MySQL root password"
-  type        = string
-  sensitive   = true
-}
-
-variable "mysql_database" {
-  description = "MySQL database name"
-  type        = string
-  default     = "wordpress"
-}
-
-variable "mysql_user" {
-  description = "MySQL user"
-  type        = string
-  default     = "wordpress"
-}
-
-variable "mysql_password" {
-  description = "MySQL password"
-  type        = string
-  sensitive   = true
-}
-
-variable "ssl_email" {
-  description = "Email address for Let's Encrypt SSL certificates"
-  type        = string
-}

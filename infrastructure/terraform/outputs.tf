@@ -31,8 +31,3 @@ output "domain_name" {
   description = "The primary domain name for the WordPress site"
   value       = var.domain_name
 }
-
-output "ssl_email" {
-  description = "Email to use for SSL certificate registration"
-  value       = var.ssl_email
-}
