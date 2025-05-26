@@ -1,0 +1,61 @@
+---
+
+- name: Install required packages
+  ansible.builtin.package:
+    name:
+      - curl
+      - gnupg
+      - lsb-release
+    state: present
+  become: yes
+
+- name: Create keyrings directory
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+  become: yes
+
+- name: Download Docker GPG key
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    dest: /etc/apt/keyrings/docker.asc
+    mode: '0644'
+  become: yes
+
+- name: Add Docker repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    state: present
+  become: yes
+
+- name: Install Docker
+  ansible.builtin.package:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-compose-plugin
+    state: present
+  become: yes
+
+- name: Start and enable Docker service
+  ansible.builtin.systemd:
+    name: docker
+    state: started
+    enabled: yes
+  become: yes
+
+- name: Add automator to docker group
+  ansible.builtin.user:
+    name: automator
+    groups: docker
+    append: yes
+  become: yes
+
+- name: Add sysadmin to docker group
+  ansible.builtin.user:
+    name: sysadmin
+    groups: docker
+    append: yes
+  become: yes

@@ -38,25 +38,6 @@ resource "digitalocean_droplet" "wordpress" {
     host        = self.ipv4_address
     timeout     = "2m"
   }
-
-  user_data = templatefile("${path.module}/templates/cloud-init.yml.tpl", {
-    automator_ssh_public_key = file(var.automator_ssh_public_key_path),
-    sysadmin_ssh_public_key = file(var.sysadmin_ssh_public_key_path),
-    domain_name = var.domain_name,
-    mysql_database = var.mysql_database,
-    mysql_root_password = var.mysql_root_password,
-    mysql_user = var.mysql_user,
-    mysql_password = var.mysql_password,
-    ssl_email = var.ssl_email,
-  })
-
-  provisioner "remote-exec" {
-    inline = [
-      # Install Docker Compose
-      "curl -L \"https://github.com/docker/compose/releases/download/v2.18.1/docker-compose-linux-x86_64\" -o /usr/local/bin/docker-compose",
-      "chmod +x /usr/local/bin/docker-compose"
-    ]
-  }
 }
 
 # STEP 2: Create DNS records
@@ -439,41 +420,41 @@ resource "digitalocean_record" "wildcard" {
 # }
 
 # STEP 4: Run post-deploy script for any additional setup
-resource "null_resource" "post_deploy_trigger" {
-  depends_on = [
-    digitalocean_droplet.wordpress,
-    digitalocean_domain.default,
-    digitalocean_record.main,
-    digitalocean_record.www,
-    digitalocean_record.staging,
-    digitalocean_record.wildcard,
-    # null_resource.initial_http_setup,
-    digitalocean_project_resources.wordpress
-  ]
-
-  # This triggers the resource to be recreated when any of these values change
-  triggers = {
-    server_ip = digitalocean_droplet.wordpress.ipv4_address
-    domain_name = var.domain_name
-    always_run = "${timestamp()}"  # Makes sure this runs on every apply
-  }
-
-  connection {
-    type        = "ssh"
-    user        = "root"
-    private_key = file(var.ssh_private_key_path)
-    host        = digitalocean_droplet.wordpress.ipv4_address
-  }
-
-  # Ensure everything is properly configured after setup
-  provisioner "remote-exec" {
-    inline = [
-      "docker exec wordpress_nginx nginx -t",
-      "docker exec wordpress_nginx nginx -s reload",
-      "echo 'WordPress setup complete with SSL enabled at https://${var.domain_name} and https://staging.${var.domain_name}'"
-    ]
-  }
-}
+# resource "null_resource" "post_deploy_trigger" {
+#   depends_on = [
+#     digitalocean_droplet.wordpress,
+#     digitalocean_domain.default,
+#     digitalocean_record.main,
+#     digitalocean_record.www,
+#     digitalocean_record.staging,
+#     digitalocean_record.wildcard,
+#     # null_resource.initial_http_setup,
+#     digitalocean_project_resources.wordpress
+#   ]
+#
+#   # This triggers the resource to be recreated when any of these values change
+#   triggers = {
+#     server_ip = digitalocean_droplet.wordpress.ipv4_address
+#     domain_name = var.domain_name
+#     always_run = "${timestamp()}"  # Makes sure this runs on every apply
+#   }
+#
+#   connection {
+#     type        = "ssh"
+#     user        = "root"
+#     private_key = file(var.ssh_private_key_path)
+#     host        = digitalocean_droplet.wordpress.ipv4_address
+#   }
+#
+#   # Ensure everything is properly configured after setup
+#   provisioner "remote-exec" {
+#     inline = [
+#       "docker exec wordpress_nginx nginx -t",
+#       "docker exec wordpress_nginx nginx -s reload",
+#       "echo 'WordPress setup complete with SSL enabled at https://${var.domain_name} and https://staging.${var.domain_name}'"
+#     ]
+#   }
+# }
 
 # Assign resources to the project
 resource "digitalocean_project_resources" "wordpress" {

@@ -1,0 +1,22 @@
+---
+
+- name: Ensure dotfiles directory exists
+  file:
+    path: "/home/sysadmin/dotfiles"
+    state: directory
+    mode: '0755'
+
+- name: Clone dotfiles repository
+  git:
+    repo: "https://github.com/nickzou/server-dotfiles.git"  
+    dest: "/home/sysadmin/dotfiles"
+    version: main  
+    update: no
+  become: yes
+
+- name: Run stow for config directories
+  ansible.builtin.shell: 
+    cmd: "stow -d /home/sysadmin/dotfiles -t ~/ {{ item }}"
+  loop: "{{ stow_packages }}"
+  become: yes
+  become_user: sysadmin

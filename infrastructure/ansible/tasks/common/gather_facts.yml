@@ -1,0 +1,6 @@
+- name: Gather facts about the system
+  setup:
+    gather_subset:
+      - '!all'
+      - '!min'
+      - 'os_family'

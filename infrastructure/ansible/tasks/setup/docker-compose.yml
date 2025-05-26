@@ -1,0 +1,6 @@
+- name: Create docker-compose.yml from template
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: /opt/wordpress/docker-compose.yml
+    mode: '0644'
+  become: yes

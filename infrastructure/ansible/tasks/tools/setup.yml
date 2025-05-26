@@ -1,0 +1,22 @@
+---
+
+- name: Install tools (Debian/Ubuntu)
+  apt:
+    name: 
+      - zsh
+      - neovim
+      - git
+      - fzf
+      - lsd
+      - bat
+      - zoxide
+      - btop
+      - stow
+      - curl
+      - unzip
+      - build-essential
+      - certbot
+      - ca-certificates
+      - software-properties-common
+    state: latest
+    update_cache: yes

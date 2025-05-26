@@ -1,0 +1,17 @@
+---
+
+- name: Add Automator User
+  user:
+    name: automator
+    state: present
+    groups: sudo, users
+    append: yes
+    shell: /bin/zsh
+    create_home: yes
+
+- name: Add Automator's Public Key
+  authorized_key:
+    user: automator
+    state: present
+    key: "{{ lookup('file', '~/.ssh/automator.pub') }}"
+

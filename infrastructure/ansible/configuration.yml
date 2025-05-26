@@ -1,0 +1,36 @@
+---
+
+- hosts: web_servers
+  become: true
+  vars:
+    user_home: "{{ lookup('env', 'HOME') }}"
+    dotfiles_dir: "/home/sysadmin/dotfiles"
+    stow_packages:
+      - nvim
+      - lsd
+      - zsh
+  tasks:
+    - include_tasks: tasks/common/gather_facts.yml
+
+    - include_tasks: tasks/tools/setup.yml
+
+    - include_tasks: tasks/user/automator.yml
+
+    - include_tasks: tasks/user/sysadmin.yml
+      
+    - include_tasks: tasks/common/stow.yml
+
+    - include_tasks: tasks/setup/folders.yml
+
+    - include_tasks: tasks/tools/docker.yml
+
+    - include_tasks: tasks/tools/docker-compose.yml
+
+    - include_tasks: tasks/setup/nginx-default.yml
+
+    - include_tasks: tasks/setup/nginx-staging.yml
+
+    - include_tasks: tasks/setup/docker-compose.yml
+
+    - include_tasks: tasks/setup/ssl-cert.yml
+

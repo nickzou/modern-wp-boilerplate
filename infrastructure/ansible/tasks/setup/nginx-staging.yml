@@ -1,0 +1,8 @@
+---
+
+- name: Create nginx staging configuration from template
+  ansible.builtin.template:
+    src: nginx-staging.conf.j2
+    dest: /opt/wordpress/nginx/conf.d/staging.conf
+    mode: '0644'
+  become: yes

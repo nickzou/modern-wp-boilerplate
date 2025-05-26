@@ -1,0 +1,17 @@
+---
+
+- name: Add System Administrator User
+  user:
+    name: sysadmin
+    state: present
+    groups: sudo, users
+    append: yes
+    shell: /bin/zsh
+    create_home: yes
+
+- name: Add System Administrator's Public Key
+  authorized_key:
+    user: sysadmin
+    state: present
+    key: "{{ lookup('file', '~/.ssh/id_ed25519.pub') }}"
+

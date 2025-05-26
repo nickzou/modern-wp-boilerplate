@@ -1,0 +1,95 @@
+version: '3'
+services:
+  # Production Database
+  db:
+    image: mysql:8.0
+    container_name: wordpress_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: {{ mysql_root_password }}
+      MYSQL_DATABASE: {{ mysql_database }}
+      MYSQL_USER: {{ mysql_user }}
+      MYSQL_PASSWORD: {{ mysql_password }}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - wordpress_network
+  # Production WordPress
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress_app
+    restart: always
+    depends_on:
+      - db
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: {{ mysql_database }}
+      WORDPRESS_DB_USER: {{ mysql_user }}
+      WORDPRESS_DB_PASSWORD: {{ mysql_password }}
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_HOME', 'https://{{ domain_name }}');
+        define('WP_SITEURL', 'https://{{ domain_name }}');
+    volumes:
+      - /opt/wordpress/wordpress/production/wp-content/themes:/var/www/html/wp-content/themes
+      - /opt/wordpress/wordpress/production/wp-content/plugins:/var/www/html/wp-content/plugins
+    networks:
+      - wordpress_network
+  # Staging Database
+  staging_db:
+    image: mysql:8.0
+    container_name: staging_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: {{ mysql_root_password }}
+      MYSQL_DATABASE: {{ mysql_database }}_staging
+      MYSQL_USER: {{ mysql_user }}
+      MYSQL_PASSWORD: {{ mysql_password }}
+    volumes:
+      - staging_mysql_data:/var/lib/mysql
+    networks:
+      - wordpress_network
+  # Staging WordPress
+  staging_wordpress:
+    image: wordpress:latest
+    container_name: staging_app
+    restart: always
+    depends_on:
+      - staging_db
+    environment:
+      WORDPRESS_DB_HOST: staging_db
+      WORDPRESS_DB_NAME: {{ mysql_database }}_staging
+      WORDPRESS_DB_USER: {{ mysql_user }}
+      WORDPRESS_DB_PASSWORD: {{ mysql_password }}
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_HOME', 'https://staging.{{ domain_name }}');
+        define('WP_SITEURL', 'https://staging.{{ domain_name }}');
+    volumes:
+      - /opt/wordpress/wordpress/staging/wp-content/themes:/var/www/html/wp-content/themes
+      - /opt/wordpress/wordpress/staging/wp-content/plugins:/var/www/html/wp-content/themes/plugins
+    networks:
+      - wordpress_network
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:latest
+    container_name: wordpress_nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - wordpress_data:/var/www/html/production
+      - staging_wordpress_data:/var/www/html/staging
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - wordpress
+      - staging_wordpress
+    networks:
+      - wordpress_network
+networks:
+  wordpress_network:
+volumes:
+  mysql_data:
+  wordpress_data:
+  staging_mysql_data:
+  staging_wordpress_data:

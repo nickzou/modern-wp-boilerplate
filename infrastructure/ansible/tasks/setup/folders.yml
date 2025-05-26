@@ -1,0 +1,16 @@
+---
+
+- name: Create WordPress directory structure
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - /opt/wordpress
+    - /opt/wordpress/nginx
+    - /opt/wordpress/nginx/conf.d
+    - /opt/wordpress/mysql
+    - /opt/wordpress/wordpress/production
+    - /opt/wordpress/wordpress/staging
+    - /opt/wordpress/ssl
+  become: yes

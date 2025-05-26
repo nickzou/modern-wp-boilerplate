@@ -1,0 +1,8 @@
+---
+
+- name: Create nginx default configuration from template
+  ansible.builtin.template:
+    src: nginx-default.conf.j2
+    dest: /opt/wordpress/nginx/conf.d/default.conf
+    mode: '0644'
+  become: yes
