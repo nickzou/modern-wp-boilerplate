@@ -9,9 +9,9 @@
 - name: Obtain SSL certificate
   ansible.builtin.shell:
     cmd: >
-      certbot certonly --dns-cloudflare
+      certbot certonly --standalone
       -d {{ domain_name }}
-      -d *.{{ domain_name }}
+      -d staging.{{ domain_name }}
       --email {{ ssl_email }}
       --agree-tos
       --non-interactive
