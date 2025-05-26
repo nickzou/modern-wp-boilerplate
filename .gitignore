@@ -13,7 +13,7 @@ terraform.tfstate
 terraform.tfstate.backup
 .terraform.tfstate.lock.info
 
-infrastructure/ansible/group_vars/
+infrastructure/ansible/group_vars/*
 
 web/wp-content/plugins/
 web/wp-content/themes/*/css/
