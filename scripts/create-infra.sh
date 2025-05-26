@@ -97,13 +97,6 @@ fi
 print_status "Terraform apply completed successfully."
 print_status "Infrastructure has been provisioned."
 
-# Optionally show outputs
-read -p "Do you want to see the outputs? (y/n): " show_outputs
-if [[ $show_outputs == [yY] || $show_outputs == [yY][eE][sS] ]]; then
-    print_status "Terraform outputs:"
-    terraform output
-fi
-
 # Return to the original directory
 cd - > /dev/null
 print_status "Done."
