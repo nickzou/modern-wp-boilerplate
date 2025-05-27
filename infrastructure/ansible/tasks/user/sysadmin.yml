@@ -9,6 +9,14 @@
     shell: /bin/zsh
     create_home: yes
 
+- name: Allow System Administrator passwordless sudo
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: '^sysadmin'
+    line: 'sysadmin ALL=(ALL) NOPASSWD:ALL'
+    validate: 'visudo -cf %s'
+
 - name: Add System Administrator's Public Key
   authorized_key:
     user: sysadmin
