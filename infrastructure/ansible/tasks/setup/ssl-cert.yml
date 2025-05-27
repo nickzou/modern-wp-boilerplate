@@ -1,30 +1,35 @@
 ---
 
-- name: Stop nginx container to free up port 80
-  ansible.builtin.shell:
-    cmd: docker-compose stop nginx
-    chdir: /opt/wordpress
+- name: Create certbot secrets directory
+  ansible.builtin.file:
+    path: /etc/letsencrypt/secrets
+    state: directory
+    owner: root
+    group: root
+    mode: '0700'
   become: yes
 
-- name: Obtain SSL certificate
+- name: Create Digital Ocean API credentials file
+  ansible.builtin.copy:
+    content: |
+      dns_digitalocean_token = {{ do_token }}
+    dest: /etc/letsencrypt/secrets/digitalocean.cfg
+    owner: root
+    group: root
+    mode: '0600'
+  become: yes
+
+- name: Obtain wildcard SSL certificate
   ansible.builtin.shell:
     cmd: >
-      certbot certonly --standalone
-      -d {{ domain_name }}
-      -d staging.{{ domain_name }}
+      certbot certonly --dns-digitalocean
+      --dns-digitalocean-credentials /etc/letsencrypt/secrets/digitalocean.cfg
+      -d "*.{{ domain_name }}"
+      -d "{{ domain_name }}"
       --email {{ ssl_email }}
       --agree-tos
       --non-interactive
   register: certbot_result
-  until: certbot_result.rc == 0
-  retries: 20
-  delay: 30
-  become: yes
-
-- name: Restart docker-compose services
-  ansible.builtin.shell:
-    cmd: docker-compose up -d
-    chdir: /opt/wordpress
   become: yes
 
 - name: Set up automatic SSL certificate renewal cron job
@@ -32,6 +37,12 @@
     name: "Certbot SSL renewal"
     minute: "0"
     hour: "0"
-    job: "certbot renew --quiet --post-hook 'docker exec wordpress_nginx nginx -s reload'"
+    job: "certbot renew --quiet --post-hook 'docker-compose -f /opt/wordpress/docker-compose.yml restart nginx'"
     user: root
+  become: yes
+
+- name: Ensure docker-compose services are running with new certificates
+  ansible.builtin.shell:
+    cmd: docker-compose down && docker-compose up -d
+    chdir: /opt/wordpress
   become: yes
