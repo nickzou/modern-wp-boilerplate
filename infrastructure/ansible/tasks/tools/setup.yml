@@ -18,5 +18,6 @@
       - certbot
       - ca-certificates
       - software-properties-common
+      - python3-certbot-dns-digitalocean
     state: latest
     update_cache: yes
