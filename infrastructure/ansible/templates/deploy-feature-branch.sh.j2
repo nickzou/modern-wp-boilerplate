@@ -1,0 +1,205 @@
+#!/bin/bash
+
+# deploy-feature-branch.sh
+# Creates a new WordPress instance for feature branch testing
+# Usage: ./deploy-feature-branch.sh <branch-name> <domain>
+# Example: ./deploy-feature-branch.sh feature-user-auth {{ domain_name }}
+
+set -e  # Exit on any error
+
+# Configuration
+BRANCH_NAME="$1"
+BASE_DOMAIN="{{ domain_name }}"
+PRODUCTION_DIR="/opt/wordpress"
+FEATURE_BASE_DIR="/opt/wordpress/wordpress/feature-branches"
+NGINX_CONF_DIR="/opt/wordpress/nginx/conf.d"
+TMP_DB_DIR="/opt/wordpress/mysql"
+
+# Validation
+if [ -z "$BRANCH_NAME" ]; then
+    echo "Usage: $0 <branch-name>"
+    echo "Example: $0 feature-user-auth"
+    exit 1
+fi
+
+# Sanitize branch name for use in URLs and file paths
+SANITIZED_BRANCH=$(echo "$BRANCH_NAME" | sed 's/[^a-zA-Z0-9-]/-/g' | tr '[:upper:]' '[:lower:]')
+SUBDOMAIN="${SANITIZED_BRANCH}.${BASE_DOMAIN}"
+FEATURE_DIR="${FEATURE_BASE_DIR}/${SANITIZED_BRANCH}"
+
+echo "=== Deploying feature branch: $BRANCH_NAME ==="
+echo "Subdomain: $SUBDOMAIN"
+echo "Directory: $FEATURE_DIR"
+
+# Create feature branch directory
+echo "Creating feature branch directory..."
+mkdir -p "$FEATURE_DIR"
+cd "$FEATURE_DIR"
+
+# Generate docker-compose file for feature branch
+echo "Generating Docker Compose configuration..."
+COMPOSE_FILE="docker-compose.${SANITIZED_BRANCH}.yml"
+
+cat > "$COMPOSE_FILE" << EOF
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: ${SANITIZED_BRANCH}_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: wordpress_${SANITIZED_BRANCH}
+      MYSQL_USER: {{ mysql_user }}
+      MYSQL_PASSWORD: {{ mysql_password }}
+      MYSQL_ROOT_PASSWORD: {{ mysql_root_password }}
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "0:3306"  # Let Docker assign random port
+    networks:
+      - wordpress_network
+
+  wordpress:
+    image: wordpress:latest
+    container_name: ${SANITIZED_BRANCH}_app
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: wordpress_${SANITIZED_BRANCH}
+      WORDPRESS_DB_USER: {{ mysql_user }}
+      WORDPRESS_DB_PASSWORD: {{ mysql_password }}
+    volumes:
+      - ${FEATURE_DIR}/wp-content/themes:/var/www/html/wp-content/themes
+      - ${FEATURE_DIR}/wp-content/plugins:/var/www/html/wp-content/plugins
+      - ${FEATURE_DIR}/wp-content/uploads:/var/www/html/wp-content/uploads
+    networks:
+      - wordpress_network
+
+  nginx:
+    image: nginx:latest
+    container_name: ${SANITIZED_BRANCH}_nginx
+    restart: unless-stopped
+    depends_on:
+      - wordpress
+    volumes:
+      - ${FEATURE_DIR}/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ${FEATURE_DIR}/wp-content:/var/www/html/wp-content:ro
+    networks:
+      - wordpress_network
+
+volumes:
+  db_data:
+
+networks:
+  wordpress_network:
+EOF
+
+# Create nginx configuration for the feature branch
+echo "Creating nginx configuration..."
+cat > "${NGINX_CONF_DIR}/${SUBDOMAIN}.conf" << EOF
+server {
+    listen 80;
+    server_name ${SUBDOMAIN};
+    
+    # Redirect HTTP to HTTPS
+    return 301 https://\$server_name\$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name ${SUBDOMAIN};
+    
+    # SSL Configuration (using wildcard cert)
+    ssl_certificate /etc/letsencrypt/live/{{ domain_name }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ domain_name }}/privkey.pem;
+    
+    # SSL Security headers
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384;
+    ssl_prefer_server_ciphers off;
+    
+    location / {
+        proxy_pass http://${SANITIZED_BRANCH}_nginx;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+        proxy_set_header X-Forwarded-Host \$server_name;
+        
+        # WordPress specific headers
+        proxy_redirect off;
+        proxy_buffering off;
+    }
+    
+    # Handle WordPress uploads
+    client_max_body_size 100M;
+}
+EOF
+
+# No WordPress files or .env copying - these will be managed by the deployment process
+
+# Start the containers
+echo "Starting Docker containers..."
+docker-compose -f "$COMPOSE_FILE" up -d
+
+# Wait for containers to be ready
+echo "Waiting for containers to start..."
+sleep 10
+
+# Wait for MySQL to be ready
+echo "Waiting for MySQL to be ready..."
+until docker-compose -f "$COMPOSE_FILE" exec -T db mysql -u root -p{{ mysql_root_password }} -e "SELECT 1" >/dev/null 2>&1; do
+    echo "Waiting for MySQL..."
+    sleep 5
+done
+
+# Export database from production using wp-cli
+echo "Exporting production database using wp-cli..."
+DB_EXPORT_FILE="${TMP_DB_DIR}/prod_export_${SANITIZED_BRANCH}_$(date +%Y%m%d_%H%M%S).sql"
+docker exec wordpress_app wp db export --path=/var/www/html - > "$DB_EXPORT_FILE"
+
+# Create new database and import data
+echo "Creating feature branch database and importing data..."
+FEATURE_DB_NAME="wordpress_${SANITIZED_BRANCH}"
+
+# Create database
+docker-compose -f "$COMPOSE_FILE" exec -T db mysql -u root -p{{ mysql_root_password }} -e "CREATE DATABASE IF NOT EXISTS $FEATURE_DB_NAME;"
+
+# Import data
+docker-compose -f "$COMPOSE_FILE" exec -T db mysql -u root -p{{ mysql_root_password }} "$FEATURE_DB_NAME" < "$DB_EXPORT_FILE"
+
+# Clean up database export file after successful import
+echo "Cleaning up database export file..."
+rm -f "$DB_EXPORT_FILE"
+
+# Update WordPress URLs in database using wp-cli
+echo "Updating WordPress URLs in database using wp-cli..."
+PROD_URL="https://${BASE_DOMAIN}"
+FEATURE_URL="https://${SUBDOMAIN}"
+
+# Wait for WordPress container to be ready
+sleep 10
+
+# Update URLs using wp-cli
+docker-compose -f "$COMPOSE_FILE" exec -T wordpress wp search-replace "$PROD_URL" "$FEATURE_URL" --path=/var/www/html
+
+# Reload main nginx container to pick up new configuration
+echo "Reloading main nginx container..."
+docker exec wordpress_nginx nginx -t && docker exec wordpress_nginx nginx -s reload
+
+# Clean up temporary files (this line is kept for completeness but file already deleted above)
+echo "Cleanup complete"
+
+echo "=== Feature branch deployment complete ==="
+echo "Site URL: https://${SUBDOMAIN}"
+echo "Directory: ${FEATURE_DIR}"
+echo "Containers: ${SANITIZED_BRANCH}_*"
+echo ""
+echo "To tear down this feature branch:"
+echo "cd ${FEATURE_DIR} && docker-compose -f ${COMPOSE_FILE} down -v"
+echo "rm -rf ${FEATURE_DIR}"
+echo "rm ${NGINX_CONF_DIR}/${SUBDOMAIN}.conf"
+echo "docker exec wordpress_nginx nginx -s reload"

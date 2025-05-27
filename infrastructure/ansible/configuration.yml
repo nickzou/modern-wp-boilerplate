@@ -34,3 +34,5 @@
 
     - include_tasks: tasks/setup/ssl-cert.yml
 
+    - include_tasks: tasks/setup/deploy-feature-branch-script.yml
+

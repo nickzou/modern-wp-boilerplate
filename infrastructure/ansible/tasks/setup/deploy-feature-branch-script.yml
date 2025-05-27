@@ -1,0 +1,8 @@
+- name: Generate feature branch deployment script
+  ansible.builtin.template:
+    src: deploy-feature-branch.sh.j2
+    dest: /usr/local/bin/deploy-feature-branch.sh
+    owner: automator
+    group: automator
+    mode: '0755'
+  become: yes
