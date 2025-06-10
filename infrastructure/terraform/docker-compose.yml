@@ -1,0 +1,136 @@
+services:
+  # Production Database
+  db:
+    image: mysql:8.0
+    container_name: wordpress_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: wprootpass123
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: db
+      MYSQL_PASSWORD: wpdbpass123
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - wordpress_network
+  # Production WordPress
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress_app
+    restart: always
+    depends_on:
+      - db
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: db
+      WORDPRESS_DB_PASSWORD: wpdbpass123
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_HOME', 'https://wandernode.ca');
+        define('WP_SITEURL', 'https://wandernode.ca');
+    volumes:
+      - /opt/wordpress/wordpress/production/wp-content/themes:/var/www/html/wp-content/themes
+      - /opt/wordpress/wordpress/production/wp-content/plugins:/var/www/html/wp-content/plugins
+      - wordpress_data:/var/www/html
+    networks:
+      - wordpress_network
+  # Production WP-CLI
+  wpcli:
+    image: wordpress:cli
+    container_name: wordpress_wpcli
+    depends_on:
+      - db
+      - wordpress
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: db
+      WORDPRESS_DB_PASSWORD: wpdbpass123
+    volumes:
+      - /opt/wordpress/wordpress/production/wp-content/themes:/var/www/html/wp-content/themes
+      - /opt/wordpress/wordpress/production/wp-content/plugins:/var/www/html/wp-content/plugins
+      - wordpress_data:/var/www/html
+    networks:
+      - wordpress_network
+    user: "33:33"
+    command: tail -f /dev/null
+  # Staging Database
+  staging_db:
+    image: mysql:8.0
+    container_name: staging_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: wprootpass123
+      MYSQL_DATABASE: wordpress_staging
+      MYSQL_USER: db
+      MYSQL_PASSWORD: wpdbpass123
+    volumes:
+      - staging_mysql_data:/var/lib/mysql
+    networks:
+      - wordpress_network
+  # Staging WordPress
+  staging_wordpress:
+    image: wordpress:latest
+    container_name: staging_app
+    restart: always
+    depends_on:
+      - staging_db
+    environment:
+      WORDPRESS_DB_HOST: staging_db
+      WORDPRESS_DB_NAME: wordpress_staging
+      WORDPRESS_DB_USER: db
+      WORDPRESS_DB_PASSWORD: wpdbpass123
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_HOME', 'https://staging.wandernode.ca');
+        define('WP_SITEURL', 'https://staging.wandernode.ca');
+    volumes:
+      - /opt/wordpress/wordpress/staging/wp-content/themes:/var/www/html/wp-content/themes
+      - /opt/wordpress/wordpress/staging/wp-content/plugins:/var/www/html/wp-content/plugins
+      - staging_wordpress_data:/var/www/html
+    networks:
+      - wordpress_network
+  # Staging WP-CLI
+  staging_wpcli:
+    image: wordpress:cli
+    container_name: staging_wpcli
+    depends_on:
+      - staging_db
+      - staging_wordpress
+    environment:
+      WORDPRESS_DB_HOST: staging_db
+      WORDPRESS_DB_NAME: wordpress_staging
+      WORDPRESS_DB_USER: db
+      WORDPRESS_DB_PASSWORD: wpdbpass123
+    volumes:
+      - /opt/wordpress/wordpress/staging/wp-content/themes:/var/www/html/wp-content/themes
+      - /opt/wordpress/wordpress/staging/wp-content/plugins:/var/www/html/wp-content/plugins
+      - staging_wordpress_data:/var/www/html
+    networks:
+      - wordpress_network
+    user: "33:33"
+    command: tail -f /dev/null
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:latest
+    container_name: wordpress_nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - wordpress_data:/var/www/html/production
+      - staging_wordpress_data:/var/www/html/staging
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - wordpress
+      - staging_wordpress
+    networks:
+      - wordpress_network
+networks:
+  wordpress_network:
+volumes:
+  mysql_data:
+  wordpress_data:
+  staging_mysql_data:
+  staging_wordpress_data:
