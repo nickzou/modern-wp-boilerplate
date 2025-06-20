@@ -27,7 +27,7 @@
     "tailwind:prod": "tailwindcss -i ./tailwind.css -o ./web/wp-content/themes/base-theme/css/tailwind.css -m",
     "tailwind:watch": "tailwindcss -i ./tailwind.css -o ./web/wp-content/themes/base-theme/css/tailwind.css -w",
     "php:format": "prettier . --write",
-    "php:format:watch": "chokidar './web/wp-content/themes/**/*.php' -c 'prettier --write {path}'",
+    "php:format:watch": "chokidar './src/**/*.php' './web/wp-content/themes/**/*.php' -c 'prettier --write {path}'",
     "php:lint": "esrun phplint.mjs",
     "php:lint:watch": "chokidar './web/wp-content/themes/base-theme/**/*.php' -i '{vendor}' -c 'php -l {path}'",
     "ts:dev": "parcel build src/ts/*.ts --dist-dir web/wp-content/themes/base-theme/js --no-optimize",
