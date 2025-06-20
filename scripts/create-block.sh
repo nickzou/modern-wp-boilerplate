@@ -54,6 +54,7 @@ cat > "${blocks_dir}/block.json" << EOF
 	"example": {},
 	"textdomain": "${block_name}",
 	"editorScript": "file:./editor.js",
+    "style": [ "file:./../../css/admin-tailwind.css" ],
     "render": "file:./render.php",
 	"attributes": {
 		"content": {
