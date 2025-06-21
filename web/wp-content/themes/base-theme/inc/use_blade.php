@@ -53,6 +53,14 @@ function get_blade_instance()
                 ?>";
     });
 
+    $blade->directive("asset", function ($name) {
+        return "<?php echo get_template_directory_uri() . '/' . $name; ?>";
+    });
+
+    $blade->directive("svg", function ($name) {
+        return "<?php echo file_get_contents(get_template_directory() . '/' . $name); ?>";
+    });
+
     return $blade;
 }
 
