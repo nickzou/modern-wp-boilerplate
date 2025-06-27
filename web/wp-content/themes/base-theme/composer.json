@@ -8,7 +8,8 @@
     ],
     "require": {
         "composer/installers": "^2.3.0",
-        "eftec/bladeone": "^4.18"
+        "eftec/bladeone": "^4.18",
+        "htmlburger/carbon-fields": "^3.6"
     },
     "config": {
         "allow-plugins": {
