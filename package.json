@@ -71,6 +71,7 @@
     "prettier": "^3.5.2",
     "prettier-plugin-blade": "^2.1.21",
     "prettier-plugin-tailwindcss": "^0.6.11",
+    "tailwind-merge": "^3.3.1",
     "typescript": "^5.7.3"
   },
   "dependencies": {
