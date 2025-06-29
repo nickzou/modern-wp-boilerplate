@@ -12,6 +12,8 @@
 			"./src/ts/**/*.tsx",
 			"./src/blocks/**/*.ts",
 			"./src/blocks/**/*.tsx",
+			"./src/components/**/*.tsx",
+			"./src/types/**/*.ts",
 			"./src/css/**/*.css"
 		],
 		"ignore": []
