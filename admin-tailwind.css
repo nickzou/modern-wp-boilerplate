@@ -1,3 +1,4 @@
 
 @import "tailwindcss" prefix(ad) source(none);
 @source "./src/blocks";
+@source "./src/components";
