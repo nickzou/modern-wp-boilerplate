@@ -1,6 +1,6 @@
 export type Names = "base" | "sm" | "md" | "lg" | "xl" | "2xl";
 
-type Screen = {
+export type Screen = {
 	name: Names;
 	value: number;
 };
