@@ -9,6 +9,8 @@
 function enqueue_theme_assets()
 {
     wp_enqueue_script("app");
+    wp_enqueue_script("alpine");
+    wp_enqueue_script("alpine-intersect");
     wp_enqueue_style("tailwind");
     wp_enqueue_style("styles");
 }
