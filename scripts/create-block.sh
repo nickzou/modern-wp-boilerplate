@@ -9,7 +9,7 @@ fi
 namespace="${THEME_NAME:-"base-theme"}"
 block_name="my-block"
 title="My Block"
-category="widgets"
+category="base-theme"
 description="A custom block for displaying content."
 icon="smiley"
 version="0.1.0"
