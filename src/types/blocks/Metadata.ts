@@ -45,7 +45,7 @@ interface Metadata {
 			source?: string;
 			selector?: string;
 			attribute?: string;
-            default?:
+			default?:
 				| string
 				| number
 				| boolean
