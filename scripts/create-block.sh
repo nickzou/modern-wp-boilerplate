@@ -6,7 +6,7 @@ if [ -f "$(dirname "$0")/../.env" ]; then
 fi
 
 # Default values
-namespace="${THEME_NAME:-"my-namespace"}"
+namespace="${THEME_NAME:-"base-theme"}"
 block_name="my-block"
 title="My Block"
 category="widgets"
