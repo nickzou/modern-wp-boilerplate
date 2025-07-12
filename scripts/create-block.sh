@@ -75,7 +75,7 @@ cat > "src/blocks/${block_name}/editor.tsx" << EOF
 import { registerBlockType, BlockConfiguration, BlockAttributes } from "@wordpress/blocks";
 import { useBlockProps, RichText } from "@wordpress/block-editor";
 import { __ } from "@wordpress/i18n";
-import Metadata from "rootDir/types/blocks/Metadata"; 
+import Metadata from "./../../types/blocks/Metadata"; 
 
 /**
  * Internal dependencies
