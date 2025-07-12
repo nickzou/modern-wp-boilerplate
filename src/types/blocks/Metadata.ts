@@ -38,7 +38,6 @@ interface Metadata {
 			lineHeight?: boolean;
 		};
 	};
-	// Also AI generated, do not know if this is accurate or complete
 	attributes?: Record<
 		string,
 		{
@@ -57,7 +56,6 @@ interface Metadata {
 			multiline?: string;
 		}
 	>;
-	// Again, AI, but why do I even have to do this? Why do the types not just work?
 	example?: {
 		attributes?: Record<
 			string,
