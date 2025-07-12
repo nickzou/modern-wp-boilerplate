@@ -13,6 +13,7 @@
 			"./src/blocks/**/*.ts",
 			"./src/blocks/**/*.tsx",
 			"./src/components/**/*.tsx",
+			"./src/utils/**/*.ts",
 			"./src/types/**/*.ts",
 			"./src/css/**/*.css"
 		],
