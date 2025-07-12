@@ -1,7 +1,4 @@
-@layer theme, base, components, utilities;
-@import "tailwindcss/theme.css" layer(theme) prefix(ad) soruce(none);
-@import "tailwindcss/utilities.css" layer(utilities) (ad) source(none);
-
+@import "tailwindcss" prefix(ad) source(none);
 @source "./src/blocks";
 @source "./src/components";
 

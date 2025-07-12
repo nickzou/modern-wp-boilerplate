@@ -1,4 +1,4 @@
-import screens, { type Names } from "./variables/screens";
+import screens, { type Screen } from "./variables/screens";
 document.addEventListener("alpine:init", () => {
 	window.Alpine.store("mobileMenu", {
 		open: false,
@@ -11,6 +11,6 @@ document.addEventListener("alpine:init", () => {
 	});
 
 	window.Alpine.store("screen", {
-		size: screens.find((screen) => window.innerWidth < screen.value)?.name,
-	} as { size: Names });
+		size: screens.find((screen) => window.innerWidth < screen.value),
+	} as { size: Screen });
 });

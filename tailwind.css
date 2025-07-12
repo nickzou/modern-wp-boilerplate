@@ -1,2 +1,6 @@
 @import "tailwindcss" source(none);
 @source "./web/wp-content/themes/base-theme/views";
+
+@variant dark (.dark &);
+
+[x-cloak] {display:none!important}
