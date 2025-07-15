@@ -5,7 +5,7 @@
         "./web/wp-content/plugins/safe-svg"
     ],
     "themes": [
-        "./web/wp-content/themes"
+        "./web/wp-content/themes/base-theme"
     ],
     "config": {
         "WP_DEBUG": true,
