@@ -14,7 +14,7 @@
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "noEmit": true,
-    "lib":["es2022","dom"],
+    "lib":["es2023","dom"],
     "paths": {
     }
   },

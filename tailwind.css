@@ -1,5 +1,6 @@
 @import "tailwindcss" source(none);
 @source "./web/wp-content/themes/base-theme/views";
+@source "./web/wp-content/themes/base-theme/inc";
 
 @variant dark (.dark &);
 
