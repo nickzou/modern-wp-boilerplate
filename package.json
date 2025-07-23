@@ -77,6 +77,8 @@
   },
   "dependencies": {
     "@tailwindcss/cli": "^4.0.8",
+    "@wordpress/core-data": "^7.26.0",
+    "@wordpress/data": "^10.26.0",
     "alpinejs": "^3.14.8",
     "tailwindcss": "^4.0.8"
   }
