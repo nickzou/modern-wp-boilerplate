@@ -33,6 +33,24 @@ resource "digitalocean_droplet" "basic" {
   })
 }
 
+resource "digitalocean_domain" "wordpress" {
+  name = var.domain_name
+}
+
+resource "digitalocean_record" "root" {
+  domain = digitalocean_domain.wordpress.id
+  type   = "A"
+  name   = "@"
+  value  = digitalocean_droplet.basic.ipv4_address
+}
+
+resource "digitalocean_record" "www" {
+  domain = digitalocean_domain.wordpress.id
+  type   = "A"
+  name   = "www"
+  value  = digitalocean_droplet.basic.ipv4_address
+}
+
 output "droplet_ip" {
   value       = digitalocean_droplet.basic.ipv4_address
   description = "The public IP address of the droplet"
