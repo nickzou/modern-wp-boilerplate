@@ -1,0 +1,59 @@
+#cloud-config
+packages:
+  - nginx
+  - git
+  - mysql-server
+  - php-fpm
+  - php-mysql
+  - php-curl
+  - php-gd
+  - php-mbstring
+  - php-xml
+  - php-xmlrpc
+  - php-soap
+  - php-intl
+  - php-zip
+  - zsh
+  - zsh-syntax-highlighting
+  
+write_files:
+  - path: /etc/nginx/sites-available/wordpress
+    encoding: b64
+    content: ${wordpress_nginx_conf}
+
+runcmd:
+  - git clone https://github.com/nickzou/server-dotfiles.git /tmp/dotfiles
+  - cp /tmp/dotfiles/dotfiles/.zshrc /root/.zshrc
+  - cp /tmp/dotfiles/dotfiles/.zsh_aliases /root/.zsh_aliases
+  - cp /tmp/dotfiles/dotfiles/.vimrc /root/.vimrc
+  - rm -rf /tmp/dotfiles
+  - chsh -s $(which zsh) root
+
+  # Set root password
+  - mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '${mysql_root_password}';"
+  - mysql -e "FLUSH PRIVILEGES;"
+  - sleep 2
+  
+  # NOW use auth for ALL remaining commands
+  - mysql -uroot -p'${mysql_root_password}' -e "DELETE FROM mysql.user WHERE User='';"
+  - mysql -uroot -p'${mysql_root_password}' -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+  - mysql -uroot -p'${mysql_root_password}' -e "DROP DATABASE IF EXISTS test;"
+  - mysql -uroot -p'${mysql_root_password}' -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
+  - mysql -uroot -p'${mysql_root_password}' -e "FLUSH PRIVILEGES;"
+  
+  # Create WordPress database and user
+  - mysql -uroot -p'${mysql_root_password}' -e "CREATE DATABASE wordpress DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+  - mysql -uroot -p'${mysql_root_password}' -e "CREATE USER 'wordpress'@'localhost' IDENTIFIED BY '${wordpress_db_password}';"
+  - mysql -uroot -p'${mysql_root_password}' -e "GRANT ALL ON wordpress.* TO 'wordpress'@'localhost';"
+  - mysql -uroot -p'${mysql_root_password}' -e "FLUSH PRIVILEGES;"
+
+  - cd /tmp && curl -O https://wordpress.org/latest.tar.gz
+  - tar xzvf /tmp/latest.tar.gz -C /tmp
+  - mkdir -p /var/www/wordpress
+  - cp -a /tmp/wordpress/. /var/www/wordpress/
+  - chown -R www-data:www-data /var/www/wordpress
+  - rm -rf /tmp/wordpress /tmp/latest.tar.gz
+
+  - ln -s /etc/nginx/sites-available/wordpress /etc/nginx/sites-enabled/
+  - rm -f /etc/nginx/sites-enabled/default
+  - nginx -t && systemctl reload nginx
