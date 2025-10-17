@@ -31,21 +31,3 @@ variable "domain_name" {
   type        = string
 }
 
-resource "digitalocean_domain" "wordpress" {
-  name = var.domain_name
-}
-
-resource "digitalocean_record" "root" {
-  domain = digitalocean_domain.wordpress.id
-  type   = "A"
-  name   = "@"
-  value  = digitalocean_droplet.basic.ipv4_address
-}
-
-resource "digitalocean_record" "www" {
-  domain = digitalocean_domain.wordpress.id
-  type   = "A"
-  name   = "www"
-  value  = digitalocean_droplet.basic.ipv4_address
-}
-
