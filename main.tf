@@ -51,6 +51,20 @@ resource "digitalocean_record" "www" {
   value  = digitalocean_droplet.basic.ipv4_address
 }
 
+resource "digitalocean_record" "staging" {
+  domain = digitalocean_domain.wordpress.id
+  type   = "A"
+  name   = "staging"
+  value  = digitalocean_droplet.basic.ipv4_address
+}
+
+resource "digitalocean_record" "dev" {
+  domain = digitalocean_domain.wordpress.id
+  type   = "A"
+  name   = "dev"
+  value  = digitalocean_droplet.basic.ipv4_address
+}
+
 output "droplet_ip" {
   value       = digitalocean_droplet.basic.ipv4_address
   description = "The public IP address of the droplet"
