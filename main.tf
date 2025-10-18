@@ -27,10 +27,14 @@ resource "digitalocean_droplet" "basic" {
   }
 
   user_data = templatefile("${path.module}/cloud-init.yaml.tftpl", {
-    wordpress_nginx_conf = base64encode(file("${path.module}/wordpress-nginx.conf")),
-    mysql_root_password = var.mysql_root_password,
-    wordpress_db_password = var.wordpress_db_password
-  })
+  production_nginx_conf     = base64encode(file("${path.module}/production-nginx.conf")),
+  staging_nginx_conf        = base64encode(file("${path.module}/staging-nginx.conf")),
+  dev_nginx_conf            = base64encode(file("${path.module}/dev-nginx.conf")),
+  mysql_root_password       = var.mysql_root_password,
+  wordpress_prod_password   = var.wordpress_prod_password,
+  wordpress_staging_password = var.wordpress_staging_password,
+  wordpress_dev_password    = var.wordpress_dev_password
+})
 }
 
 resource "digitalocean_domain" "wordpress" {

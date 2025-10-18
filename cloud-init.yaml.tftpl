@@ -19,9 +19,17 @@ packages:
   - python3-certbot-nginx
   
 write_files:
-  - path: /etc/nginx/sites-available/wordpress
+  - path: /etc/nginx/sites-available/production
     encoding: b64
-    content: ${wordpress_nginx_conf}
+    content: ${production_nginx_conf}
+
+  - path: /etc/nginx/sites-available/staging
+    encoding: b64
+    content: ${staging_nginx_conf}
+
+  - path: /etc/nginx/sites-available/dev
+    encoding: b64
+    content: ${dev_nginx_conf}
 
 runcmd:
   - git clone https://github.com/nickzou/server-dotfiles.git /tmp/dotfiles
@@ -48,22 +56,52 @@ runcmd:
   - mysql -uroot -p'${mysql_root_password}' -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
   - mysql -uroot -p'${mysql_root_password}' -e "FLUSH PRIVILEGES;"
   
-  # Create WordPress database and user
-  - mysql -uroot -p'${mysql_root_password}' -e "CREATE DATABASE wordpress DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-  - mysql -uroot -p'${mysql_root_password}' -e "CREATE USER 'wordpress'@'localhost' IDENTIFIED BY '${wordpress_db_password}';"
-  - mysql -uroot -p'${mysql_root_password}' -e "GRANT ALL ON wordpress.* TO 'wordpress'@'localhost';"
+  # Create Production WordPress database and user
+  - mysql -uroot -p'${mysql_root_password}' -e "CREATE DATABASE wordpress_prod DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+  - mysql -uroot -p'${mysql_root_password}' -e "CREATE USER 'wp_prod'@'localhost' IDENTIFIED BY '${wordpress_prod_password}';"
+  - mysql -uroot -p'${mysql_root_password}' -e "GRANT ALL ON wordpress_prod.* TO 'wp_prod'@'localhost';"
+
+  # Create Staging WordPress database and user
+  - mysql -uroot -p'${mysql_root_password}' -e "CREATE DATABASE wordpress_staging DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+  - mysql -uroot -p'${mysql_root_password}' -e "CREATE USER 'wp_staging'@'localhost' IDENTIFIED BY '${wordpress_staging_password}';"
+  - mysql -uroot -p'${mysql_root_password}' -e "GRANT ALL ON wordpress_staging.* TO 'wp_staging'@'localhost';"
+
+  - mysql -uroot -p'${mysql_root_password}' -e "CREATE DATABASE wordpress_dev DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+  - mysql -uroot -p'${mysql_root_password}' -e "CREATE USER 'wp_dev'@'localhost' IDENTIFIED BY '${wordpress_dev_password}';"
+  - mysql -uroot -p'${mysql_root_password}' -e "GRANT ALL ON wordpress_dev.* TO 'wp_dev'@'localhost';"
+
   - mysql -uroot -p'${mysql_root_password}' -e "FLUSH PRIVILEGES;"
 
+  # Install WordPress - Production
   - cd /tmp && curl -O https://wordpress.org/latest.tar.gz
   - tar xzvf /tmp/latest.tar.gz -C /tmp
-  - mkdir -p /var/www/wordpress
-  - cp -a /tmp/wordpress/. /var/www/wordpress/
-  - chown -R www-data:www-data /var/www/wordpress
+  - mkdir -p /var/www/production
+  - cp -a /tmp/wordpress/. /var/www/production/
+  - chown -R www-data:www-data /var/www/production
   - rm -rf /tmp/wordpress /tmp/latest.tar.gz
 
-  - ln -s /etc/nginx/sites-available/wordpress /etc/nginx/sites-enabled/
+  # Install WordPress - Staging
+  - cd /tmp && curl -O https://wordpress.org/latest.tar.gz
+  - tar xzvf /tmp/latest.tar.gz -C /tmp
+  - mkdir -p /var/www/staging
+  - cp -a /tmp/wordpress/. /var/www/staging/
+  - chown -R www-data:www-data /var/www/staging
+  - rm -rf /tmp/wordpress /tmp/latest.tar.gz
+
+  # Install WordPress - Dev
+  - cd /tmp && curl -O https://wordpress.org/latest.tar.gz
+  - tar xzvf /tmp/latest.tar.gz -C /tmp
+  - mkdir -p /var/www/dev
+  - cp -a /tmp/wordpress/. /var/www/dev/
+  - chown -R www-data:www-data /var/www/dev
+  - rm -rf /tmp/wordpress /tmp/latest.tar.gz
+
+  # Enable all sites
+  - ln -s /etc/nginx/sites-available/production /etc/nginx/sites-enabled/
+  - ln -s /etc/nginx/sites-available/staging /etc/nginx/sites-enabled/
+  - ln -s /etc/nginx/sites-available/dev /etc/nginx/sites-enabled/
   - rm -f /etc/nginx/sites-enabled/default
   - nginx -t && systemctl reload nginx
 
   # Set up SSL
-  - certbot --nginx -d pandacalculus.com -d www.pandacalculus.com --non-interactive --agree-tos --email z.nick00@gmail.com --redirect
+  - certbot --nginx -d pandacalculus.com -d www.pandacalculus.com -d staging.pandacalculus.com -d dev.pandacalculus.com --non-interactive --agree-tos --email z.nick00@gmail.com --redirect

@@ -20,8 +20,20 @@ variable "mysql_root_password" {
   sensitive   = true
 }
 
-variable "wordpress_db_password" {
-  description = "WordPress database password"
+variable "wordpress_prod_password" {
+  description = "WordPress production database password"
+  type        = string
+  sensitive   = true
+}
+
+variable "wordpress_staging_password" {
+  description = "WordPress staging database password"
+  type        = string
+  sensitive   = true
+}
+
+variable "wordpress_dev_password" {
+  description = "WordPress dev database password"
   type        = string
   sensitive   = true
 }
