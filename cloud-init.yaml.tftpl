@@ -19,6 +19,10 @@ packages:
   - python3-certbot-nginx
   
 write_files:
+  - path: /etc/nginx/conf.d/cache.conf
+    encoding: b64
+    content: ${cache_conf}
+
   - path: /etc/nginx/sites-available/production
     encoding: b64
     content: ${production_nginx_conf}
