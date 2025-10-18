@@ -105,3 +105,9 @@ runcmd:
 
   # Set up SSL
   - certbot --nginx -d pandacalculus.com -d www.pandacalculus.com -d staging.pandacalculus.com -d dev.pandacalculus.com --non-interactive --agree-tos --email z.nick00@gmail.com --redirect
+
+  - ufw default deny incoming
+  - ufw default allow outgoing
+  - ufw allow ssh
+  - ufw allow 'Nginx Full'
+  - ufw --force enable
