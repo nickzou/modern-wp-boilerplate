@@ -11,7 +11,7 @@ variable "cf_token" {
 }
 
 variable "cf_zone_id" {
-  description = "CloudFlare Zone ID for pandacalculus.com"
+  description = "CloudFlare Zone ID"
   type        = string
 }
 
