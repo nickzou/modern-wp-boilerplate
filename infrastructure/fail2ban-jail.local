@@ -1,0 +1,17 @@
+[DEFAULT]
+bantime = 600
+findtime = 600
+maxretry = 5
+destemail = z.nick00@gmail.com
+sendername = Fail2Ban
+action = %(action_mwl)s
+
+[sshd]
+enabled = true
+port = ssh
+logpath = /var/log/auth.log
+
+[nginx-http-auth]
+enabled = true
+port = http,https
+logpath = /var/log/nginx/error.log

@@ -17,6 +17,7 @@ packages:
   - zsh-syntax-highlighting
   - certbot
   - python3-certbot-nginx
+  - fail2ban
   
 write_files:
   - path: /etc/nginx/conf.d/cache.conf
@@ -119,3 +120,6 @@ runcmd:
   - ufw allow ssh
   - ufw allow 'Nginx Full'
   - ufw --force enable
+
+  - systemctl enable fail2ban
+  - systemctl start fail2ban
