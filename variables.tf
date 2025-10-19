@@ -4,6 +4,17 @@ variable "do_token" {
   sensitive   = true
 }
 
+variable "cf_token" {
+  description = "CloudFlare API Token"
+  type        = string
+  sensitive   = true
+}
+
+variable "cf_zone_id" {
+  description = "CloudFlare Zone ID for pandacalculus.com"
+  type        = string
+}
+
 variable "ssh_key_id" {
   description = "ID of your SSH key in DigitalOcean"
   type        = string

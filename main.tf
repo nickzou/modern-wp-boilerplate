@@ -4,11 +4,19 @@ terraform {
       source  = "digitalocean/digitalocean"
       version = "~> 2.0"
     }
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 4.0"
+    }
   }
 }
 
 provider "digitalocean" {
   token = var.do_token
+}
+
+provider "cloudflare" {
+  api_token = var.cf_token
 }
 
 resource "digitalocean_droplet" "basic" {
@@ -38,36 +46,40 @@ resource "digitalocean_droplet" "basic" {
   })
 }
 
-resource "digitalocean_domain" "wordpress" {
-  name = var.domain_name
+# Root domain
+resource "cloudflare_record" "root" {
+  zone_id = var.cf_zone_id
+  name    = "@"
+  content = digitalocean_droplet.basic.ipv4_address
+  type    = "A"
+  proxied = true
 }
 
-resource "digitalocean_record" "root" {
-  domain = digitalocean_domain.wordpress.id
-  type   = "A"
-  name   = "@"
-  value  = digitalocean_droplet.basic.ipv4_address
+# www subdomain
+resource "cloudflare_record" "www" {
+  zone_id = var.cf_zone_id
+  name    = "www"
+  content = digitalocean_droplet.basic.ipv4_address
+  type    = "A"
+  proxied = true
 }
 
-resource "digitalocean_record" "www" {
-  domain = digitalocean_domain.wordpress.id
-  type   = "A"
-  name   = "www"
-  value  = digitalocean_droplet.basic.ipv4_address
+# Staging subdomain
+resource "cloudflare_record" "staging" {
+  zone_id = var.cf_zone_id
+  name    = "staging"
+  content = digitalocean_droplet.basic.ipv4_address
+  type    = "A"
+  proxied = true
 }
 
-resource "digitalocean_record" "staging" {
-  domain = digitalocean_domain.wordpress.id
-  type   = "A"
-  name   = "staging"
-  value  = digitalocean_droplet.basic.ipv4_address
-}
-
-resource "digitalocean_record" "dev" {
-  domain = digitalocean_domain.wordpress.id
-  type   = "A"
-  name   = "dev"
-  value  = digitalocean_droplet.basic.ipv4_address
+# Dev subdomain
+resource "cloudflare_record" "dev" {
+  zone_id = var.cf_zone_id
+  name    = "dev"
+  content = digitalocean_droplet.basic.ipv4_address
+  type    = "A"
+  proxied = true
 }
 
 output "droplet_ip" {
