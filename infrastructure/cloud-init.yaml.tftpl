@@ -113,7 +113,7 @@ runcmd:
   - nginx -t && systemctl reload nginx
 
   # Set up SSL
-  - certbot --nginx -d pandacalculus.com -d www.pandacalculus.com -d staging.pandacalculus.com -d dev.pandacalculus.com --non-interactive --agree-tos --email z.nick00@gmail.com --redirect
+  - certbot --nginx -d pandacalculus.com -d www.pandacalculus.com -d staging.pandacalculus.com -d dev.pandacalculus.com --non-interactive --agree-tos --email z.nick00@gmail.com --redirect --staging
 
   - ufw default deny incoming
   - ufw default allow outgoing
