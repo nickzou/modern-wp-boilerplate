@@ -1,7 +1,19 @@
+.DS_Store
 .env
 .terraform/
 .terraform.lock.hcl
 terraform.tfstate
 terraform.tfstate.*
 *.tfvars
+
+node_modules
+vendor
+.parcel-cache
+
+web/wp-content/plugins/
+web/wp-content/themes/*/css/
+web/wp-content/themes/*/js/
+web/wp-content/themes/*/blocks/*
+web/wp-content/themes/*/cache/
+
 
