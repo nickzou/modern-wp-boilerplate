@@ -21,9 +21,9 @@ provider "cloudflare" {
 
 resource "digitalocean_droplet" "basic" {
   image  = "ubuntu-24-04-x64"
-  name   = "terraform-wordpress"
-  region = "nyc3"
-  size   = "s-1vcpu-1gb-35gb-intel"
+  name   = var.project_name
+  region = var.region
+  size   = var.droplet_size
   ssh_keys = [var.ssh_key_id]
 
   connection {
@@ -35,14 +35,16 @@ resource "digitalocean_droplet" "basic" {
   }
 
   user_data = templatefile("${path.module}/cloud-init.yaml.tftpl", {
-    cache_conf                = base64encode(file("${path.module}/cache.conf")),
-    production_nginx_conf     = base64encode(file("${path.module}/production-nginx.conf")),
-    staging_nginx_conf        = base64encode(file("${path.module}/staging-nginx.conf")),
-    dev_nginx_conf            = base64encode(file("${path.module}/dev-nginx.conf")),
-    mysql_root_password       = var.mysql_root_password,
-    wordpress_prod_password   = var.wordpress_prod_password,
+    cache_conf                 = base64encode(file("${path.module}/cache.conf")),
+    production_nginx_conf      = base64encode(file("${path.module}/production-nginx.conf")),
+    staging_nginx_conf         = base64encode(file("${path.module}/staging-nginx.conf")),
+    dev_nginx_conf             = base64encode(file("${path.module}/dev-nginx.conf")),
+    domain_name                = var.domain_name,
+    mysql_root_password        = var.mysql_root_password,
+    wordpress_prod_password    = var.wordpress_prod_password,
     wordpress_staging_password = var.wordpress_staging_password,
-    wordpress_dev_password    = var.wordpress_dev_password
+    wordpress_dev_password     = var.wordpress_dev_password,
+    ssl_email                  = var.ssl_email
   })
 }
 

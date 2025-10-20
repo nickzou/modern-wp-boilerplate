@@ -25,6 +25,21 @@ variable "ssh_private_key_path" {
   type        = string
 }
 
+variable "project_name" {
+  description = "Project Name"
+  type        = string
+}
+
+variable "region" {
+  description = "VPS Region"
+  type        = string
+}
+
+variable "droplet_size" {
+  description = "VPS Type"
+  type        = string
+}
+
 variable "mysql_root_password" {
   description = "MySQL root password"
   type        = string
@@ -54,3 +69,7 @@ variable "domain_name" {
   type        = string
 }
 
+variable "ssl_email" {
+  description = "SSL Email"
+  type        = string
+}
