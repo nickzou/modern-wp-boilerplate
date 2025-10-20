@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames":true,
+    "skipLibCheck":true,
+    "target": "ESNext",
+    "verbatimModuleSyntax":false,
+    "allowJs":true,
+    "resolveJsonModule":true,
+    "moduleDetection":"force",
+    "strict":true,
+    "noUncheckedIndexedAccess":true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "noEmit": true,
+    "lib":["es2023","dom"],
+    "paths": {
+    }
+  },
+  "include": ["./src/**/*.ts", "./src/**/*.tsx"],
+  "exclude": ["node_modules", "./playwright.config.ts"]
+}

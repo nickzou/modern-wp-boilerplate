@@ -1,0 +1,30 @@
+@import "tailwindcss" prefix(ad) source(none);
+@source "./src/blocks";
+@source "./src/components";
+
+h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+}
+h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+}
+h3 {
+    font-size: 1.17rem;
+    font-weight: bold;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+}
+p, ul {
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+}
+ul, ol {
+    padding-inline-start: 40px;
+    list-style-type: disc;
+}
