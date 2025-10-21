@@ -54,7 +54,7 @@
     "@prettier/plugin-php": "^0.24.0",
     "@types/alpinejs": "^3.13.11",
     "@types/wordpress__block-editor": "^14.21.0",
-    "@wordpress/block-editor": "^14.14.0",
+    "@wordpress/block-editor": "^15.6.0",
     "@wordpress/blocks": "^14.8.0",
     "@wordpress/components": "^29.11.0",
     "@wordpress/env": "^10.18.0",
