@@ -62,7 +62,7 @@
     "@wordpress/scripts": "^30.26.0",
     "browser-sync": "^3.0.4",
     "chokidar-cli": "^3.0.0",
-    "concurrently": "^9.1.2",
+    "concurrently": "^9.2.1",
     "dotenv": "^16.4.7",
     "esrun": "^3.2.26",
     "glob": "^11.0.1",
