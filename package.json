@@ -63,7 +63,7 @@
     "browser-sync": "^3.0.4",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^9.2.1",
-    "dotenv": "^16.4.7",
+    "dotenv": "^17.2.3",
     "esrun": "^3.2.26",
     "glob": "^11.0.1",
     "lightningcss-cli": "^1.29.1",
