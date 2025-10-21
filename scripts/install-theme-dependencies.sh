@@ -49,7 +49,7 @@ else
 fi
 
 echo "Executing: composer $COMMAND in $THEME_DIR"
-composer $COMMAND -d $THEME_DIR
+composer "$COMMAND" -d "$THEME_DIR"
 
 exit $?
 
