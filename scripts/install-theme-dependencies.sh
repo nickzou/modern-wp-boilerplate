@@ -31,7 +31,25 @@ if ! command -v composer &> /dev/null; then
 fi
 
 # Check if composer.json exists
-if [ ! -f "composer.json" ]; then
-  echo "Error: composer.json not found in current directory"
+if [ ! -f "$COMPOSER_JSON" ]; then
+  echo "Error: composer.json not found at $COMPOSER_JSON"
   exit 1
 fi
+
+# Decide whether to run install or update
+if [ ! -f "$COMPOSER_LOCK" ]; then
+  echo "No composer.lock file found, running composer install"
+  COMMAND="install"
+elif [ "$COMPOSER_JSON" -nt "$COMPOSER_LOCK" ]; then
+  echo "composer.json is newer than composer.lock, running composer update"
+  COMMAND="update"
+else
+  echo "Using existing composer.lock file, running composer install"
+  COMMAND="install"
+fi
+
+echo "Executing: composer $COMMAND in $THEME_DIR"
+composer $COMMAND -d $THEME_DIR
+
+exit $?
+
