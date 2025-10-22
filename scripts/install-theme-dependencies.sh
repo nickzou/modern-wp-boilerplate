@@ -5,16 +5,7 @@ ENV_FILE=".env"
 
 # Extract the THEME_NAME variable from .env file
 if [ -f "$ENV_FILE" ]; then
-  THEME_NAME=$(grep -E "^THEME_NAME=" "$ENV_FILE" | cut -d= -f2)
-  # Remove any surrounding quotes if present
-  THEME_NAME=$(echo $THEME_NAME | sed 's/^"//;s/"$//;s/^'\''//;s/'\''$//')
-  
-  if [ -n "$THEME_NAME" ]; then
-    echo "Using theme: $THEME_NAME"
-  else
-    echo "Warning: THEME_NAME not found in $ENV_FILE"
-    THEME_NAME="base-theme"  # Default fallback value
-  fi
+    source "$ENV_FILE"
 else
   echo "Warning: .env file not found at $ENV_FILE"
   THEME_NAME="base-theme"  # Default fallback value
