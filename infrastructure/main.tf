@@ -34,7 +34,7 @@ resource "digitalocean_droplet" "basic" {
     timeout     = "2m"
   }
 
-  user_data = templatefile("${path.module}/cloud-init.yaml.tftpl", {
+  user_data = templatefile("${path.module}/cloud-init.yaml.tpl", {
     cache_conf                 = base64encode(file("${path.module}/cache.conf")),
     production_nginx_conf      = base64encode(file("${path.module}/production-nginx.conf")),
     staging_nginx_conf         = base64encode(file("${path.module}/staging-nginx.conf")),
