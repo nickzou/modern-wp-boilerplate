@@ -1,5 +1,4 @@
 #!/bin/bash
-# tf-apply.sh - Initialize and apply Terraform configuration from root folder
 
 # Set error handling
 set -e
