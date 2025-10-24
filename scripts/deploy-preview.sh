@@ -58,6 +58,28 @@ else
     exit 1
 fi
 
+# Step 2: Create database
+echo "💾 Creating database ${DB_NAME}..."
+
+mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" <<EOF
+CREATE DATABASE IF NOT EXISTS ${DB_NAME} DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER IF NOT EXISTS '${DB_USER}'@'localhost' IDENTIFIED BY '${DB_PASS}';
+GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'localhost';
+FLUSH PRIVILEGES;
+EOF
+
+if [ $? -eq 0 ]; then
+    echo "✅ Database created"
+else
+    echo "❌ Database creation failed"
+    exit 1
+fi
+
+# Store DB credentials for later use (optional - for debugging)
+echo "DB_NAME=${DB_NAME}" >> /root/previews/${SAFE_NAME}.env
+echo "DB_USER=${DB_USER}" >> /root/previews/${SAFE_NAME}.env
+echo "DB_PASS=${DB_PASS}" >> /root/previews/${SAFE_NAME}.env
+
 echo "Preview deployment complete!"
 echo "URL: https://${BRANCH_NAME}.pandacalculus.com"
 ```
