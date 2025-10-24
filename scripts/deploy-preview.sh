@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e  # Exit on error
 
+mkdir -p /root/previews
+
 source /root/.env
 
 # Usage: ./deploy-preview.sh feature-branch-name
@@ -79,6 +81,29 @@ fi
 echo "DB_NAME=${DB_NAME}" >> /root/previews/${SAFE_NAME}.env
 echo "DB_USER=${DB_USER}" >> /root/previews/${SAFE_NAME}.env
 echo "DB_PASS=${DB_PASS}" >> /root/previews/${SAFE_NAME}.env
+
+# Step 3: Install WordPress
+echo "📦 Installing WordPress to ${WP_DIR}..."
+
+# Download WordPress
+cd /tmp
+curl -O https://wordpress.org/latest.tar.gz
+tar xzf latest.tar.gz
+
+# Move to web directory
+mkdir -p ${WP_DIR}
+cp -a wordpress/. ${WP_DIR}/
+chown -R www-data:www-data ${WP_DIR}
+
+# Clean up
+rm -rf wordpress latest.tar.gz
+
+if [ -d "${WP_DIR}" ]; then
+    echo "✅ WordPress installed"
+else
+    echo "❌ WordPress installation failed"
+    exit 1
+fi
 
 echo "Preview deployment complete!"
 echo "URL: https://${BRANCH_NAME}.pandacalculus.com"
