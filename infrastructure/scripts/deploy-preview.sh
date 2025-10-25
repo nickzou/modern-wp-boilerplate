@@ -105,6 +105,22 @@ else
     exit 1
 fi
 
+# Create wp-config.php
+echo "⚙️  Configuring WordPress..."
+sudo -u www-data wp --path=${WP_DIR} config create \
+  --dbname=${DB_NAME} \
+  --dbuser=${DB_USER} \
+  --dbpass=${DB_PASS} \
+  --dbhost=localhost \
+  --skip-check
+
+if [ $? -eq 0 ]; then
+    echo "✅ wp-config.php created"
+else
+    echo "❌ wp-config.php creation failed"
+    exit 1
+fi
+
 # Export from production
 sudo -u www-data wp --path=/var/www/production db export /tmp/preview-db.sql
 
