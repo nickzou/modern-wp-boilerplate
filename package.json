@@ -19,7 +19,7 @@
     "env:clean": "wp-env clean all",
     "env:destroy": "wp-env destroy",
     "wp:create-block": "bash ./scripts/create-block.sh",
-    "wp:setup-infra": "bash ./scripts/create-tfvars.sh && bash ./scripts/create-infra.sh",
+    "wp:setup-infra": "bash ./scripts/create-env-tpl.sh && bash ./scripts/create-tfvars.sh && bash ./scripts/create-infra.sh",
     "wp:setup-env": "bash ./scripts/rename-theme-folder.sh && bash ./scripts/install-theme-dependencies.sh",
     "wp:blocks:build": "wp-scripts build --source-path=src/blocks --output-path=web/wp-content/themes/base-theme/blocks",
     "wp:blocks:watch": "npm run wp:blocks:build -- --watch",
