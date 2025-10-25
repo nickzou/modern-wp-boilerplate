@@ -41,6 +41,7 @@ resource "digitalocean_droplet" "basic" {
     dev_nginx_conf             = base64encode(file("${path.module}/dev-nginx.conf")),
     fail2ban_config            = base64encode(file("${path.module}/fail2ban-jail.local")),
     deploy_preview_script      = base64encode(file("${path.module}/scripts/deploy-preview.sh")),
+    cleanup_preview_script     = base64encode(file("${path.module}/scripts/cleanup-preview.sh")),
     env                        = base64encode(file("${path.module}/templates/.env.tpl")),
     preview_nginx_template     = base64encode(file("${path.module}/templates/preview-nginx.conf.tpl")),
     domain_name                = var.domain_name,

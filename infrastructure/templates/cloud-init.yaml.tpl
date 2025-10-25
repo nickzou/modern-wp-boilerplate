@@ -48,7 +48,7 @@ write_files:
 
   - path: /root/scripts/cleanup-preview.sh
     encoding: b64
-    content: ${deploy_preview_script}
+    content: ${cleanup_preview_script}
     permissions: '0755'
 
   - path: /root/templates/preview-nginx.conf.tpl
