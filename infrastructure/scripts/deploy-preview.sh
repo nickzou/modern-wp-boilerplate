@@ -83,43 +83,25 @@ echo "DB_USER=${DB_USER}" >> /root/previews/${SAFE_NAME}.env
 echo "DB_PASS=${DB_PASS}" >> /root/previews/${SAFE_NAME}.env
 
 # Step 3: Install WordPress
-echo "📦 Installing WordPress to ${WP_DIR}..."
+echo "📦 Copying production WordPress to ${WP_DIR}..."
 
-# Download WordPress
-cd /tmp
-curl -O https://wordpress.org/latest.tar.gz
-tar xzf latest.tar.gz
-
-# Move to web directory
-mkdir -p ${WP_DIR}
-cp -a wordpress/. ${WP_DIR}/
+cp -r /var/www/production ${WP_DIR}
 chown -R www-data:www-data ${WP_DIR}
 
-# Clean up
-rm -rf wordpress latest.tar.gz
-
 if [ -d "${WP_DIR}" ]; then
-    echo "✅ WordPress installed"
+    echo "✅ WordPress copied"
 else
-    echo "❌ WordPress installation failed"
+    echo "❌ WordPress copy failed"
     exit 1
 fi
 
-# Create wp-config.php
-echo "⚙️  Configuring WordPress..."
-sudo -u www-data wp --path=${WP_DIR} config create \
-  --dbname=${DB_NAME} \
-  --dbuser=${DB_USER} \
-  --dbpass=${DB_PASS} \
-  --dbhost=localhost \
-  --skip-check
+# Update wp-config.php with new database credentials
+echo "⚙️  Updating database credentials..."
+sudo -u www-data wp --path=${WP_DIR} config set DB_NAME ${DB_NAME}
+sudo -u www-data wp --path=${WP_DIR} config set DB_USER ${DB_USER}
+sudo -u www-data wp --path=${WP_DIR} config set DB_PASSWORD ${DB_PASS}
 
-if [ $? -eq 0 ]; then
-    echo "✅ wp-config.php created"
-else
-    echo "❌ wp-config.php creation failed"
-    exit 1
-fi
+echo "✅ Database credentials updated"
 
 # Export from production
 sudo -u www-data wp --path=/var/www/production db export /tmp/preview-db.sql
