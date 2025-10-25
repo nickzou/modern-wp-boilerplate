@@ -128,6 +128,26 @@ else
     echo "⚠️  No uploads folder found in production"
 fi
 
+# Step 4: Generate nginx config from template
+echo "⚙️  Configuring nginx..."
+
+# Generate nginx config from template
+sed -e "s|{{PREVIEW_URL}}|${PREVIEW_URL}|g" \
+    -e "s|{{WP_DIR}}|${WP_DIR}|g" \
+    /root/templates/preview-nginx.conf.tpl > /etc/nginx/sites-available/${SAFE_NAME}
+
+# Symlink to enable
+ln -sf /etc/nginx/sites-available/${SAFE_NAME} /etc/nginx/sites-enabled/${SAFE_NAME}
+
+# Test nginx config
+if nginx -t 2>/dev/null; then
+    systemctl reload nginx
+    echo "✅ Nginx configured"
+else
+    echo "❌ Nginx config failed"
+    nginx -t  # Show error
+    exit 1
+fi
+
 echo "Preview deployment complete!"
-echo "URL: https://${BRANCH_NAME}.pandacalculus.com"
-```
+echo "URL: https://${BRANCH_NAME}.${DOMAIN}"
