@@ -149,5 +149,22 @@ else
     exit 1
 fi
 
+# Step 5: Get SSL certificate
+echo "🔒 Getting SSL certificate..."
+
+# Get list of current domains from existing cert
+CURRENT_DOMAINS=$(certbot certificates 2>/dev/null | grep "Domains:" | head -1 | cut -d: -f2 | tr ',' '\n' | xargs)
+
+# Add our new domain to the list
+ALL_DOMAINS="${CURRENT_DOMAINS} ${PREVIEW_URL}"
+
+# Build certbot command with all domains
+CERTBOT_CMD="certbot certonly --nginx --expand --non-interactive --agree-tos --email ${TF_SSL_EMAIL}"
+
+for domain in ${ALL_DOMAINS}; do
+    CERTBOT_CMD="${CERTBOT_CMD} -d ${domain}"
+done
+
+
 echo "Preview deployment complete!"
 echo "URL: https://${BRANCH_NAME}.${DOMAIN}"
