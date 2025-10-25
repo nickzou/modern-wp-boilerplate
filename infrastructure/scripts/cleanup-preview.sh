@@ -3,6 +3,14 @@ set -e  # Exit on error
 
 source /root/.env
 
+# Usage: ./deploy-preview.sh feature-branch-name
+BRANCH_NAME=$1
+
+if [ -z "$BRANCH_NAME" ]; then
+    echo "Usage: $0 <branch-name>"
+    exit 1
+fi
+
 echo "🧹 Cleaning up preview for: $BRANCH_NAME"
 
 # Sanitize branch name (replace / and _ with -)
