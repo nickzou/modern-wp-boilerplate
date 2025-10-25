@@ -1,0 +1,23 @@
+name: Deploy Preview
+
+on:
+  push:
+    branches:
+      - '*'
+      - '!main'
+      - '!master'
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check if new branch
+        run: |
+          if [ "${{ github.event.before }}" == "0000000000000000000000000000000000000000" ]; then
+            echo "NEW_BRANCH=true" >> $GITHUB_ENV
+            echo "This is a new branch!"
+          else
+            echo "NEW_BRANCH=false" >> $GITHUB_ENV
+            echo "This is a push to existing branch"
+          fi
