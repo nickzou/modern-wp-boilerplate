@@ -24,7 +24,7 @@ if [ -f "/etc/nginx/sites-enabled/${SAFE_NAME}" ]; then
     nginx -t && systemctl reload nginx
     echo "✅ Nginx config removed"
 else
-    echo "⚠️  Nginx config not found"
+    echo "⚠️ Nginx config not found"
 fi
 
 # Step 2: Remove WordPress directory
@@ -33,7 +33,7 @@ if [ -d "${WP_DIR}" ]; then
     rm -rf ${WP_DIR}
     echo "✅ WordPress removed"
 else
-    echo "⚠️  WordPress directory not found"
+    echo "⚠️ WordPress directory not found"
 fi
 
 # Step 3: Remove database
@@ -47,7 +47,7 @@ EOF
 if [ $? -eq 0 ]; then
     echo "✅ Database removed"
 else
-    echo "⚠️  Database removal had issues"
+    echo "⚠️ Database removal had issues"
 fi
 
 # Step 4: Remove CloudFlare DNS record
@@ -64,7 +64,7 @@ if [ -n "$RECORD_ID" ]; then
       -H "Content-Type: application/json" > /dev/null
     echo "✅ DNS record removed"
 else
-    echo "⚠️  DNS record not found"
+    echo "⚠️ DNS record not found"
 fi
 
 # Step 5: Remove SSL certificate (optional - Let's Encrypt handles this)
