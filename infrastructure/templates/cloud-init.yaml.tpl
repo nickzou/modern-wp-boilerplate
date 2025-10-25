@@ -36,6 +36,20 @@ write_files:
     encoding: b64
     content: ${dev_nginx_conf}
 
+  - path: /root/.env
+    encoding: b64
+    content: ${env}
+    permissions: '0600'
+
+  - path: /root/scripts/deploy-preview.sh
+    encoding: b64
+    content: ${deploy_preview_script}
+    permissions: '0755'
+
+  - path: /root/templates/preview-nginx.conf.tpl
+    encoding: b64
+    content: ${preview_nginx_template}
+
 runcmd:
   - git clone https://github.com/nickzou/server-dotfiles.git /tmp/dotfiles
   - cp /tmp/dotfiles/dotfiles/.zshrc /root/.zshrc
@@ -52,6 +66,11 @@ runcmd:
   # Create cache directory
   - mkdir -p /var/cache/nginx
   - chown -R www-data:www-data /var/cache/nginx
+
+  # Create directories for preview deployments
+  - mkdir -p /root/scripts
+  - mkdir -p /root/templates
+  - mkdir -p /root/previews
 
   # Set root password
   - mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '${mysql_root_password}';"
