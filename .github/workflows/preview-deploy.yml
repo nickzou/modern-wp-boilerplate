@@ -21,3 +21,13 @@ jobs:
             echo "NEW_BRANCH=false" >> $GITHUB_ENV
             echo "This is a push to existing branch"
           fi
+
+      - name: Deploy preview environment
+        if: steps.branch-check.outputs.is_new == 'true'
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.DROPLET_IP }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            /root/scripts/deploy-preview.sh "${{ github.ref_name }}"
