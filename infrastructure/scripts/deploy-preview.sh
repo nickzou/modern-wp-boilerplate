@@ -18,7 +18,6 @@ echo "Deploying preview for branch: $BRANCH_NAME"
 # Sanitize branch name (replace / and _ with -)
 SAFE_NAME=$(echo "$BRANCH_NAME" | sed 's/[^a-zA-Z0-9-]/-/g' | tr '[:upper:]' '[:lower:]')
 
-echo "🚀 Deploying preview for: $BRANCH_NAME"
 echo "📝 Safe name: $SAFE_NAME"
 
 # Configuration
