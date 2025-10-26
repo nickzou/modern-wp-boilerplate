@@ -16,15 +16,15 @@ jobs:
         id: branch-check
         run: |
           if [ "${{ github.event.before }}" == "0000000000000000000000000000000000000000" ]; then
-            echo "NEW_BRANCH=true" >> "$GITHUB_OUTPUT"
+            echo "IS_NEW=true" >> "$GITHUB_OUTPUT"
             echo "This is a new branch!"
           else
-            echo "NEW_BRANCH=false" >> "$GITHUB_OUTPUT"
+            echo "IS_NEW=false" >> "$GITHUB_OUTPUT"
             echo "This is a push to existing branch"
           fi
 
       - name: Deploy preview environment
-        if: steps.branch-check.outputs.is_new == 'true'
+        if: steps.branch-check.outputs.IS_NEW == 'true'
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.DROPLET_IP }}
