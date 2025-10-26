@@ -1,0 +1,37 @@
+name: Cleanup Preview Environment
+
+on:
+  pull_request:
+    types: [closed]  # Triggers when PR is closed (merged or just closed)
+  delete:
+    branches:
+      - '**'  # Triggers when any branch is deleted
+
+jobs:
+  cleanup-preview:
+    runs-on: ubuntu-latest
+    # Only run if it's a feature branch (not main/master)
+    if: github.event.ref != 'refs/heads/main' && github.event.ref != 'refs/heads/master'
+    
+    steps:
+      - name: Extract branch name
+        id: branch
+        run: |
+          if [ "${{ github.event_name }}" == "delete" ]; then
+            # For delete events
+            BRANCH="${{ github.event.ref }}"
+          else
+            # For PR closed events
+            BRANCH="${{ github.event.pull_request.head.ref }}"
+          fi
+          echo "BRANCH_NAME=${BRANCH}" >> $GITHUB_OUTPUT
+          echo "Cleaning up branch: ${BRANCH}"
+
+      - name: Teardown preview environment
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.DROPLET_IP }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            /root/scripts/cleanup-preview.sh "${{ steps.branch.outputs.BRANCH_NAME }}"
