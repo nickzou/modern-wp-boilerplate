@@ -13,6 +13,7 @@ jobs:
     
     steps:
       - name: Check if new branch
+        id: branch-check
         run: |
           if [ "${{ github.event.before }}" == "0000000000000000000000000000000000000000" ]; then
             echo "NEW_BRANCH=true" >> $GITHUB_ENV
