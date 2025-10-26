@@ -118,7 +118,7 @@ else
 fi
 
 # Step 4: Generate nginx config from template
-echo "⚙️  Configuring nginx..."
+echo "⚙️ Configuring nginx..."
 
 # Generate nginx config from template
 sed -e "s|{{PREVIEW_URL}}|${PREVIEW_URL}|g" \
