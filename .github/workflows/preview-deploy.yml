@@ -16,10 +16,10 @@ jobs:
         id: branch-check
         run: |
           if [ "${{ github.event.before }}" == "0000000000000000000000000000000000000000" ]; then
-            echo "NEW_BRANCH=true" >> $GITHUB_ENV
+            echo "NEW_BRANCH=true" >> $GITHUB_OUTPUT
             echo "This is a new branch!"
           else
-            echo "NEW_BRANCH=false" >> $GITHUB_ENV
+            echo "NEW_BRANCH=false" >> $GITHUB_OUTPUT
             echo "This is a push to existing branch"
           fi
 
