@@ -154,9 +154,7 @@ for domain in ${ALL_DOMAINS}; do
     CERTBOT_CMD="${CERTBOT_CMD} -d ${domain}"
 done
 
-# Step 6: Purge Cache
-
-# Purge cache for the preview URL
+# Step 6: Purge Cache for the preview URL
 echo "🧹 Purging Cloudflare cache..."
 curl -s -X POST "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/purge_cache" \
   -H "Authorization: Bearer ${CF_API_TOKEN}" \
