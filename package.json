@@ -23,7 +23,7 @@
     "wp:blocks:watch": "npm run wp:blocks:build -- --watch",
     "wp:cli": "wp-env run cli",
     "setup:infra": "bash ./scripts/create-env-tpl.sh && bash ./scripts/create-tfvars.sh && bash ./scripts/create-infra.sh && ./scripts/set-repo-droplet-id.sh",
-    "setup:env": "bash ./scripts/rename-theme-folder.sh && bash ./scripts/install-theme-dependencies.sh",
+    "setup:wp": "bash ./scripts/rename-theme-folder.sh && bash ./scripts/install-theme-dependencies.sh",
     "admin:tailwind:dev": "tailwindcss -i ./admin-tailwind.css -o ./web/wp-content/themes/base-theme/css/admin-tailwind.css",
     "admin:tailwind:prod": "tailwindcss -i ./admin-tailwind.css -o ./web/wp-content/themes/base-theme/css/admin-tailwind.css -m",
     "admin:tailwind:watch": "tailwindcss -i ./admin-tailwind.css -o ./web/wp-content/themes/base-theme/css/admin-tailwind.css -w",
