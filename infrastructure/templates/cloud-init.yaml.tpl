@@ -17,6 +17,7 @@ packages:
   - zsh-syntax-highlighting
   - certbot
   - python3-certbot-nginx
+  - python3-certbot-dns-cloudflare
   - fail2ban
   
 write_files:
@@ -35,6 +36,16 @@ write_files:
   - path: /etc/nginx/sites-available/dev
     encoding: b64
     content: ${dev_nginx_conf}
+
+  - path: /root/.secrets/cloudflare.ini
+    encoding: b64
+    content: |
+      dns_cloudflare_api_token = ${cf_token}
+    permissions: '0600'
+
+  - path: /etc/nginx/sites-available/preview-wildcard
+    encoding: b64
+    content: ${preview_wildcard_nginx_conf}
 
   - path: /root/.env
     encoding: b64
@@ -71,6 +82,10 @@ runcmd:
   # Create cache directory
   - mkdir -p /var/cache/nginx
   - chown -R www-data:www-data /var/cache/nginx
+
+  # NEW: Create secrets directory
+  - mkdir -p /root/.secrets
+  - chmod 700 /root/.secrets
 
   # Create directories for preview deployments
   - mkdir -p /root/scripts
@@ -129,15 +144,23 @@ runcmd:
   - chown -R www-data:www-data /var/www/dev
   - rm -rf /tmp/wordpress /tmp/latest.tar.gz
 
+  # Set up SSL
+  - certbot --nginx -d ${domain_name} -d www.${domain_name} -d staging.${domain_name} -d dev.${domain_name} --non-interactive --agree-tos --email ${ssl_email} --redirect --staging
+
+  # Set up wildcard SSL for preview environments
+  - certbot certonly --dns-cloudflare --dns-cloudflare-credentials /root/.secrets/cloudflare.ini -d '*.preview.${domain_name}' -d 'preview.${domain_name}' --non-interactive --agree-tos --email ${ssl_email}
+
   # Enable all sites
   - ln -s /etc/nginx/sites-available/production /etc/nginx/sites-enabled/
   - ln -s /etc/nginx/sites-available/staging /etc/nginx/sites-enabled/
   - ln -s /etc/nginx/sites-available/dev /etc/nginx/sites-enabled/
   - rm -f /etc/nginx/sites-enabled/default
-  - nginx -t && systemctl reload nginx
 
-  # Set up SSL
-  - certbot --nginx -d ${domain_name} -d www.${domain_name} -d staging.${domain_name} -d dev.${domain_name} --non-interactive --agree-tos --email ${ssl_email} --redirect --staging
+  # Enable wildcard preview site
+  - ln -s /etc/nginx/sites-available/preview-wildcard /etc/nginx/sites-enabled/
+
+  - rm -f /etc/nginx/sites-enabled/default
+  - nginx -t && systemctl reload nginx
 
   - ufw default deny incoming
   - ufw default allow outgoing
