@@ -35,21 +35,23 @@ resource "digitalocean_droplet" "basic" {
   }
 
   user_data = templatefile("${path.module}/templates/cloud-init.yaml.tpl", {
-    cache_conf                 = base64encode(file("${path.module}/cache.conf")),
-    production_nginx_conf      = base64encode(file("${path.module}/production-nginx.conf")),
-    staging_nginx_conf         = base64encode(file("${path.module}/staging-nginx.conf")),
-    dev_nginx_conf             = base64encode(file("${path.module}/dev-nginx.conf")),
-    fail2ban_config            = base64encode(file("${path.module}/fail2ban-jail.local")),
-    deploy_preview_script      = base64encode(file("${path.module}/scripts/deploy-preview.sh")),
-    cleanup_preview_script     = base64encode(file("${path.module}/scripts/cleanup-preview.sh")),
-    env                        = base64encode(file("${path.module}/templates/.env.tpl")),
-    preview_nginx_template     = base64encode(file("${path.module}/templates/preview-nginx.conf.tpl")),
-    domain_name                = var.domain_name,
-    mysql_root_password        = var.mysql_root_password,
-    wordpress_prod_password    = var.wordpress_prod_password,
-    wordpress_staging_password = var.wordpress_staging_password,
-    wordpress_dev_password     = var.wordpress_dev_password,
-    ssl_email                  = var.ssl_email
+    cache_conf                  = base64encode(file("${path.module}/cache.conf")),
+    production_nginx_conf       = base64encode(file("${path.module}/production-nginx.conf")),
+    staging_nginx_conf          = base64encode(file("${path.module}/staging-nginx.conf")),
+    dev_nginx_conf              = base64encode(file("${path.module}/dev-nginx.conf")),
+    fail2ban_config             = base64encode(file("${path.module}/fail2ban-jail.local")),
+    deploy_preview_script       = base64encode(file("${path.module}/scripts/deploy-preview.sh")),
+    cleanup_preview_script      = base64encode(file("${path.module}/scripts/cleanup-preview.sh")),
+    env                         = base64encode(file("${path.module}/templates/.env.tpl")),
+    preview_nginx_template      = base64encode(file("${path.module}/templates/preview-nginx.conf.tpl")),
+    preview_wildcard_nginx_conf = base64encode(file("${path.module}/nginx-configs/preview-wildcard.conf")),
+    cf_token                    = var.cf_token,
+    domain_name                 = var.domain_name,
+    mysql_root_password         = var.mysql_root_password,
+    wordpress_prod_password     = var.wordpress_prod_password,
+    wordpress_staging_password  = var.wordpress_staging_password,
+    wordpress_dev_password      = var.wordpress_dev_password,
+    ssl_email                   = var.ssl_email
   })
 }
 
