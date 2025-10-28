@@ -101,21 +101,10 @@ sudo -u www-data wp --path=/var/www/production db export /tmp/preview-db.sql
 sudo -u www-data wp --path=${WP_DIR} db import /tmp/preview-db.sql
 
 # Update URLs in database
-sudo -u www-data wp --path=${WP_DIR} search-replace "pandacalculus.com" "${PREVIEW_URL}" --skip-columns=guid
+sudo -u www-data wp --path=${WP_DIR} search-replace "${DOMAIN}" "${PREVIEW_URL}" --skip-columns=guid
 
 # Clean up
 rm /tmp/preview-db.sql
-
-# Copy uploads folder (media library)
-echo "🖼️ Copying media files..."
-
-if [ -d "/var/www/production/wp-content/uploads" ]; then
-    cp -r /var/www/production/wp-content/uploads ${WP_DIR}/wp-content/
-    chown -R www-data:www-data ${WP_DIR}/wp-content/uploads
-    echo "✅ Media files copied"
-else
-    echo "⚠️  No uploads folder found in production"
-fi
 
 # Step 4: Generate nginx config from template
 echo "⚙️ Configuring nginx..."
