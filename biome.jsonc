@@ -1,5 +1,5 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.3.1/schema.json",
 	"vcs": {
 		"enabled": false,
 		"clientKind": "git",
@@ -7,7 +7,7 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"include": [
+		"includes": [
 			"./src/ts/**/*.ts",
 			"./src/ts/**/*.tsx",
 			"./src/blocks/**/*.ts",
@@ -16,15 +16,11 @@
 			"./src/utils/**/*.ts",
 			"./src/types/**/*.ts",
 			"./src/css/**/*.css"
-		],
-		"ignore": []
+		]
 	},
 	"formatter": {
 		"enabled": true,
 		"indentStyle": "tab"
-	},
-	"organizeImports": {
-		"enabled": true
 	},
 	"linter": {
 		"enabled": true,

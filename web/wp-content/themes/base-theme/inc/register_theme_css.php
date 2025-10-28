@@ -14,21 +14,21 @@ function register_theme_css_files()
         "{$theme_uri}/css/tailwind.css",
         [],
         filemtime("{$theme_directory}/css/tailwind.css"),
-        "all"
+        "all",
     );
     wp_register_style(
         "admin-tailwind",
         "{$theme_uri}/css/admin-tailwind.css",
         [],
         filemtime("{$theme_directory}/css/admin-tailwind.css"),
-        "all"
+        "all",
     );
     wp_register_style(
         "styles",
         "{$theme_uri}/css/styles.css",
         [],
         filemtime("{$theme_directory}/css/styles.css"),
-        "all"
+        "all",
     );
 }
 
