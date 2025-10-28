@@ -18,13 +18,13 @@ else
 fi
 
 # Check if package.json exists
-if [ ! -f "package.json" ]; then
-    echo "Error: package.json not found in the current directory"
+if [ ! -f ".wp-env.json" ]; then
+    echo "Error: .wp-env.json not found in the current directory"
     exit 1
 fi
 
-# Replace 'base-theme' with THEME_SLUG env variable in wp-env.json
-sed -i "" "s/base-theme/${THEME_SLUG}/g" wp-env.json
+# Replace 'base-theme' with THEME_SLUG env variable in .wp-env.json
+sed -i "" "s/base-theme/${THEME_SLUG}/g" .wp-env.json
 
-echo "Renaming base-theme to $THEME_SLUG in package.json"
+echo "Renaming base-theme to $THEME_SLUG in .wp-env.json"
 echo -e "${GREEN}Rename complete${NC}"
