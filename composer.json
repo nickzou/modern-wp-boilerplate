@@ -8,7 +8,7 @@
     ],
     "require": {
         "composer/installers": "^2.3.0",
-        "wpackagist-plugin/wordpress-seo": "^26.1.1",
+        "wpackagist-plugin/wordpress-seo": "^26.2",
         "wpackagist-plugin/safe-svg": "^2.4.0"
 
     },
