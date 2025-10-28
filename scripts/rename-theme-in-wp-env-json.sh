@@ -23,8 +23,8 @@ if [ ! -f "package.json" ]; then
     exit 1
 fi
 
-# Replace 'base-theme' with THEME_NAME env variable in package.json
-sed -i "" "s/base-theme/${THEME_NAME}/g" package.json
+# Replace 'base-theme' with THEME_NAME env variable in wp-env.json
+sed -i "" "s/base-theme/${THEME_NAME}/g" wp-env.json
 
 echo "Renaming base-theme to $THEME_NAME in package.json"
 echo -e "${GREEN}Rename complete${NC}"
