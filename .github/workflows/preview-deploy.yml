@@ -63,6 +63,6 @@ jobs:
                 SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
                 REMOTE_HOST: ${{ secrets.DROPLET_IP }}
                 REMOTE_USER: root
-                SOURCE: "web/wp-content/"
+                SOURCE: "./web/wp-content/"
                 TARGET: "/var/www/${{ github.ref_name }}/wp-content/"
                 ARGS: "-avzc"
