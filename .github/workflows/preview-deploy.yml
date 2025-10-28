@@ -22,6 +22,12 @@ jobs:
                   node-version: '22'  
                   cache: 'npm'  
 
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.4'  # or '8.1', '8.3', '7.4', etc.
+                  tools: composer:v2
+
             - name: Check if new branch
               id: branch-check
               run: |
@@ -42,4 +48,5 @@ jobs:
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   script: |
                       /root/scripts/deploy-preview.sh "${{ github.ref_name }}"
+
 
