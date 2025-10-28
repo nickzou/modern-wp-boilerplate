@@ -18,7 +18,7 @@ function register_theme_js_files()
         [
             "strategy" => "defer",
             "in_footer" => false,
-        ]
+        ],
     );
 
     wp_register_script(
@@ -29,7 +29,7 @@ function register_theme_js_files()
         [
             "strategy" => "defer",
             "in_footer" => false,
-        ]
+        ],
     );
 }
 

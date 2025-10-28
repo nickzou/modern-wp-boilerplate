@@ -12,7 +12,7 @@ function load_theme_files()
 
     $count = 0;
     $files = new RecursiveIteratorIterator(
-        new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS)
+        new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS),
     );
 
     foreach ($files as $file) {

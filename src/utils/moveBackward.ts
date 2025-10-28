@@ -1,7 +1,10 @@
 const moveBackward = <T>({
 	index,
 	list,
-}: { index: number; list: Array<T> }) => {
+}: {
+	index: number;
+	list: Array<T>;
+}) => {
 	if (index <= 0) {
 		return list;
 	}

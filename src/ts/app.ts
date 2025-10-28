@@ -1,4 +1,5 @@
 import screens, { type Screen } from "./variables/screens";
+
 document.addEventListener("alpine:init", () => {
 	window.Alpine.store("mobileMenu", {
 		open: false,
