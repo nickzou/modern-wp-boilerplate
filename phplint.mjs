@@ -4,7 +4,7 @@ import { execSync } from "child_process";
 
 dotenv.config();
 
-const themeName = process.env.THEME_NAME ?? "base-theme";
+const themeName = process.env.THEME_SLUG ?? "base-theme";
 
 const phpFiles = globSync([
         `./web/wp-content/themes/${themeName}/**/*.php`,

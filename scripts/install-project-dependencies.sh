@@ -3,12 +3,12 @@
 # Path to your .env file
 ENV_FILE=".env"
 
-# Extract the THEME_NAME variable from .env file
+# Extract the THEME_SLUG variable from .env file
 if [ -f "$ENV_FILE" ]; then
     source "$ENV_FILE"
 else
   echo "Warning: .env file not found at $ENV_FILE"
-  THEME_NAME="base-theme"  # Default fallback value
+  THEME_SLUG="base-theme"  # Default fallback value
 fi
 
 COMPOSER_JSON="./composer.json"

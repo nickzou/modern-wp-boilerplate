@@ -5,7 +5,7 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-const themeName = process.env.THEME_NAME ?? "base-theme";
+const themeName = process.env.THEME_SLUG ?? "base-theme";
 
 const entryPoints = globSync("./src/blocks/**/*.json");
 
