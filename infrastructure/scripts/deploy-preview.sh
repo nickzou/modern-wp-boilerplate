@@ -97,6 +97,13 @@ echo "✅ Database credentials updated"
 # Export from production
 sudo -u www-data wp --path=/var/www/production db export /tmp/preview-db.sql
 
+if sudo -u www-data wp --path=/var/www/production db export /tmp/preview-db.sql; then
+    echo "✅ Database exported"
+else
+    echo "❌ Database export failed"
+    exit 1
+fi
+
 # Import to preview
 sudo -u www-data wp --path=${WP_DIR} db import /tmp/preview-db.sql
 
@@ -143,6 +150,14 @@ for domain in ${ALL_DOMAINS}; do
     CERTBOT_CMD="${CERTBOT_CMD} -d ${domain}"
 done
 
+if eval $CERTBOT_CMD; then
+    echo "✅ SSL certificate obtained"
+    systemctl reload nginx  # Reload nginx to use new cert
+else
+    echo "❌ SSL certificate failed"
+    exit 1
+fi
+
 # Step 6: Purge Cache for the preview URL
 echo "🧹 Purging Cloudflare cache..."
 curl -s -X POST "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/purge_cache" \
@@ -153,4 +168,4 @@ echo "✅ Cache purged"
 
 
 echo "Preview deployment complete!"
-echo "URL: https://${BRANCH_NAME}.${DOMAIN}"
+echo "URL: https://${PREVIEW_URL}"
