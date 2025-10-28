@@ -20,7 +20,6 @@ jobs:
               uses: actions/setup-node@v6
               with:
                   node-version: '22'  
-                  cache: 'npm'  
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
@@ -49,4 +48,6 @@ jobs:
                   script: |
                       /root/scripts/deploy-preview.sh "${{ github.ref_name }}"
 
+            - name: Install Node Dependencies
+              run: npm install
 
