@@ -144,7 +144,7 @@ CURRENT_DOMAINS=$(certbot certificates 2>/dev/null | grep "Domains:" | head -1 |
 ALL_DOMAINS="${CURRENT_DOMAINS} ${PREVIEW_URL}"
 
 # Build certbot command with all domains
-CERTBOT_CMD="certbot certonly --nginx --expand --non-interactive --agree-tos --email ${TF_SSL_EMAIL}"
+CERTBOT_CMD="certbot certonly --nginx --expand --non-interactive --agree-tos --email ${SSL_EMAIL}"
 
 for domain in ${ALL_DOMAINS}; do
     CERTBOT_CMD="${CERTBOT_CMD} -d ${domain}"
