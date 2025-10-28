@@ -69,9 +69,10 @@ else
 fi
 
 # Store DB credentials for later use (optional - for debugging)
-echo "DB_NAME=${DB_NAME}" >> /root/previews/${SAFE_NAME}.env
-echo "DB_USER=${DB_USER}" >> /root/previews/${SAFE_NAME}.env
-echo "DB_PASS=${DB_PASS}" >> /root/previews/${SAFE_NAME}.env
+echo "DB_NAME=${DB_NAME}"     >> /root/previews/${SAFE_NAME}.env
+echo "DB_USER=${DB_USER}"     >> /root/previews/${SAFE_NAME}.env
+echo "DB_PASS=${DB_PASS}"     >> /root/previews/${SAFE_NAME}.env
+echo "SSL_EMAIL=${SSL_EMAIL}" >> /root/previews/${SAFE_NAME}.env
 
 # Step 3: Install WordPress
 echo "📦 Copying production WordPress to ${WP_DIR}..."
