@@ -1,35 +1,35 @@
 name: Deploy Preview
 
 on:
-  push:
-    branches:
-      - '*'
-      - '!main'
-      - '!staging'
-      - '!dev'
+    push:
+        branches:
+            - "*"
+            - "!main"
+            - "!staging"
+            - "!dev"
 
 jobs:
-  deploy-preview:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Check if new branch
-        id: branch-check
-        run: |
-          if [ "${{ github.event.before }}" == "0000000000000000000000000000000000000000" ]; then
-            echo "IS_NEW=true" >> "$GITHUB_OUTPUT"
-            echo "This is a new branch!"
-          else
-            echo "IS_NEW=false" >> "$GITHUB_OUTPUT"
-            echo "This is a push to existing branch"
-          fi
+    deploy-preview:
+        runs-on: ubuntu-latest
 
-      - name: Deploy preview environment
-        if: steps.branch-check.outputs.IS_NEW == 'true'
-        uses: appleboy/ssh-action@v1.2.2
-        with:
-          host: ${{ secrets.DROPLET_IP }}
-          username: root
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            /root/scripts/deploy-preview.sh "${{ github.ref_name }}"
+        steps:
+            - name: Check if new branch
+              id: branch-check
+              run: |
+                  if [ "${{ github.event.before }}" == "0000000000000000000000000000000000000000" ]; then
+                    echo "IS_NEW=true" >> "$GITHUB_OUTPUT"
+                    echo "This is a new branch!"
+                  else
+                    echo "IS_NEW=false" >> "$GITHUB_OUTPUT"
+                    echo "This is a push to existing branch"
+                  fi
+
+            - name: Deploy preview environment
+              if: steps.branch-check.outputs.IS_NEW == 'true'
+              uses: appleboy/ssh-action@v1.2.2
+              with:
+                  host: ${{ secrets.DROPLET_IP }}
+                  username: root
+                  key: ${{ secrets.SSH_PRIVATE_KEY }}
+                  script: |
+                      /root/scripts/deploy-preview.sh "${{ github.ref_name }}"
