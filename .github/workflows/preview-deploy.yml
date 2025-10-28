@@ -19,12 +19,12 @@ jobs:
             - name: Setup Node.js
               uses: actions/setup-node@v6
               with:
-                  node-version: '22'  
+                  node-version: "22"
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: '8.4'  # or '8.1', '8.3', '7.4', etc.
+                  php-version: "8.4" # or '8.1', '8.3', '7.4', etc.
                   tools: composer:v2
 
             - name: Check if new branch
@@ -50,6 +50,9 @@ jobs:
 
             - name: Install Dependencies
               run: |
-                npm install
-                composer update 
-                composer update -d ./web/wp-content/themes/${{secrets.THEME_SLUG}}
+                  npm install
+                  composer update 
+                  composer update -d ./web/wp-content/themes/${{secrets.THEME_SLUG}}
+
+            - name: Build
+              run: npm run prod
