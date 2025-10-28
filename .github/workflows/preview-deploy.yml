@@ -48,6 +48,8 @@ jobs:
                   script: |
                       /root/scripts/deploy-preview.sh "${{ github.ref_name }}"
 
-            - name: Install Node Dependencies
-              run: npm install
-
+            - name: Install Dependencies
+              run: |
+                npm install
+                composer install 
+                composer install -d /web/wp-content/themes/${{secrets.THEME_SLUG}}
