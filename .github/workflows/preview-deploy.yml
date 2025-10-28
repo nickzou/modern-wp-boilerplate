@@ -52,4 +52,4 @@ jobs:
               run: |
                 npm install
                 composer update 
-                composer update -d /web/wp-content/themes/${{secrets.THEME_SLUG}}
+                composer update -d ./web/wp-content/themes/${{secrets.THEME_SLUG}}
