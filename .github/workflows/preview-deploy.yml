@@ -19,8 +19,8 @@ jobs:
             - name: Setup Node.js
               uses: actions/setup-node@v6
               with:
-                  node-version: '22'  # or '18', '22', etc.
-                  cache: 'npm'  # optional but speeds up subsequent runs
+                  node-version: '22'  
+                  cache: 'npm'  
 
             - name: Check if new branch
               id: branch-check
