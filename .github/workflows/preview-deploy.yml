@@ -47,7 +47,6 @@ jobs:
                   username: root
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   script: |
-                      echo "${{github.ref_name}}"
                       /root/scripts/deploy-preview.sh "${{ github.ref_name }}"
 
             - name: Install Dependencies
@@ -72,4 +71,13 @@ jobs:
                   sudo chown -R www-data:www-data /var/www/${{ github.ref_name }}/wp-content
                   sudo chmod -R 755 /var/www/${{ github.ref_name }}/wp-content
                   echo "after scripts are running"
-                SCRIPT_AFTER_REQUIRED: true
+
+            - name: Change Permissions of Deployed Code
+              uses: appleboy/ssh-action@v1.2.2
+              with:
+                  host: ${{ secrets.DROPLET_IP }}
+                  username: root
+                  key: ${{ secrets.SSH_PRIVATE_KEY }}
+                  script: |
+                    sudo chown -R www-data:www-data /var/www/${{ github.ref_name }}/wp-content
+                    sudo chmod -R 755 /var/www/${{ github.ref_name }}/wp-content
