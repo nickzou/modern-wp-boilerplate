@@ -155,7 +155,7 @@ runcmd:
   - nginx -t && systemctl reload nginx
 
   # Set up SSL
-  - certbot --nginx -d ${domain_name} -d www.${domain_name} -d staging.${domain_name} -d dev.${domain_name} --non-interactive --agree-tos --email ${ssl_email} --redirect --staging
+  - certbot certbot --dns-cloudflare --dns-cloudflare-credentials /root/.secrets/cloudflare.ini -d ${domain_name} -d *.${domain_name} --non-interactive --agree-tos --email ${ssl_email} --redirect --staging
 
   - ufw default deny incoming
   - ufw default allow outgoing
