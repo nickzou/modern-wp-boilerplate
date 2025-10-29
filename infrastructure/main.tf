@@ -49,7 +49,10 @@ resource "digitalocean_droplet" "basic" {
     wordpress_prod_password    = var.wordpress_prod_password,
     wordpress_staging_password = var.wordpress_staging_password,
     wordpress_dev_password     = var.wordpress_dev_password,
-    ssl_email                  = var.ssl_email
+    ssl_email                  = var.ssl_email,
+    wp_default_username        = var.wp_default_username,
+    wp_default_user_email      = var.wp_default_user_email,
+    wp_default_user_password   = var.wp_default_user_password
   })
 }
 
