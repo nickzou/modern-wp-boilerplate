@@ -72,3 +72,4 @@ jobs:
                   sudo chown -R www-data:www-data /var/www/${{ github.ref_name }}/wp-content
                   sudo chmod -R 755 /var/www/${{ github.ref_name }}/wp-content
                   echo "after scripts are running"
+                SCRIPT_AFTER_REQUIRED: true
