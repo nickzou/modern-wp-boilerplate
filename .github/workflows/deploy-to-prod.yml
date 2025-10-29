@@ -7,7 +7,7 @@ on:
 jobs:
     deploy-to-prod:
         runs-on: ubuntu-latest
-        # Only run if it's a feature branch (not main/master)
+        # Only run if it's a feature branch (not main)
         if: github.event.ref != 'refs/heads/main'
         steps:
             - name: Checkout code
