@@ -123,7 +123,7 @@ sed -e "s|{{PREVIEW_URL}}|${PREVIEW_URL}|g" \
     /root/templates/preview-nginx.conf.tpl > /etc/nginx/sites-available/${SAFE_NAME}
 
 # Symlink to enable
-ln -sf /etc/nginx/sites-available/${SAFE_NAME} /etc/nginx/sites-enabled/${SAFE_NAME}
+ln -s /etc/nginx/sites-available/${SAFE_NAME} /etc/nginx/sites-enabled/${SAFE_NAME}
 
 # Test nginx config
 if nginx -t 2>/dev/null; then
