@@ -17,6 +17,7 @@ packages:
   - zsh-syntax-highlighting
   - certbot
   - python3-certbot-nginx
+  - python3-certbot-dns-cloudflare
   - fail2ban
   
 write_files:
