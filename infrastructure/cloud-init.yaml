@@ -129,9 +129,17 @@ runcmd:
   - chown -R www-data:www-data /var/www/dev
   - rm -rf /tmp/wordpress /tmp/latest.tar.gz
 
-  # After Production WordPress files
+  # Production Environment Install
   - cd /var/www/production && wp config create --dbname=wordpress_prod --dbuser=wp_prod --dbpass='${wordpress_prod_password}' --allow-root
-  - cd /var/www/production && wp core install --url=${domain_name} --title="Production Site" --admin_user=admin --admin_password='${wordpress_admin_password}' --admin_email=${ssl_email} --allow-root
+  - cd /var/www/production && wp core install --url=${domain_name} --title="Production Site" --admin_user=${wp_default_username} --admin_password='${wp_default_user_password}' --admin_email=${wp_default_user_email} --allow-root
+
+  # Staging Environment Install
+  - cd /var/www/staging && wp config create --dbname=wordpress_staging --dbuser=wp_staging --dbpass='${wordpress_staging_password}' --allow-root
+  - cd /var/www/staging && wp core install --url=staging.${domain_name} --title="Staging Site" --admin_user=${wp_default_username} --admin_password='${wp_default_user_password}' --admin_email=${wp_default_user_email} --allow-root
+
+  # Dev Environment Install
+  - cd /var/www/dev && wp config create --dbname=wordpress_dev --dbuser=wp_dev --dbpass='${wordpress_dev_password}' --allow-root
+  - cd /var/www/dev && wp core install --url=dev.${domain_name} --title="Dev Site" --admin_user=${wp_default_username} --admin_password='${wp_default_user_password}' --admin_email=${wp_default_user_email} --allow-root
 
   # Enable all sites
   - ln -s /etc/nginx/sites-available/production /etc/nginx/sites-enabled/
