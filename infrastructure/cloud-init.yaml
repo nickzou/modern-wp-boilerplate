@@ -155,7 +155,17 @@ runcmd:
   - nginx -t && systemctl reload nginx
 
   # Set up SSL
-  - certbot --nginx --dns-cloudflare --dns-cloudflare-credentials /root/.secrets/cloudflare.ini -d ${domain_name} -d '*.${domain_name}' --non-interactive --agree-tos --email ${ssl_email} --redirect --staging
+  - certbot certonly --dns-cloudflare --dns-cloudflare-credentials /root/.secrets/cloudflare.ini -d ${domain_name} -d '*.${domain_name}' --non-interactive --agree-tos --email ${ssl_email} --redirect --staging
+
+  # Create SSL option files if they don't exist
+  - |
+    if [ ! -f /etc/letsencrypt/options-ssl-nginx.conf ]; then
+      curl -s https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf > /etc/letsencrypt/options-ssl-nginx.conf
+    fi
+  - |
+    if [ ! -f /etc/letsencrypt/ssl-dhparams.pem ]; then
+      openssl dhparam -out /etc/letsencrypt/ssl-dhparams.pem 2048
+    fi
 
   - ufw default deny incoming
   - ufw default allow outgoing
