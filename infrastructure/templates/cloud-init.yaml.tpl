@@ -113,20 +113,20 @@ runcmd:
   - chown -R www-data:www-data /var/www/production
   - rm -rf /tmp/wordpress /tmp/latest.tar.gz
 
-  # Install WordPress - Staging
-  - cd /tmp && curl -O https://wordpress.org/latest.tar.gz
-  - tar xzvf /tmp/latest.tar.gz -C /tmp
-  - mkdir -p /var/www/staging
-  - cp -a /tmp/wordpress/. /var/www/staging/
-  - chown -R www-data:www-data /var/www/staging
-  - rm -rf /tmp/wordpress /tmp/latest.tar.gz
-
   # Install WordPress - Dev
   - cd /tmp && curl -O https://wordpress.org/latest.tar.gz
   - tar xzvf /tmp/latest.tar.gz -C /tmp
   - mkdir -p /var/www/dev
   - cp -a /tmp/wordpress/. /var/www/dev/
   - chown -R www-data:www-data /var/www/dev
+  - rm -rf /tmp/wordpress /tmp/latest.tar.gz
+
+  # Install WordPress - Staging
+  - cd /tmp && curl -O https://wordpress.org/latest.tar.gz
+  - tar xzvf /tmp/latest.tar.gz -C /tmp
+  - mkdir -p /var/www/staging
+  - cp -a /tmp/wordpress/. /var/www/staging/
+  - chown -R www-data:www-data /var/www/staging
   - rm -rf /tmp/wordpress /tmp/latest.tar.gz
 
   # Enable all sites
