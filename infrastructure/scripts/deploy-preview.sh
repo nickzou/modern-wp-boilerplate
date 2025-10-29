@@ -120,6 +120,7 @@ echo "⚙️ Configuring nginx..."
 # Generate nginx config from template
 sed -e "s|{{PREVIEW_URL}}|${PREVIEW_URL}|g" \
     -e "s|{{WP_DIR}}|${WP_DIR}|g" \
+    -e "s|{{DOMAIN}}|${DOMAIN}|g" \
     /root/templates/preview-nginx.conf.tpl > /etc/nginx/sites-available/${SAFE_NAME}
 
 # Symlink to enable
