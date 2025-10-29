@@ -1,18 +1,14 @@
-name: Deploy Preview
+name: Deploy to Production
 
 on:
-    push:
-        branches:
-            - "*"
-            - "!main"
-            - "!staging"
-            - "!dev"
-            - "!wip/**"
+    pull_request:
+        types: [closed] # Triggers when PR is closed (merged or just closed)
 
 jobs:
-    deploy-preview:
+    deploy-to-prod:
         runs-on: ubuntu-latest
-
+        # Only run if it's a feature branch (not main)
+        if: github.event.ref != 'refs/heads/main'
         steps:
             - name: Checkout code
               uses: actions/checkout@v5
@@ -27,27 +23,6 @@ jobs:
               with:
                   php-version: "8.4" # or '8.1', '8.3', '7.4', etc.
                   tools: composer:v2
-
-            - name: Check if new branch
-              id: branch-check
-              run: |
-                  if [ "${{ github.event.before }}" == "0000000000000000000000000000000000000000" ]; then
-                    echo "IS_NEW=true" >> "$GITHUB_OUTPUT"
-                    echo "This is a new branch!"
-                  else
-                    echo "IS_NEW=false" >> "$GITHUB_OUTPUT"
-                    echo "This is a push to existing branch"
-                  fi
-
-            - name: Deploy preview environment
-              if: steps.branch-check.outputs.IS_NEW == 'true'
-              uses: appleboy/ssh-action@v1.2.2
-              with:
-                  host: ${{ secrets.DROPLET_IP }}
-                  username: root
-                  key: ${{ secrets.SSH_PRIVATE_KEY }}
-                  script: |
-                      /root/scripts/deploy-preview.sh "${{ github.ref_name }}"
 
             - name: Install Dependencies
               run: |
@@ -65,7 +40,7 @@ jobs:
                   REMOTE_HOST: ${{ secrets.DROPLET_IP }}
                   REMOTE_USER: root
                   SOURCE: "./web/wp-content/"
-                  TARGET: "/var/www/${{ github.ref_name }}/wp-content/"
+                  TARGET: "/var/www/production/wp-content/"
                   ARGS: "-avzc"
 
             - name: Change Permissions of Deployed Code
@@ -75,5 +50,5 @@ jobs:
                   username: root
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   script: |
-                      sudo chown -R www-data:www-data /var/www/${{ github.ref_name }}/wp-content
-                      sudo chmod -R 755 /var/www/${{ github.ref_name }}/wp-content
+                      sudo chown -R www-data:www-data /var/www/production/wp-content
+                      sudo chmod -R 755 /var/www/production/wp-content
