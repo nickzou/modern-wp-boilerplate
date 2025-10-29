@@ -46,7 +46,7 @@ jobs:
                   username: root
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   script: |
-                      echo ${{github.ref_name}}
+                      echo "${{github.ref_name}}"
                       /root/scripts/deploy-preview.sh "${{ github.ref_name }}"
 
             - name: Install Dependencies
