@@ -75,10 +75,6 @@ else
     echo "⚠️ DNS record not found"
 fi
 
-# Step 5: Remove SSL certificate (optional - Let's Encrypt handles this)
-echo "🔒 Note: SSL certificate will auto-expire in 90 days"
-
-
 # Step 6: Remove environment file
 if [ -f "/root/previews/${SAFE_NAME}.env" ]; then
     rm /root/previews/${SAFE_NAME}.env

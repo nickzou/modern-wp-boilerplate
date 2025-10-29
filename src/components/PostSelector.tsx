@@ -26,17 +26,17 @@ const PostSelector = ({
 		[searchTerm],
 	);
 	const options = posts
-	    //@ts-expect-error I don't know, WordPress didn't provide types here
-		? posts.map((post) => ({
+		? //@ts-expect-error I don't know, WordPress didn't provide types here
+			posts.map((post) => ({
 				value: post.id.toString(),
 				label: post.title.rendered,
 			}))
 		: [];
 	const handleChange = (e: string | null | undefined) => {
 		const post = options
-	        //@ts-expect-error I don't know, WordPress didn't provide types here
+			//@ts-expect-error I don't know, WordPress didn't provide types here
 			.filter((p) => p.value === e)
-	        //@ts-expect-error I don't know, WordPress didn't provide types here
+			//@ts-expect-error I don't know, WordPress didn't provide types here
 			.map((p) => ({ id: Number(p.value), title: p.label as string }))[0];
 		if (post) {
 			parentSetter(post);
