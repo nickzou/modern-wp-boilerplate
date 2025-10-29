@@ -17,6 +17,7 @@ packages:
   - zsh-syntax-highlighting
   - certbot
   - python3-certbot-nginx
+  - python3-certbot-dns-cloudflare
   - fail2ban
   
 write_files:
@@ -39,6 +40,11 @@ write_files:
   - path: /root/.env
     encoding: b64
     content: ${env}
+    permissions: '0600'
+
+  - path: /root/.secrets/cloudflare.ini
+    content: |
+      dns_cloudflare_api_token = ${cf_token}
     permissions: '0600'
 
   - path: /root/scripts/deploy-preview.sh
@@ -146,10 +152,21 @@ runcmd:
   - ln -s /etc/nginx/sites-available/staging /etc/nginx/sites-enabled/
   - ln -s /etc/nginx/sites-available/dev /etc/nginx/sites-enabled/
   - rm -f /etc/nginx/sites-enabled/default
-  - nginx -t && systemctl reload nginx
 
   # Set up SSL
-  - certbot --nginx -d ${domain_name} -d www.${domain_name} -d staging.${domain_name} -d dev.${domain_name} --non-interactive --agree-tos --email ${ssl_email} --redirect --staging
+  - certbot certonly --dns-cloudflare --dns-cloudflare-credentials /root/.secrets/cloudflare.ini -d ${domain_name} -d '*.${domain_name}' --non-interactive --agree-tos --email ${ssl_email} --redirect --staging
+
+  # Create SSL option files if they don't exist
+  - |
+    if [ ! -f /etc/letsencrypt/options-ssl-nginx.conf ]; then
+      curl -s https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf > /etc/letsencrypt/options-ssl-nginx.conf
+    fi
+  - |
+    if [ ! -f /etc/letsencrypt/ssl-dhparams.pem ]; then
+      openssl dhparam -out /etc/letsencrypt/ssl-dhparams.pem 2048
+    fi
+
+  - nginx -t && systemctl reload nginx
 
   - ufw default deny incoming
   - ufw default allow outgoing

@@ -53,6 +53,7 @@ resource "digitalocean_droplet" "basic" {
     wp_default_username        = var.wp_default_username,
     wp_default_user_email      = var.wp_default_user_email,
     wp_default_user_password   = var.wp_default_user_password
+    cf_token                   = var.cf_token
   })
 }
 
