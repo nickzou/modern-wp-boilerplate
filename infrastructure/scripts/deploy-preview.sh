@@ -135,29 +135,9 @@ else
     exit 1
 fi
 
-# Step 5: Get SSL certificate
-echo "🔒 Getting SSL certificate..."
-
-# Get list of current domains from existing cert
-CURRENT_DOMAINS=$(certbot certificates 2>/dev/null | grep "Domains:" | head -1 | cut -d: -f2 | tr ',' '\n' | xargs)
-
-# Add our new domain to the list
-ALL_DOMAINS="${CURRENT_DOMAINS} ${PREVIEW_URL}"
-
-# Build certbot command with all domains
-CERTBOT_CMD="certbot --nginx --expand --non-interactive --agree-tos --redirect --email ${SSL_EMAIL}"
-
-for domain in ${ALL_DOMAINS}; do
-    CERTBOT_CMD="${CERTBOT_CMD} -d ${domain}"
-done
-
-if eval $CERTBOT_CMD; then
-    echo "✅ SSL certificate obtained"
-    systemctl reload nginx  # Reload nginx to use new cert
-else
-    echo "❌ SSL certificate failed"
-    exit 1
-fi
+# Step 5: SSL certificate (already covered by wildcard)
+echo "🔒 SSL already covered by wildcard certificate"
+systemctl reload nginx
 
 # Step 6: Purge Cache for the preview URL
 echo "🧹 Purging Cloudflare cache..."
