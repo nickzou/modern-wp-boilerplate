@@ -58,6 +58,9 @@ jobs:
             - name: Build
               run: npm run prod
 
+            # - name: Run Tests
+            #   run: test commands
+
             - name: Deploy Plugins and Themes
               uses: easingthemes/ssh-deploy@main
               with:
