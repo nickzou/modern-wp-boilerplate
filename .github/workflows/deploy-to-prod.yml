@@ -1,0 +1,54 @@
+name: Deploy to Production
+
+on:
+    pull_request:
+        types: [closed] # Triggers when PR is closed (merged or just closed)
+
+jobs:
+    deploy-to-prod:
+        runs-on: ubuntu-latest
+        # Only run if it's a feature branch (not main/master)
+        if: github.event.ref != 'refs/heads/main'
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v5
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v6
+              with:
+                  node-version: "22"
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: "8.4" # or '8.1', '8.3', '7.4', etc.
+                  tools: composer:v2
+
+            - name: Install Dependencies
+              run: |
+                  npm install
+                  composer update 
+                  composer update -d ./web/wp-content/themes/${{secrets.THEME_SLUG}}
+
+            - name: Build
+              run: npm run prod
+
+            - name: Deploy Plugins and Themes
+              uses: easingthemes/ssh-deploy@main
+              with:
+                  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+                  REMOTE_HOST: ${{ secrets.DROPLET_IP }}
+                  REMOTE_USER: root
+                  SOURCE: "./web/wp-content/"
+                  TARGET: "/var/www/production/wp-content/"
+                  ARGS: "-avzc"
+
+            - name: Change Permissions of Deployed Code
+              uses: appleboy/ssh-action@v1.2.2
+              with:
+                  host: ${{ secrets.DROPLET_IP }}
+                  username: root
+                  key: ${{ secrets.SSH_PRIVATE_KEY }}
+                  script: |
+                      sudo chown -R www-data:www-data /var/www/production/wp-content
+                      sudo chmod -R 755 /var/www/production/wp-content
