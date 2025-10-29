@@ -67,10 +67,6 @@ jobs:
                   SOURCE: "./web/wp-content/"
                   TARGET: "/var/www/${{ github.ref_name }}/wp-content/"
                   ARGS: "-avzc"
-                  SCRIPT_AFTER: |
-                      sudo chown -R www-data:www-data /var/www/${{ github.ref_name }}/wp-content
-                      sudo chmod -R 755 /var/www/${{ github.ref_name }}/wp-content
-                      echo "after scripts are running"
 
             - name: Change Permissions of Deployed Code
               uses: appleboy/ssh-action@v1.2.2
