@@ -42,6 +42,11 @@ write_files:
     content: ${env}
     permissions: '0600'
 
+  - path: /root/.secrets/cloudflare.ini
+    content: |
+      dns_cloudflare_api_token = ${cf_token}
+    permissions: '0600'
+
   - path: /root/scripts/deploy-preview.sh
     encoding: b64
     content: ${deploy_preview_script}
