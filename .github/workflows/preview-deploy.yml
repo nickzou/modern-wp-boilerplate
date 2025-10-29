@@ -61,16 +61,16 @@ jobs:
             - name: Deploy Plugins and Themes
               uses: easingthemes/ssh-deploy@main
               with:
-                SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-                REMOTE_HOST: ${{ secrets.DROPLET_IP }}
-                REMOTE_USER: root
-                SOURCE: "./web/wp-content/"
-                TARGET: "/var/www/${{ github.ref_name }}/wp-content/"
-                ARGS: "-avzc"
-                SCRIPT_AFTER: |
-                  sudo chown -R www-data:www-data /var/www/${{ github.ref_name }}/wp-content
-                  sudo chmod -R 755 /var/www/${{ github.ref_name }}/wp-content
-                  echo "after scripts are running"
+                  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+                  REMOTE_HOST: ${{ secrets.DROPLET_IP }}
+                  REMOTE_USER: root
+                  SOURCE: "./web/wp-content/"
+                  TARGET: "/var/www/${{ github.ref_name }}/wp-content/"
+                  ARGS: "-avzc"
+                  SCRIPT_AFTER: |
+                      sudo chown -R www-data:www-data /var/www/${{ github.ref_name }}/wp-content
+                      sudo chmod -R 755 /var/www/${{ github.ref_name }}/wp-content
+                      echo "after scripts are running"
 
             - name: Change Permissions of Deployed Code
               uses: appleboy/ssh-action@v1.2.2
@@ -79,5 +79,5 @@ jobs:
                   username: root
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   script: |
-                    sudo chown -R www-data:www-data /var/www/${{ github.ref_name }}/wp-content
-                    sudo chmod -R 755 /var/www/${{ github.ref_name }}/wp-content
+                      sudo chown -R www-data:www-data /var/www/${{ github.ref_name }}/wp-content
+                      sudo chmod -R 755 /var/www/${{ github.ref_name }}/wp-content
