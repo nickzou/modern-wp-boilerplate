@@ -129,6 +129,10 @@ runcmd:
   - chown -R www-data:www-data /var/www/dev
   - rm -rf /tmp/wordpress /tmp/latest.tar.gz
 
+  # After Production WordPress files
+  - cd /var/www/production && wp config create --dbname=wordpress_prod --dbuser=wp_prod --dbpass='${wordpress_prod_password}' --allow-root
+  - cd /var/www/production && wp core install --url=${domain_name} --title="Production Site" --admin_user=admin --admin_password='${wordpress_admin_password}' --admin_email=${ssl_email} --allow-root
+
   # Enable all sites
   - ln -s /etc/nginx/sites-available/production /etc/nginx/sites-enabled/
   - ln -s /etc/nginx/sites-available/staging /etc/nginx/sites-enabled/
