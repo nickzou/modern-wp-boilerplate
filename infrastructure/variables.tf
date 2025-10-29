@@ -73,3 +73,18 @@ variable "ssl_email" {
   description = "SSL Email"
   type        = string
 }
+
+variable "wp_default_username" {
+  description = "WordPress Admin Username"
+  type        = string
+}
+
+variable "wp_default_user_email" {
+  description = "WordPress Admin Email"
+  type        = string
+}
+
+variable "wp_default_user_password" {
+  description = "WordPress Admin Password"
+  type        = string
+}
