@@ -15,6 +15,7 @@ packages:
     - php-zip
     - zsh
     - zsh-syntax-highlighting
+    - btop
     - certbot
     - python3-certbot-nginx
     - python3-certbot-dns-cloudflare
