@@ -61,7 +61,7 @@
     "@wordpress/env": "^10.33.0",
     "@wordpress/i18n": "^6.6.0",
     "@wordpress/scripts": "^30.26.0",
-    "browser-sync": "^3.0.4",
+    "browser-sync": "^3.0.3",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^9.2.1",
     "dotenv": "^17.2.3",
