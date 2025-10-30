@@ -41,7 +41,7 @@ resource "digitalocean_droplet" "basic" {
   }
 
   data "local_file" "monitoring_htpasswd" {
-    filename   = "${path.module}/monitoring.htpasswd",
+    filename   = "${path.module}/monitoring.htpasswd"
     depends_on = [null_resource.generate_htpasswd]
   }
 
