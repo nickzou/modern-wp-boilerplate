@@ -8,6 +8,10 @@ terraform {
       source  = "cloudflare/cloudflare"
       version = "~> 4.0"
     }
+    htpasswd = {
+      source  = "loafoe/htpasswd"
+      version = "~> 1.5"
+    }
   }
 }
 
@@ -17,6 +21,10 @@ provider "digitalocean" {
 
 provider "cloudflare" {
   api_token = var.cf_token
+}
+
+resource "htpasswd_password" "monitoring" {
+  password = var.monitoring_password
 }
 
 resource "digitalocean_droplet" "basic" {
@@ -34,17 +42,6 @@ resource "digitalocean_droplet" "basic" {
     timeout     = "2m"
   }
 
-  resource "null_resource" "generate_htpasswd" {
-    provisioner "local-exec" {
-      command = "htpasswd -nb ${var.monitoring_password} > monitoring.htpasswd"
-    }
-  }
-
-  data "local_file" "monitoring_htpasswd" {
-    filename   = "${path.module}/monitoring.htpasswd"
-    depends_on = [null_resource.generate_htpasswd]
-  }
-
   user_data = templatefile("${path.module}/cloud-init.yaml", {
     cache_conf                 = base64encode(file("${path.module}/cache.conf")),
     production_nginx_conf      = base64encode(file("${path.module}/production-nginx.conf")),
@@ -53,6 +50,7 @@ resource "digitalocean_droplet" "basic" {
     monitoring_nginx_conf      = base64encode(templatefile("${path.module}/monitoring-nginx.conf.tpl", {
       domain_name = var.domain_name
     })),
+    monitoring_htpasswd        = "admin:${htpasswd_password.monitoring.apr1}",
     fail2ban_config            = base64encode(file("${path.module}/fail2ban-jail.local")),
     deploy_preview_script      = base64encode(file("${path.module}/scripts/deploy-preview.sh")),
     cleanup_preview_script     = base64encode(file("${path.module}/scripts/cleanup-preview.sh")),
@@ -110,7 +108,7 @@ resource "cloudflare_record" "dev" {
 # Monitoring subdomain
 resource "cloudflare_record" "monitoring" {
   zone_id = var.cf_zone_id
-  name    = "dev"
+  name    = "monitoring"
   content = digitalocean_droplet.basic.ipv4_address
   type    = "A"
   proxied = true

@@ -72,6 +72,10 @@ write_files:
       encoding: b64
       content: ${monitoring_nginx_conf}
 
+    - path: /etc/nginx/.htpasswd
+      content: ${monitoring_htpasswd}
+      permissions: '0644'
+
     - path: /etc/netdata/netdata.conf
       content: |
          [web]
@@ -184,11 +188,7 @@ runcmd:
         fi
 
     # Install Netdata
-    - bash <(curl -Ss https://my-netdata.io/kickstart.sh) --non-interactive --dont-wait
-    
-    # Create htpasswd file for monitoring (password: change this!)
-    - echo '${monitoring_htpasswd}' > /etc/nginx/.htpasswd
-    - chmod 644 /etc/nginx/.htpasswd
+    - curl -Ss https://my-netdata.io/kickstart.sh | bash -s -- --non-interactive --dont-wait
     
     # Enable monitoring site
     - ln -s /etc/nginx/sites-available/monitoring /etc/nginx/sites-enabled/
