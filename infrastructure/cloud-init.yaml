@@ -61,6 +61,12 @@ write_files:
       encoding: b64
       content: ${preview_nginx_template}
 
+    - path: /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh
+      content: |
+        #!/bin/bash
+        systemctl reload nginx
+      permissions: '0755'
+
 runcmd:
     - git clone https://github.com/nickzou/server-dotfiles.git /tmp/dotfiles
     - cp /tmp/dotfiles/dotfiles/.zshrc /root/.zshrc
