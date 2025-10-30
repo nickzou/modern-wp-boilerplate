@@ -87,4 +87,11 @@ variable "wp_default_user_email" {
 variable "wp_default_user_password" {
   description = "WordPress Admin Password"
   type        = string
+  sensitive   = true
+}
+
+variable "monitoring_password" {
+  description = "Monitoring Password"
+  type        = string
+  sensitive   = true
 }
