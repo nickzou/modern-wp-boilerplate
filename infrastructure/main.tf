@@ -93,6 +93,15 @@ resource "cloudflare_record" "dev" {
   proxied = true
 }
 
+# Monitoring subdomain
+resource "cloudflare_record" "monitoring" {
+  zone_id = var.cf_zone_id
+  name    = "dev"
+  content = digitalocean_droplet.basic.ipv4_address
+  type    = "A"
+  proxied = true
+}
+
 output "droplet_ip" {
   value       = digitalocean_droplet.basic.ipv4_address
   description = "The public IP address of the droplet"
