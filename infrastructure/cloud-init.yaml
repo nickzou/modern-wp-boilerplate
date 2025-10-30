@@ -19,6 +19,7 @@ packages:
     - python3-certbot-nginx
     - python3-certbot-dns-cloudflare
     - fail2ban
+    - apache2-utils
 
 write_files:
     - path: /etc/nginx/conf.d/cache.conf
@@ -66,6 +67,16 @@ write_files:
         #!/bin/bash
         systemctl reload nginx
       permissions: '0755'
+
+    - path: /etc/nginx/sites-available/monitoring
+      encoding: b64
+      content: ${monitoring_nginx_conf}
+
+    - path: /etc/netdata/netdata.conf
+      content: |
+         [web]
+             bind to = 127.0.0.1
+      permissions: '0644'
 
 runcmd:
     - git clone https://github.com/nickzou/server-dotfiles.git /tmp/dotfiles
@@ -172,6 +183,19 @@ runcmd:
           openssl dhparam -out /etc/letsencrypt/ssl-dhparams.pem 2048
         fi
 
+    # Install Netdata
+    - bash <(curl -Ss https://my-netdata.io/kickstart.sh) --non-interactive --dont-wait
+    
+    # Create htpasswd file for monitoring (password: change this!)
+    - echo '${monitoring_htpasswd}' > /etc/nginx/.htpasswd
+    - chmod 644 /etc/nginx/.htpasswd
+    
+    # Enable monitoring site
+    - ln -s /etc/nginx/sites-available/monitoring /etc/nginx/sites-enabled/
+
+    # Restart netdata with localhost binding
+    - systemctl restart netdata
+
     - nginx -t && systemctl reload nginx
 
     - ufw default deny incoming
@@ -182,3 +206,4 @@ runcmd:
 
     - systemctl enable fail2ban
     - systemctl start fail2ban
+
