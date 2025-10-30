@@ -188,8 +188,8 @@ runcmd:
         fi
 
     # Install Netdata
-    - curl -Ss https://my-netdata.io/kickstart.sh | bash -s -- --non-interactive --dont-wait
-    
+    - curl https://get.netdata.cloud/kickstart.sh > /tmp/netdata-kickstart.sh && sh /tmp/netdata-kickstart.sh --non-interactive    
+
     # Enable monitoring site
     - ln -s /etc/nginx/sites-available/monitoring /etc/nginx/sites-enabled/
 
