@@ -34,6 +34,17 @@ resource "digitalocean_droplet" "basic" {
     timeout     = "2m"
   }
 
+  resource "null_resource" "generate_htpasswd" {
+    provisioner "local-exec" {
+      command = "htpasswd -nb ${var.monitoring_password} > monitoring.htpasswd"
+    }
+  }
+
+  data "local_file" "monitoring_htpasswd" {
+    filename   = "${path.module}/monitoring.htpasswd",
+    depends_on = [null_resource.generate_htpasswd]
+  }
+
   user_data = templatefile("${path.module}/cloud-init.yaml", {
     cache_conf                 = base64encode(file("${path.module}/cache.conf")),
     production_nginx_conf      = base64encode(file("${path.module}/production-nginx.conf")),
