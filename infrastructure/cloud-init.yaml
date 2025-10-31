@@ -21,6 +21,8 @@ packages:
     - python3-certbot-dns-cloudflare
     - fail2ban
     - apache2-utils
+    - redis-server 
+    - php-redis   
 
 write_files:
     - path: /etc/nginx/conf.d/cache.conf
@@ -222,3 +224,11 @@ runcmd:
 
     # Weekly production backup on Sundays at 2 AM
     - echo "0 2 * * 0 /root/scripts/backup-production.sh >> /var/log/backup.log 2>&1" | crontab -
+
+    # Configure and start Redis
+    - systemctl enable redis-server
+    - systemctl start redis-server
+    
+    # Configure Redis for WordPress (secure it to localhost only)
+    - sed -i 's/^bind .*/bind 127.0.0.1/' /etc/redis/redis.conf
+    - systemctl restart redis-server
