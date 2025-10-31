@@ -59,6 +59,11 @@ write_files:
       content: ${cleanup_preview_script}
       permissions: "0755"
 
+    - path: /root/scripts/create-backup.sh
+      encoding: b64
+      content: ${create_backup_script}
+      permissions: "0755"
+
     - path: /root/templates/preview-nginx.conf.tpl
       encoding: b64
       content: ${preview_nginx_template}
@@ -208,3 +213,4 @@ runcmd:
     - systemctl enable fail2ban
     - systemctl start fail2ban
 
+    - mkdir -r /root/backups/
