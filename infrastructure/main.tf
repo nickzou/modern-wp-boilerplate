@@ -44,16 +44,16 @@ resource "digitalocean_droplet" "basic" {
 
   user_data = templatefile("${path.module}/cloud-init.yaml", {
     cache_conf                 = base64encode(file("${path.module}/cache.conf")),
-    production_nginx_conf      = base64encode(templatefile("${path.module}/nginx-confs/production-nginx.conf.tpl", {
+    production_nginx_conf      = base64encode(templatefile("${path.module}/nginx-confs/production-nginx.conf", {
       domain_name = var.domain_name
     })),
-    staging_nginx_conf         = base64encode(templatefile("${path.module}/nginx-confs/staging-nginx.conf.tpl", {
+    staging_nginx_conf         = base64encode(templatefile("${path.module}/nginx-confs/staging-nginx.conf", {
       domain_name = var.domain_name
     })),
-    dev_nginx_conf             = base64encode(templatefile("${path.module}/nginx-confs/dev-nginx.conf.tpl", {
+    dev_nginx_conf             = base64encode(templatefile("${path.module}/nginx-confs/dev-nginx.conf", {
       domain_name = var.domain_name
     })),
-    monitoring_nginx_conf      = base64encode(templatefile("${path.module}/nginx-confs/monitoring-nginx.conf.tpl", {
+    monitoring_nginx_conf      = base64encode(templatefile("${path.module}/nginx-confs/monitoring-nginx.conf", {
       domain_name = var.domain_name
     })),
     monitoring_htpasswd        = "admin:${htpasswd_password.monitoring.apr1}",
