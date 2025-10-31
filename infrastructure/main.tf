@@ -61,6 +61,7 @@ resource "digitalocean_droplet" "basic" {
     deploy_preview_script      = base64encode(file("${path.module}/scripts/deploy-preview.sh")),
     cleanup_preview_script     = base64encode(file("${path.module}/scripts/cleanup-preview.sh")),
     create_backup_script       = base64encode(file("${path.module}/scripts/create-backup.sh")),
+    sync_prod_to_env_script    = base64encode(file("${path.module}/scripts/sync-prod-to-env.sh")),
     env                        = base64encode(file("${path.module}/templates/.env.tpl")),
     preview_nginx_template     = base64encode(file("${path.module}/templates/preview-nginx.conf.tpl")),
     nginx_custom_logrotate     = base64encode(file("${path.module}/nginx-custom")),
