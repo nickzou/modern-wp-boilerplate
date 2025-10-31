@@ -57,6 +57,7 @@ resource "digitalocean_droplet" "basic" {
     create_backup_script       = base64encode(file("${path.module}/scripts/create-backup.sh")),
     env                        = base64encode(file("${path.module}/templates/.env.tpl")),
     preview_nginx_template     = base64encode(file("${path.module}/templates/preview-nginx.conf.tpl")),
+    nginx_custom_logrotate     = base64encode(file("${path.module}/nginx-custom")),
     domain_name                = var.domain_name,
     mysql_root_password        = var.mysql_root_password,
     wordpress_prod_password    = var.wordpress_prod_password,

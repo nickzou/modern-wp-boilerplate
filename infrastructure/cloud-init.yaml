@@ -39,6 +39,11 @@ write_files:
       encoding: b64
       content: ${dev_nginx_conf}
 
+    - path: /etc/logrotate.d/nginx-custom
+      encoding: b64
+      content: ${nginx_custom_logrotate}
+      permissions: "0644"
+
     - path: /root/.env
       encoding: b64
       content: ${env}
