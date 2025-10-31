@@ -8,7 +8,7 @@
         "./web/wp-content/themes/base-theme"
     ],
     "mappings": {
-        "wp-content/uploads": "./wp-content/uploads"
+        "wp-content/uploads": "./web/wp-content/uploads"
     },
     "config": {
         "WP_DEBUG": true,
