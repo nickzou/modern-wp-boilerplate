@@ -27,6 +27,7 @@
     "sync:local": "bash ./scripts/sync-from-prod.sh",
     "sync:staging": "bash ./scripts/sync-env.sh staging",
     "sync:dev": "bash ./scripts/sync-env.sh dev",
+    "ssh": "cd infrastructure && ssh root@$(terraform output -raw droplet_ip)",
     "admin:tailwind:dev": "tailwindcss -i ./admin-tailwind.css -o ./web/wp-content/themes/base-theme/css/admin-tailwind.css",
     "admin:tailwind:prod": "tailwindcss -i ./admin-tailwind.css -o ./web/wp-content/themes/base-theme/css/admin-tailwind.css -m",
     "admin:tailwind:watch": "tailwindcss -i ./admin-tailwind.css -o ./web/wp-content/themes/base-theme/css/admin-tailwind.css -w",
