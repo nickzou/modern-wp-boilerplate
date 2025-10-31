@@ -16,5 +16,6 @@ web/wp-content/themes/*/css/
 web/wp-content/themes/*/js/
 web/wp-content/themes/*/blocks/*
 web/wp-content/themes/*/cache/
-
+web/wp-content/uploads/*
+tmp/*
 
