@@ -26,6 +26,9 @@ sudo -u www-data wp --path=$TARGET_PATH db import /tmp/prod-to-$TARGET_ENV.sql
 echo "🔗 Updating URLs for $TARGET_ENV..."
 sudo -u www-data wp --path=$TARGET_PATH search-replace "${DOMAIN}" "$TARGET_URL" --skip-columns=guid
 
+echo "🚫 Discouraging search engines..."
+sudo -u www-data wp --path=$TARGET_PATH option update blog_public 0
+
 echo "📸 Syncing uploads..."
 rsync -a --delete /var/www/production/wp-content/uploads/ $TARGET_PATH/wp-content/uploads/
 
@@ -35,3 +38,7 @@ sudo -u www-data wp --path=$TARGET_PATH cache flush || true
 if sudo -u www-data wp --path=$TARGET_PATH plugin is-active redis-cache 2>/dev/null; then
     sudo -u www-data wp --path=$TARGET_PATH redis flush || true
 fi
+
+echo "✅ $TARGET_ENV synced with production!"
+echo "🌐 Visit: https://$TARGET_URL"
+echo "🔒 Search engines: Discouraged"
