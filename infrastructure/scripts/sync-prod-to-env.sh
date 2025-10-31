@@ -31,4 +31,7 @@ rsync -a --delete /var/www/production/wp-content/uploads/ $TARGET_PATH/wp-conten
 
 echo "🧹 Flushing cache..."
 sudo -u www-data wp --path=$TARGET_PATH cache flush || true
-sudo -u www-data wp --path=$TARGET_PATH redis flush || true
+# Only flush Redis if the plugin exists
+if sudo -u www-data wp --path=$TARGET_PATH plugin is-active redis-cache 2>/dev/null; then
+    sudo -u www-data wp --path=$TARGET_PATH redis flush || true
+fi
