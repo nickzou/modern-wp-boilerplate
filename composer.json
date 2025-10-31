@@ -9,7 +9,8 @@
     "require": {
         "composer/installers": "^2.3.0",
         "wpackagist-plugin/wordpress-seo": "^26.2",
-        "wpackagist-plugin/safe-svg": "^2.4.0"
+        "wpackagist-plugin/safe-svg": "^2.4.0",
+        "wpackagist-plugin/redis-cache": "^2.7.0"
 
     },
     "extra": {
