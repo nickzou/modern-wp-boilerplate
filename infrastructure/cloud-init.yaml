@@ -220,7 +220,7 @@ runcmd:
     - systemctl enable fail2ban
     - systemctl start fail2ban
 
-    - mkdir -r /root/backups/
+    - mkdir -p /root/backups/
 
     # Weekly production backup on Sundays at 2 AM
     - echo "0 2 * * 0 /root/scripts/backup-production.sh >> /var/log/backup.log 2>&1" | crontab -
