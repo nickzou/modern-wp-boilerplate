@@ -71,6 +71,11 @@ write_files:
       content: ${create_backup_script}
       permissions: "0755"
 
+    - path: /root/scripts/sync-prod-to-env.sh
+      encoding: b64
+      content: ${sync_prod_to_env_script}
+      permissions: "0755"
+
     - path: /root/templates/preview-nginx.conf.tpl
       encoding: b64
       content: ${preview_nginx_template}
