@@ -1,16 +1,16 @@
 server {
     listen 80;
-    server_name staging.pandacalculus.com;
+    server_name staging.${domain_name};
     return 301 https://$server_name$request_uri;
 }
 
 server {
     listen 443 ssl http2;
-    server_name staging.pandacalculus.com;
+    server_name staging.${domain_name};
     root /var/www/staging;
     
-    ssl_certificate /etc/letsencrypt/live/pandacalculus.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/pandacalculus.com/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/${domain_name}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/${domain_name}/privkey.pem;
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
