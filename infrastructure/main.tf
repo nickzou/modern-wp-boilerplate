@@ -47,7 +47,9 @@ resource "digitalocean_droplet" "basic" {
     production_nginx_conf      = base64encode(templatefile("${path.module}/nginx-confs/production-nginx.conf.tpl", {
       domain_name = var.domain_name
     })),
-    staging_nginx_conf         = base64encode(file("${path.module}/nginx-confs/staging-nginx.conf")),
+    staging_nginx_conf         = base64encode(templatefile("${path.module}/nginx-confs/staging-nginx.conf", {
+      domain_name = var.domain_name
+    })),
     dev_nginx_conf             = base64encode(templatefile("${path.module}/nginx-confs/dev-nginx.conf.tpl", {
       domain_name = var.domain_name
     })),
