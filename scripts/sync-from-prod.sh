@@ -14,35 +14,39 @@ REMOTE_WP_PATH="/var/www/production"
 
 echo "🔄 Syncing production to local wp-env..."
 
-# Step 1: Export database on server
+# Export database on server
 echo "📦 Exporting production database..."
 ssh $SERVER "sudo -u www-data wp --path=$REMOTE_WP_PATH db export /tmp/prod-export.sql"
 
-# Step 2: Download database
+# Download database
 echo "⬇️  Downloading database..."
 scp $SERVER:/tmp/prod-export.sql ./tmp/prod-export.sql
 
-# Step 3: Import to local wp-env
+# Import to local wp-env
 echo "💾 Importing to local database..."
 npx wp-env run cli wp db import ./tmp/prod-export.sql
-#
-# # Step 4: Update URLs for local environment
+
+# Update URLs for local environment
 echo "🔗 Updating URLs..."
 npx wp-env run cli wp search-replace "$TF_DOMAIN_NAME" "localhost:8888" --skip-columns=guid
-#
-# # Step 5: Flush Redis cache (if you're using Redis locally)
+
+# Discouraging search engines
+echo "🚫 Discouraging search engines..."
+npx wp-env run cli wp option update blog_public 0
+
+# Flush Redis cache (if you're using Redis locally)
 echo "🧹 Flushing cache..."
 npx wp-env run cli wp cache flush || true
-#
-# # Step 6: Download media/uploads
+
+# Download media/uploads
 echo "📸 Syncing media files..."
 rsync -avz --progress $SERVER:/var/www/production/wp-content/uploads/ ./web/wp-content/uploads/
-#
-# # Step 7: Cleanup
+
+# Cleanup
 echo "🧹 Cleaning up remote temp files..."
 ssh $SERVER "rm /tmp/prod-export.sql"
 rm ./tmp/prod-export.sql
-#
+
 echo "✅ Done! Your local environment is now synced with production."
 echo "🌐 Visit: http://localhost:8888"
 echo ""
