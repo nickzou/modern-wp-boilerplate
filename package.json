@@ -1,7 +1,7 @@
 {
   "name": "modern-wp-boilerplate",
   "version": "1.0.0",
-  "description": "A modern WordPress boilerplate",
+  "description": "A complete modern WordPress development and deployment system with infrastructure as code, automated DevOps workflows, and cutting-edge frontend tooling",
   "license": "ISC",
   "author": "Nick Zou",
   "type": "commonjs",
