@@ -87,8 +87,8 @@ sudo apt update && sudo apt install terraform
 
 # doctl
 cd ~
-wget https://github.com/digitalocean/doctl/releases/download/v1.104.0/doctl-1.104.0-linux-amd64.tar.gz
-tar xf ~/doctl-1.104.0-linux-amd64.tar.gz
+wget https://github.com/digitalocean/doctl/releases/download/v1.104.0/doctl-1.146.0-linux-amd64.tar.gz
+tar xf ~/doctl-1.146.0-linux-amd64.tar.gz
 sudo mv ~/doctl /usr/local/bin
 
 # GitHub CLI
