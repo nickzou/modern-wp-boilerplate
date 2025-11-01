@@ -27,6 +27,7 @@ docker-compose --version
 # Start Docker Desktop
 open -a Docker
 ```
+
 Can't be bothered? Just run:
 
 ```bash
