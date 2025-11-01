@@ -43,7 +43,7 @@ resource "digitalocean_droplet" "basic" {
   }
 
   user_data = templatefile("${path.module}/cloud-init.yaml", {
-    cache_conf                 = base64encode(file("${path.module}/cache.conf")),
+    cache_conf                 = base64encode(file("${path.module}/nginx-confs/cache.conf")),
     production_nginx_conf      = base64encode(templatefile("${path.module}/nginx-confs/production-nginx.conf", {
       domain_name = var.domain_name
     })),
