@@ -1,8 +1,5 @@
-## Installation Instructions
+#!/bin/bash
 
-### macOS (Homebrew)
-
-```bash
 # Install required tools
 brew install node
 brew install composer
@@ -26,9 +23,3 @@ docker-compose --version
 
 # Start Docker Desktop
 open -a Docker
-```
-Can't be bothered? Just run:
-
-```bash
-bash ./scripts/install-prereq-macos.sh
-```
