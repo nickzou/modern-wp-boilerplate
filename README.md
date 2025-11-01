@@ -1,152 +1,108 @@
-# Modern WP Boilerplate
+# Modern WordPress Boilerplate
 
-A production-ready WordPress development system combining modern DevOps practices with cutting-edge frontend tooling.
+A complete modern WordPress development and deployment system with infrastructure as code, automated DevOps workflows, and cutting-edge frontend tooling.
 
-## Features
+## ✨ Features
 
-### 🏗️ Infrastructure & DevOps
-- **Infrastructure as Code** - Terraform-managed DigitalOcean droplets
-- **Multi-Environment** - Production, Staging, Dev + unlimited preview environments
-- **Automated CI/CD** - GitHub Actions for testing and deployment
-- **SSL & Security** - Automatic Wildcard SSL, Fail2ban, UFW firewall
-- **Monitoring** - Real-time server metrics with Netdata
-- **Backups** - Automated weekly backups with easy restore
-- **Environment Sync** - One-command sync between environments
-
-### ⚡ Performance
-- **BladeOne Template Cache** - Pre-compiled Blade templates
-- **Redis Object Cache** - Database query caching
-- **Nginx FastCGI Cache** - Full page caching
-- **Cloudflare CDN** - Global edge caching
-
-### 📦 Dependency Management
-- **Composer (Project)** - WordPress plugins, testing tools
-- **Composer (Theme)** - Theme-specific dependencies (BladeOne)
-- **npm** - Frontend tooling and build system
-- **Modular Architecture** - Plugins, themes, and tools independently managed
-
-### 🎨 Frontend Development
-- **BladeOne Templates** - Standalone implementation of the Blade templating engine
-- **Tailwind CSS 4** - Utility-first CSS with JIT compilation
-- **TypeScript** - Type-safe JavaScript with hot reload
-- **Alpine.js** - Lightweight reactive framework
-- **Gutenberg Blocks** - Custom block development with @wordpress/scripts
-- **Lightning CSS** - Ultra-fast CSS bundling and minification
-- **Parcel** - Zero-config TypeScript bundler
-- **Browser Sync** - Live reload during development
-
-### 🧪 Testing & Quality
-- **Pest PHP** - Modern PHP testing framework
-- **TypeScript** - Static type checking
-- **Biome** - Fast JS/TS linting and formatting
-- **PHP Linting** - Built-in syntax checking
-
-### 🛠️ Developer Experience
-- **wp-env** - Local WordPress environment with Docker
-- **Composer** - PHP dependency management
-- **Code Quality** - PHP linting, formatting, and type checking
-- **Watch Mode** - Auto-rebuild on file changes with parallel task execution
-- **Hot Reloading** - Instant feedback during development
-- **SSH Access** - Quick server access via npm scripts
+- 🏗️ **Infrastructure as Code** - Terraform + DigitalOcean
+- 🚀 **Multi-Environment** - Prod, Staging, Dev + unlimited previews
+- ⚡ **Performance** - Redis, Nginx caching, Cloudflare CDN, BladeOne templates
+- 🎨 **Modern Frontend** - Tailwind 4, TypeScript, Alpine.js, Gutenberg blocks
+- 🔐 **Security** - SSL, Fail2ban, UFW firewall
+- 📊 **Monitoring** - Netdata real-time metrics
+- 🧪 **Testing** - Pest PHP, TypeScript type checking
 
 ## 🚀 Quick Start
 
-### Prerequisites
-
-#### Required Tools:
-- Node.js 20+
-- PHP 8.4+
-- Composer 2+
-- Docker
-- Terraform
-- GitHub CLI
-- doctl (DigitalOcean CLI)
-- DigitalOcean account
-- Cloudflare account with domain
-- SSH key pair
-
-#### Required Accounts:
-- DigitalOcean account
-- Cloudflare account
-- Domains registered and added to Cloudflare
-- GitHub account
-- SSH key pair
-
-### 1. Create from Template
-
-Click "Use this template" on GitHub or clone:
+**5 minute setup:**
 ```bash
-git clone git@github.com:yourusername/modern-wp-boilerplate.git my-project
-cd my-project
-```
+# 1. Clone repo
+git clone git@github.com:yourusername/modern-wp-boilerplate.git
+cd modern-wp-boilerplate
 
-### 2. Configure Environment Variables
-
-Copy and rename the example file:
-```bash
+# 2. Copy and configure environment
 cp .env.example .env
-```
+nano .env  # Fill in your values
 
-Edit `.env` with your values:
-```bash
-vim .env # or use your preferred editor
-```
-
-Fill in the required values:
-```bash
-# Theme Configuration
-THEME_SLUG=your-theme-name        # Your custom theme slug
-
-# GitHub (for CI/CD)
-REPO_OWNER=yourusername            # Your GitHub username
-REPO_NAME=my-new-project           # Your repo name
-
-# DigitalOcean
-TF_DO_TOKEN=dop_v1_xxxxx          # Get from: cloud.digitalocean.com/account/api/tokens
-TF_SSH_KEY_ID=12345678             # Get from: doctl compute ssh-key list
-TF_PROJECT_NAME=MyProject          # Display name for droplet
-TF_REGION=nyc3                     # Choose: nyc3, sfo3, lon1, fra1, etc.
-TF_DROPLET_SIZE=s-1vcpu-2gb        # See: digitalocean.com/pricing
-
-# Cloudflare
-TF_CF_TOKEN=xxxxx                  # Get from: dash.cloudflare.com/profile/api-tokens
-TF_CF_ZONE_ID=xxxxx                # Get from your domain's overview page
-TF_DOMAIN_NAME=yourdomain.com      # Your domain
-
-# Database Passwords (generate random strong passwords!)
-TF_MYSQL_ROOT_PASSWORD=xxx
-TF_WORDPRESS_PROD_PASSWORD=xxx
-TF_WORDPRESS_STAGING_PASSWORD=xxx
-TF_WORDPRESS_DEV_PASSWORD=xxx
-
-# WordPress Admin
-TF_WP_DEFAULT_USERNAME=admin
-TF_WP_DEFAULT_USER_EMAIL=admin@yourdomain.com
-TF_WP_DEFAULT_USER_PASSWORD=xxx    # Generate strong password!
-
-# SSL & Monitoring
-TF_SSL_EMAIL=admin@yourdomain.com
-TF_MONITORING_PASSWORD=xxx         # For https://monitoring.yourdomain.com
-
-# SSH Key
-TF_SSH_PRIVATE_KEY_PATH=~/.ssh/id_ed25519  # Path to your private key
-```
-
-### 3. Install Dependencies
-```bash
-# Install Node dependencies
+# 3. Install dependencies
 npm install
-
-# Install all Composer dependencies (project + theme)
 npm run composer:install
-```
 
-### 3. Set Up Infrastructure
-```bash
+# 4. Deploy infrastructure
 npm run setup:infra
-# Follow prompts to configure DigitalOcean, Cloudflare, domain, etc.
+cd infrastructure && terraform apply
 
-npm run setup:wp
-# Follow prompts to configure WordPress theme name, etc.
+# 5. Start local development
+npm run env:start
+npm run sync:local
+npm run watch
 ```
+
+Visit: http://localhost:8888
+
+**Need help?** See [Installation Guide](docs/INSTALLATION.md) for detailed setup.
+
+## 📚 Documentation
+
+- **[Installation Guide](docs/INSTALLATION.md)** - Prerequisites, tools, authentication
+- **[Quick Start](docs/QUICK_START.md)** - Get up and running fast
+- **[Development Guide](docs/DEVELOPMENT.md)** - Frontend workflow, local dev
+- **[Deployment Guide](docs/DEPLOYMENT.md)** - CI/CD, production deploys
+- **[Infrastructure Guide](docs/INFRASTRUCTURE.md)** - Terraform, server architecture
+- **[Troubleshooting](docs/TROUBLESHOOTING.md)** - Common issues and solutions
+
+## 📋 Common Commands
+```bash
+# Development
+npm run watch          # Start dev with hot reload
+npm run dev            # Build for development
+npm run prod           # Build for production
+
+# Environment Management
+npm run env:start      # Start local WordPress
+npm run sync:local     # Pull production data to local
+npm run sync:staging   # Sync prod → staging
+npm run sync:dev       # Sync prod → dev
+
+# Infrastructure
+npm run ssh            # SSH into server
+cd infrastructure && terraform apply  # Deploy changes
 ```
+
+## 🏗️ Tech Stack
+
+**Backend:** WordPress, PHP 8.4, MySQL 8.4, Nginx, Redis  
+**Frontend:** Tailwind CSS 4, TypeScript, Alpine.js, BladeOne  
+**Infrastructure:** Terraform, DigitalOcean, Cloudflare, Ubuntu 24.04  
+**DevOps:** GitHub Actions, Docker (wp-env), Composer, Netdata
+
+## 🌍 Environments
+
+- **Production**: https://yourdomain.com
+- **Staging**: https://staging.yourdomain.com
+- **Dev**: https://dev.yourdomain.com
+- **Monitoring**: https://monitoring.yourdomain.com
+- **Previews**: https://feature-branch.yourdomain.com (auto-created)
+
+## 💰 Cost
+
+**~$12-13/month total**
+- DigitalOcean Droplet: $12/month (2GB)
+- Cloudflare: Free
+- Domain: ~$10-15/year
+
+## 🤝 Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md)
+
+## 📄 License
+
+ISC
+
+## 👤 Author
+
+**Nick Zou**
+
+---
+
+**⭐ Star this repo if you find it useful!**
