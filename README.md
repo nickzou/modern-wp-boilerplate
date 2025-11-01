@@ -15,6 +15,7 @@ A complete modern WordPress development and deployment system with infrastructur
 ## 🚀 Quick Start
 
 **5 minute setup:**
+
 ```bash
 # 1. Clone repo
 git clone git@github.com:yourusername/modern-wp-boilerplate.git
@@ -53,6 +54,7 @@ Visit: http://localhost:8888
 - **[Infrastructure Guide](docs/INFRASTRUCTURE.md)** - Terraform, server architecture (COMING SOON)
 
 ## 📋 Common Commands
+
 ```bash
 # Development
 npm run watch          # Start dev with hot reload
@@ -87,7 +89,8 @@ cd infrastructure && terraform apply  # Deploy changes
 
 ## 🗺️ Roadmap
 
-### Coming Soon 
+### Coming Soon
+
 - Multi-cloud support
 - Automated Testing
 - S3 backups
@@ -96,6 +99,7 @@ cd infrastructure && terraform apply  # Deploy changes
 ## 💰 Cost
 
 **~$12-13/month total**
+
 - DigitalOcean Droplet: $12/month (2GB)
 - Cloudflare: Free
 - Domain: ~$10-15/year
