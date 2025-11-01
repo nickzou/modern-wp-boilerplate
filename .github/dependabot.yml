@@ -7,21 +7,6 @@ updates:
           day: "monday"
           time: "01:00"
           timezone: "America/New_York"
-          open-pull-requests-limit: 10
-          groups:
-          dev-dependencies:
-              dependency-type: "development"
-              update-types:
-                  - "minor"
-                  - "patch"
-          prod-dependencies:
-              dependency-type: "production"
-              update-types:
-                  - "minor"
-                  - "patch"
-          labels:
-              - "dependencies"
-              - "npm"
           commit-message:
           prefix: "chore(deps)"
           reviewers:
@@ -36,14 +21,6 @@ updates:
           day: "monday"
           time: "01:00"
           timezone: "America/New_York"
-      open-pull-requests-limit: 5
-      groups:
-          wordpress-plugins:
-              patterns:
-                  - "wpackagist-plugin/*"
-              update-types:
-                  - "minor"
-                  - "patch"
       testing-tools:
           patterns:
               - "*"
@@ -52,10 +29,6 @@ updates:
           update-types:
               - "minor"
               - "patch"
-      labels:
-          - "dependencies"
-          - "composer"
-          - "plugins"
       commit-message:
           prefix: "chore(deps)"
       reviewers:
@@ -70,18 +43,6 @@ updates:
           interval: "weekly"
           day: "monday"
           time: "01:00"
-      open-pull-requests-limit: 5
-      groups:
-          theme-dependencies:
-              patterns:
-                  - "*"
-              update-types:
-                  - "minor"
-                  - "patch"
-      labels:
-          - "dependencies"
-          - "composer"
-          - "theme"
 
     - package-ecosystem: "github-actions"
       directory: "/"
@@ -89,11 +50,6 @@ updates:
           interval: "weekly"
           day: "monday"
           time: "09:00"
-      open-pull-requests-limit: 5
-      labels:
-          - "dependencies"
-          - "github-actions"
-          - "ci"
 
     # Terraform
     - package-ecosystem: "terraform"
@@ -102,8 +58,3 @@ updates:
           interval: "weekly"
           day: "monday"
           time: "09:00"
-      open-pull-requests-limit: 3
-      labels:
-          - "dependencies"
-          - "terraform"
-          - "infrastructure"
