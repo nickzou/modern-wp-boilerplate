@@ -28,14 +28,17 @@ vim .env  # Fill in your values
 npm install
 npm run composer:install
 
-# 4. Deploy infrastructure
-npm run setup:infra
+# 4. Setup local environment
+npm run setup:local
 
 # 5. Start local development
 npm run env:start
 
 # 6. Start developmen with hot reload
 npm run watch
+
+# 4. Deploy infrastructure
+npm run setup:infra
 ```
 
 Visit: http://localhost:8888
