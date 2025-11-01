@@ -3,6 +3,8 @@ name: Deploy to Production
 on:
     pull_request:
         types: [closed] # Triggers when PR is closed (merged or just closed)
+        branches:
+            - "!dependabot/**"
 
 jobs:
     deploy-to-prod:

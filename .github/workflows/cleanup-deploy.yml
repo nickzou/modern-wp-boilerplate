@@ -6,6 +6,7 @@ on:
     delete:
         branches:
             - "**" # Triggers when any branch is deleted
+            - "!dependabot/**"
 
 jobs:
     cleanup-preview:
