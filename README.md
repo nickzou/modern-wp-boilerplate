@@ -26,9 +26,8 @@ vim .env  # Fill in your values
 
 # 3. Install dependencies
 npm install
-npm run composer:install
 
-# 4. Setup local environment
+# 4. Setup local environment and development tools
 npm run setup:local
 
 # 5. Start local development
@@ -37,7 +36,7 @@ npm run env:start
 # 6. Start developmen with hot reload
 npm run watch
 
-# 4. Deploy infrastructure
+# 4. Deploy infrastructure (when you're ready)
 npm run setup:infra
 ```
 
