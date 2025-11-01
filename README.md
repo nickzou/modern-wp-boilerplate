@@ -47,11 +47,10 @@ Visit: http://localhost:8888
 ## 📚 Documentation
 
 - **[Installation Guide](docs/INSTALLATION.md)** - Prerequisites, tools, authentication
-- **[Quick Start](docs/QUICK_START.md)** - Get up and running fast
-- **[Development Guide](docs/DEVELOPMENT.md)** - Frontend workflow, local dev
-- **[Deployment Guide](docs/DEPLOYMENT.md)** - CI/CD, production deploys
-- **[Infrastructure Guide](docs/INFRASTRUCTURE.md)** - Terraform, server architecture
-- **[Troubleshooting](docs/TROUBLESHOOTING.md)** - Common issues and solutions
+- **[Quick Start](docs/QUICK_START.md)** - Get up and running fast (COMING SOON)
+- **[Development Guide](docs/DEVELOPMENT.md)** - Frontend workflow, local dev (COMING SOON)
+- **[Deployment Guide](docs/DEPLOYMENT.md)** - CI/CD, production deploys (COMING SOON)
+- **[Infrastructure Guide](docs/INFRASTRUCTURE.md)** - Terraform, server architecture (COMING SOON)
 
 ## 📋 Common Commands
 ```bash
