@@ -86,6 +86,14 @@ cd infrastructure && terraform apply  # Deploy changes
 - **Monitoring**: https://monitoring.yourdomain.com
 - **Previews**: https://feature-branch.yourdomain.com (auto-created)
 
+## 🗺️ Roadmap
+
+### Coming Soon 
+- Multi-cloud support
+- Automated Testing
+- S3 backups
+- Enhanced monitoring
+
 ## 💰 Cost
 
 **~$12-13/month total**
