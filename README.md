@@ -36,7 +36,7 @@ npm run env:start
 # 6. Start developmen with hot reload
 npm run watch
 
-# 4. Deploy infrastructure (when you're ready)
+# 7. Deploy infrastructure (when you're ready)
 npm run setup:infra
 ```
 
