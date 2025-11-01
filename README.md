@@ -22,7 +22,7 @@ cd modern-wp-boilerplate
 
 # 2. Copy and configure environment
 cp .env.example .env
-nano .env  # Fill in your values
+vim .env  # Fill in your values
 
 # 3. Install dependencies
 npm install
@@ -30,11 +30,11 @@ npm run composer:install
 
 # 4. Deploy infrastructure
 npm run setup:infra
-cd infrastructure && terraform apply
 
 # 5. Start local development
 npm run env:start
-npm run sync:local
+
+# 6. Start developmen with hot reload
 npm run watch
 ```
 
