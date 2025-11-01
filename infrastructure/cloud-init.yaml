@@ -21,8 +21,8 @@ packages:
     - python3-certbot-dns-cloudflare
     - fail2ban
     - apache2-utils
-    - redis-server 
-    - php-redis   
+    - redis-server
+    - php-redis
 
 write_files:
     - path: /etc/nginx/conf.d/cache.conf
@@ -82,9 +82,9 @@ write_files:
 
     - path: /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh
       content: |
-        #!/bin/bash
-        systemctl reload nginx
-      permissions: '0755'
+          #!/bin/bash
+          systemctl reload nginx
+      permissions: "0755"
 
     - path: /etc/nginx/sites-available/monitoring
       encoding: b64
@@ -92,13 +92,13 @@ write_files:
 
     - path: /etc/nginx/.htpasswd
       content: ${monitoring_htpasswd}
-      permissions: '0644'
+      permissions: "0644"
 
     - path: /etc/netdata/netdata.conf
       content: |
-         [web]
-             bind to = 127.0.0.1
-      permissions: '0644'
+          [web]
+              bind to = 127.0.0.1
+      permissions: "0644"
 
 runcmd:
     - git clone https://github.com/nickzou/server-dotfiles.git /tmp/dotfiles
@@ -157,7 +157,7 @@ runcmd:
     - cp -a /tmp/wordpress/. /var/www/production/
     - chown -R www-data:www-data /var/www/production
     - rm -rf /tmp/wordpress /tmp/latest.tar.gz
-    
+
     # Production Environment Install
     - sudo -u www-data wp --path=/var/www/production config create --dbname=wordpress_prod --dbuser=wp_prod --dbpass='${wordpress_prod_password}'
     - sudo -u www-data wp --path=/var/www/production core install --url=${domain_name} --title="Production Site" --admin_user=${wp_default_username} --admin_password='${wp_default_user_password}' --admin_email=${wp_default_user_email}
@@ -206,7 +206,7 @@ runcmd:
         fi
 
     # Install Netdata
-    - curl https://get.netdata.cloud/kickstart.sh > /tmp/netdata-kickstart.sh && sh /tmp/netdata-kickstart.sh --non-interactive    
+    - curl https://get.netdata.cloud/kickstart.sh > /tmp/netdata-kickstart.sh && sh /tmp/netdata-kickstart.sh --non-interactive
 
     # Enable monitoring site
     - ln -s /etc/nginx/sites-available/monitoring /etc/nginx/sites-enabled/
@@ -233,7 +233,7 @@ runcmd:
     # Configure and start Redis
     - systemctl enable redis-server
     - systemctl start redis-server
-    
+
     # Configure Redis for WordPress (secure it to localhost only)
     - sed -i 's/^bind .*/bind 127.0.0.1/' /etc/redis/redis.conf
     - systemctl restart redis-server
