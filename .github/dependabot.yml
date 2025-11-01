@@ -7,12 +7,6 @@ updates:
           day: "monday"
           time: "01:00"
           timezone: "America/New_York"
-          commit-message:
-          prefix: "chore(deps)"
-          reviewers:
-              - "nickzou"
-          assignees:
-              - "nickzou"
 
     - package-ecosystem: "composer"
       directory: "/"
@@ -29,14 +23,7 @@ updates:
           update-types:
               - "minor"
               - "patch"
-      commit-message:
-          prefix: "chore(deps)"
-      reviewers:
-          - "nickzou"
-      assignees:
-          - "nickzou"
 
-      # Composer (theme)
     - package-ecosystem: "composer"
       directory: "/web/wp-content/themes/base-theme"
       schedule:
