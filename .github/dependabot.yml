@@ -15,14 +15,6 @@ updates:
           day: "monday"
           time: "01:00"
           timezone: "America/New_York"
-      testing-tools:
-          patterns:
-              - "*"
-          exclude-pattners:
-              - "wpackagist-plugin/*"
-          update-types:
-              - "minor"
-              - "patch"
 
     - package-ecosystem: "composer"
       directory: "/web/wp-content/themes/base-theme"
