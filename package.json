@@ -73,7 +73,7 @@
     "esrun": "^3.2.30",
     "glob": "^11.0.3",
     "lightningcss-cli": "^1.30.2",
-    "lucide-react": "^0.546.0",
+    "lucide-react": "^0.552.0",
     "parcel": "^2.16.0",
     "prettier": "^3.6.2",
     "prettier-plugin-blade": "^2.1.21",
