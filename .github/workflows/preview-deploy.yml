@@ -21,8 +21,10 @@ jobs:
               run: |
                   if [ -n "${{ secrets.DROPLET_IP }}" ]; then
                     echo "has-infra=true" >> $GITHUB_OUTPUT
+                    echo "has infra"
                   else
                     echo "has-infra=false" >> $GITHUB_OUTPUT
+                    echo "no infra"
                   fi
     deploy-preview:
         runs-on: ubuntu-latest
