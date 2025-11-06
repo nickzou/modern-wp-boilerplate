@@ -14,17 +14,15 @@ jobs:
     check-infrastructure:
         runs-on: ubuntu-latest
         outputs:
-            has_infra: ${{ steps.check.outputs.has-infra }}
+            has-infra: ${{ steps.check.outputs.has-infra }}
         steps:
             - name: Check if infrastructure exists
               id: check
               run: |
                   if [ -n "${{ secrets.DROPLET_IP }}" ]; then
                     echo "has-infra=true" >> $GITHUB_OUTPUT
-                    echo "has infra"
                   else
                     echo "has-infra=false" >> $GITHUB_OUTPUT
-                    echo "no infra"
                   fi
     deploy-preview:
         runs-on: ubuntu-latest
