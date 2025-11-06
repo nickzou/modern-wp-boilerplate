@@ -10,7 +10,7 @@ jobs:
     check-infrastructure:
         runs-on: ubuntu-latest
         outputs:
-            has_infra: ${{ steps.check.outputs.has-infra }}
+            has-infra: ${{ steps.check.outputs.has-infra }}
         steps:
             - name: Check if infrastructure exists
               id: check
