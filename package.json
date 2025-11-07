@@ -24,7 +24,7 @@
     "wp:cli": "wp-env run cli",
     "setup:infra": "bash ./scripts/infra/create-env-tpl.sh && bash ./scripts/infra/create-tfvars.sh && bash ./scripts/infra/create-infra.sh && ./scripts/infra/set-repo-droplet-id.sh && bash ./scripts/infra/set-repo-theme-slug.sh",
     "setup:local": "bash ./scripts/local/rename-theme-folder.sh && bash ./scripts/local/replace-theme-slug-in-file.sh package.json && bash ./scripts/local/replace-theme-slug-in-file.sh .wp-env.json && bash ./scripts/local/replace-theme-slug-in-file.sh bs-config.json && bash ./scripts/local/replace-theme-slug-in-file.sh tailwind.css && bash ./scripts/local/install-theme-dependencies.sh && ./scripts/local/install-project-dependencies.sh",
-    "sync:local": "bash ./scripts/sync-from-prod.sh",
+    "sync:local": "bash ./scripts/automations/sync-from-prod.sh",
     "sync:staging": "bash ./scripts/automations/sync-env.sh staging",
     "sync:dev": "bash ./scripts/automations/sync-env.sh dev",
     "ssh": "cd infrastructure && ssh root@$(terraform output -raw droplet_ip)",
