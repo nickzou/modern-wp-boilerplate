@@ -18,7 +18,7 @@
     "env:stop": "wp-env stop",
     "env:clean": "wp-env clean all",
     "env:destroy": "wp-env destroy",
-    "wp:create-block": "bash ./scripts/create-block.sh",
+    "wp:create-block": "bash ./scripts/theme/create-block.sh",
     "wp:blocks:build": "wp-scripts build --source-path=src/blocks --output-path=web/wp-content/themes/base-theme/blocks",
     "wp:blocks:watch": "npm run wp:blocks:build -- --watch",
     "wp:cli": "wp-env run cli",
