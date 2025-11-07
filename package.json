@@ -28,7 +28,7 @@
     "sync:staging": "bash ./scripts/automations/sync-env.sh staging",
     "sync:dev": "bash ./scripts/automations/sync-env.sh dev",
     "ssh": "cd infrastructure && ssh root@$(terraform output -raw droplet_ip)",
-    "verify-tools": "bash ./scripts/verify-tools.sh",
+    "verify-tools": "bash ./scripts/install/verify-tools.sh",
     "admin:tailwind:dev": "tailwindcss -i ./admin-tailwind.css -o ./web/wp-content/themes/base-theme/css/admin-tailwind.css",
     "admin:tailwind:prod": "tailwindcss -i ./admin-tailwind.css -o ./web/wp-content/themes/base-theme/css/admin-tailwind.css -m",
     "admin:tailwind:watch": "tailwindcss -i ./admin-tailwind.css -o ./web/wp-content/themes/base-theme/css/admin-tailwind.css -w",
