@@ -31,7 +31,7 @@ open -a Docker
 Can't be bothered? Just run:
 
 ```bash
-bash ./scripts/install-prereq-macos.sh
+bash ./scripts/install/install-prereq-macos.sh
 ```
 
 ### Linux (Ubuntu/Debian)
