@@ -38,8 +38,8 @@ else
   COMMAND="install"
 fi
 
-echo "Executing: composer $COMMAND in $THEME_DIR"
-composer "$COMMAND" -d "$THEME_DIR"
+echo "Executing: composer $COMMAND"
+composer "$COMMAND" 
 
 exit $?
 
