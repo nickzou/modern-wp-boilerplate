@@ -42,7 +42,7 @@ jobs:
                   echo "Cleaning up branch: ${BRANCH}"
 
             - name: Teardown preview environment
-              uses: appleboy/ssh-action@v1.2.2
+              uses: appleboy/ssh-action@v1.2.3
               with:
                   host: ${{ secrets.DROPLET_IP }}
                   username: root
