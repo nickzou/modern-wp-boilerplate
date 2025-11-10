@@ -62,7 +62,7 @@ jobs:
             #   run: test commands
 
             - name: Change Permissions of Deployed Code
-              uses: appleboy/ssh-action@v1.2.2
+              uses: appleboy/ssh-action@v1.2.3
               with:
                   host: ${{ secrets.DROPLET_IP }}
                   username: root
